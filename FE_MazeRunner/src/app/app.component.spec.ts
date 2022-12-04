@@ -23,8 +23,6 @@ describe('AppComponent', () => {
   it(`should have as title 'FE_MazeRunner'`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    //test should fail now!!
-    expect(app.title).toEqual('FE_MazeRunner_fail');
     expect(app.title).toEqual('FE_MazeRunner');
   });
 
