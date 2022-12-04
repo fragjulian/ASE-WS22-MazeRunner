@@ -2,12 +2,19 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+
       <module fileurl="file://$PROJECT_DIR$/.idea/Projekt.iml" filepath="$PROJECT_DIR$/.idea/Projekt.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ASE-WS22-MazeRunner.iml" filepath="$PROJECT_DIR$/.idea/ASE-WS22-MazeRunner.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/ASE Project.iml" filepath="$PROJECT_DIR$/.idea/ASE Project.iml" />
     </modules>
   </component>
 </project>
+      <module fileurl="file://$PROJECT_DIR$/.idea/ASE-WS22-MazeRunner.iml" filepath="$PROJECT_DIR$/.idea/ASE-WS22-MazeRunner.iml" />
+    </modules>
+  </component>
+</project>
+
+
       <module fileurl="file://$PROJECT_DIR$/.idea/ASE-WS22-MazeRunner.iml" filepath="$PROJECT_DIR$/.idea/ASE-WS22-MazeRunner.iml" />
     </modules>
   </component>
