@@ -1,0 +1,19 @@
+
+# Inital workflow for building and testing in future
+# It has to be commited to default branch once to start working
+
+name: Build, test and analyze
+
+on: # run on any push except on main
+  push:
+    branches-ignore:
+      - main
+  pull_request: # run for every pull request
+    types: [opened, synchronize, reopened]
+jobs:
+  build:
+    name: TODO Build and analyze
+    runs-on: ubuntu-latest
+    steps:
+    - name: inital workflow file
+      run: echo "workflow works"
