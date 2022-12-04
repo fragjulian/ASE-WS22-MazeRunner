@@ -1,0 +1,14 @@
+# will deploy the project to docker hub from where it can be pulled to docker
+
+name: Deploy to Docker Hub
+
+on: # run on push to main (only after successfull pull-request) 
+  push:
+    branches:
+      - main
+jobs:
+  build-docker:
+    runs-on: ubuntu-latest
+    steps:
+    - name: initial deploy workflow
+      run: echo "workflow works"
