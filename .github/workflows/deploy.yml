@@ -30,4 +30,4 @@ jobs:
         cache-to: type=gha, mode=max
         file: ./Dockerfile # creates container with this file
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/mazeRunner:latest
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/maze-runner:latest
