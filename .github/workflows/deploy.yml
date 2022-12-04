@@ -8,6 +8,9 @@ on: # run on push to main (only after successful pull-request)
     branches:
       - main
       - CI-CD # todo remove after testing
+    paths-ignore:
+      - 'README.md'
+      - 'doc/**'
 jobs:
   build-docker:
     runs-on: ubuntu-latest
@@ -28,6 +31,6 @@ jobs:
         context: .
         cache-from: type=gha # cache docker content
         cache-to: type=gha, mode=max
-        file: ./Dockerfile # creates container with this file
+        file: ./Dockerfile # creates backend container with this file
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/maze-runner:latest
