@@ -10,9 +10,8 @@ import java.io.IOException;
 
 @RestController
 public class MazeSolverController {
-    @PostMapping("/solve-maze")
-    public String uploadImage(@RequestParam("image") MultipartFile file)
-            throws IOException {
+    @PostMapping("/api/maze")
+    public String uploadImage(@RequestParam("image") MultipartFile file) {
         //solve maze and return the solved image
         return "image uploaded";
     }
