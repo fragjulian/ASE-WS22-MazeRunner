@@ -11,9 +11,6 @@ on: # run on push to main (only after successful pull-request)
     paths-ignore:
       - 'README.md'
       - 'doc/**'
-defaults:
-  run:
-    working-directory: 'BE_MazeRunner'
 jobs:
   build-docker:
     runs-on: ubuntu-latest
