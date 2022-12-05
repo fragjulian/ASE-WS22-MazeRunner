@@ -13,6 +13,9 @@ on: # run on any push except on main
       - 'doc/**'
   pull_request: # run for every pull request
     types: [opened, synchronize, reopened]
+defaults:
+  run:
+    working-directory: 'BE_MazeRunner'
 jobs:
   build:
     name: Build and analyze

@@ -31,6 +31,6 @@ jobs:
         context: .
         cache-from: type=gha # cache docker content
         cache-to: type=gha, mode=max
-        file: ./Dockerfile # creates backend container with this file
+        file: ./BE_MazeRunner/Dockerfile # creates backend container with this file
         push: true
         tags: ${{ secrets.DOCKER_HUB_USERNAME }}/maze-runner:latest
