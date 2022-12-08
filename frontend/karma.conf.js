@@ -7,7 +7,6 @@ module.exports = function(config) {
     // base path that will be used to resolve all patterns (eg. files, exclude)
     basePath: '',
 
-
     // frameworks to use
     // available frameworks: https://www.npmjs.com/search?q=keywords:karma-adapter
     frameworks: ['jasmine', '@angular-devkit/build-angular'],
@@ -24,7 +23,6 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      //'test-main.js',
       { pattern: '**/*spec.ts', included: false }
     ],
 
@@ -84,7 +82,6 @@ module.exports = function(config) {
         flags: ['--no-sandbox']
       }
     },
-
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits

@@ -13,13 +13,13 @@ on: # run on any push except on main
       - 'doc/**'
   pull_request: # run for every pull request
     types: [opened, synchronize, reopened]
-defaults:
-  run:
-    working-directory: 'backend'
 jobs:
-  build:
+  backend:
     name: Build and analyze
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'backend'
     steps:
       - uses: actions/checkout@v3 # get project from gitHub
       - name: Set up JDK 17
@@ -43,3 +43,23 @@ jobs:
           name: Build test report
           path: "**/surefire-reports/TEST-*.xml"
           reporter: java-junit
+
+  frontend:
+    name: Build and test frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'frontend'
+    steps:
+      - name: Checkout code from repo
+        uses: actions/checkout@v3
+      - name: show tree
+        run: tree
+      - name: Node.js setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+      - run: npm install
+      - run: npm run test:ci
