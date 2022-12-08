@@ -25,7 +25,7 @@ describe('AppComponent', () => {
     const app = fixture.componentInstance;
 
     //test should fail now
-    expect(app.title).toEqual('frontend_fail');
+    expect(app.title).toEqual('frontend');
 
   });
 
