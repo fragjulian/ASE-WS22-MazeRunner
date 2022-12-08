@@ -1,0 +1,54 @@
+<div class="widget-container flex-box">
+  <span>Upload your maze to solve here</span>
+  <div
+    id="dropzone-external"
+    class="flex-box"
+    [ngClass]="
+      isDropZoneActive
+        ? ['dx-theme-accent-as-border-color', 'dropzone-active']
+        : ['dx-theme-border-color']
+    "
+  >
+    <img id="dropzone-image" [src]="imageSource" *ngIf="imageSource" alt=""/>
+    <div id="dropzone-text" class="flex-box" *ngIf="textVisible">
+      <span>Drag & Drop the desired file</span>
+      <span>…or click to browse for a file instead.</span>
+    </div>
+    <dx-progress-bar
+      #uploadProgress
+      [min]="0"
+      [max]="100"
+      width="30%"
+      [showStatus]="false"
+      [visible]="progressVisible"
+      [value]="progressValue"
+    ></dx-progress-bar>
+  </div>
+  <dx-file-uploader
+    #fileUploader
+    dialogTrigger="#dropzone-external"
+    dropZone="#dropzone-external"
+    [multiple]="false"
+    [allowedFileExtensions]="['.jpg', '.jpeg', '.gif', '.png']"
+    uploadMode="instantly"
+    uploadUrl="https://js.devexpress.com/Demos/NetCore/FileUploader/Upload"
+    [visible]="true"
+    (onDropZoneEnter)="onDropZoneEnter($event)"
+    (onDropZoneLeave)="onDropZoneLeave($event)"
+    (onUploaded)="onUploaded($event)"
+    (onProgress)="onProgress($event)"
+  ></dx-file-uploader> <!--(onUploadStarted)="onUploadStarted($event)"-->
+
+  <div class="solve-maze-btn">
+    <button class="btn btn-primary" type="button" [disabled]="!solveButtonEnabled" (click)="onMazeSolve()">
+      <div *ngIf="isLoading">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span class="sr-only"> Solving...</span>
+      </div>
+      <div *ngIf="!isLoading">
+        <span class="sr-only">Solve Maze</span>
+      </div>
+    </button>
+  </div>
+</div>
+
