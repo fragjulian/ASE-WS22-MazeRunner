@@ -16,6 +16,15 @@
   margin: auto;
 }
 
+.solve-maze-btn {
+  width: 80vw;
+  margin-top: 15px;
+}
+
+.btn {
+  width: 100%;
+}
+
 ::ng-deep #dropzone-external > * {
   pointer-events: none;
 }

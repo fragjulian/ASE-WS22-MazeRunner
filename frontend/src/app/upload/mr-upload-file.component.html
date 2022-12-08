@@ -1,5 +1,5 @@
 <div class="widget-container flex-box">
-  <span>Maze to Solve</span>
+  <span>Upload your maze to solve here</span>
   <div
     id="dropzone-external"
     class="flex-box"
@@ -9,7 +9,7 @@
         : ['dx-theme-border-color']
     "
   >
-    <img id="dropzone-image" [src]="imageSource" *ngIf="imageSource" alt="" />
+    <img id="dropzone-image" [src]="imageSource" *ngIf="imageSource" alt=""/>
     <div id="dropzone-text" class="flex-box" *ngIf="textVisible">
       <span>Drag & Drop the desired file</span>
       <span>…or click to browse for a file instead.</span>
@@ -38,4 +38,17 @@
     (onUploaded)="onUploaded($event)"
     (onProgress)="onProgress($event)"
   ></dx-file-uploader> <!--(onUploadStarted)="onUploadStarted($event)"-->
+
+  <div class="solve-maze-btn">
+    <button class="btn btn-primary" type="button" [disabled]="!solveButtonEnabled" (click)="onMazeSolve()">
+      <div *ngIf="isLoading">
+        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span class="sr-only"> Loading...</span>
+      </div>
+      <div *ngIf="!isLoading">
+        <span class="sr-only">Solve Maze</span>
+      </div>
+    </button>
+  </div>
 </div>
+

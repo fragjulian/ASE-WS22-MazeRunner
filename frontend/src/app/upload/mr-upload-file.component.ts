@@ -16,12 +16,26 @@ export class MrUploadFileComponent {
 
   progressValue = 0;
 
+  solveButtonEnabled = true;
+
+  isLoading = false;
+
   constructor() {
     this.onDropZoneEnter = this.onDropZoneEnter.bind(this);
     this.onDropZoneLeave = this.onDropZoneLeave.bind(this);
     this.onUploaded = this.onUploaded.bind(this);
     this.onProgress = this.onProgress.bind(this);
     this.onUploadStarted = this.onUploadStarted.bind(this);
+  }
+
+  async onMazeSolve() {
+    this.solveButtonEnabled = false;
+    this.isLoading = true;
+
+    await delay(3500);
+
+    this.solveButtonEnabled = true;
+    this.isLoading = false;
   }
 
   // @ts-ignore
@@ -57,4 +71,8 @@ export class MrUploadFileComponent {
     this.imageSource = '';
     this.progressVisible = true;
   }
+}
+
+function delay(ms: number) {
+  return new Promise( resolve => setTimeout(resolve, ms) );
 }
