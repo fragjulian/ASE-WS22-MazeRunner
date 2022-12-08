@@ -15,7 +15,7 @@ on: # run on any push except on main
     types: [opened, synchronize, reopened]
 defaults:
   run:
-    working-directory: 'BE_MazeRunner'
+    working-directory: 'backend'
 jobs:
   build:
     name: Build and analyze
