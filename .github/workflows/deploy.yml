@@ -25,7 +25,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
     - name: show tree # for debugging
       run: tree
-    - name: Build and push
+    - name: Build and push backend
       uses: docker/build-push-action@v3
       with:
         context: .
@@ -33,4 +33,13 @@ jobs:
         cache-to: type=gha, mode=max
         file: ./backend/Dockerfile # creates backend container with this file
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/maze-runner:latest
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/maze-runner-backend:latest
+    - name: Build and push frontend
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        cache-from: type=gha # cache docker content
+        cache-to: type=gha, mode=max
+        file: ./frontend/Dockerfile # creates frontend container with this file
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/maze-runner-frontend:latest
