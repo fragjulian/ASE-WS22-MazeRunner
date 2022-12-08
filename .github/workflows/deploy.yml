@@ -1,14 +1,36 @@
+
 # will deploy the project to docker hub from where it can be pulled to docker
 
 name: Deploy to Docker Hub
 
-on: # run on push to main (only after successfull pull-request) 
+on: # run on push to main (only after successful pull-request)
   push:
     branches:
       - main
+      - CI-CD # todo remove after testing
+    paths-ignore:
+      - 'README.md'
+      - 'doc/**'
 jobs:
   build-docker:
     runs-on: ubuntu-latest
     steps:
-    - name: initial deploy workflow
-      run: echo "workflow works"
+    - uses: actions/checkout@v3 # get project from gitHub
+    - name: Login to Docker Hub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_HUB_USERNAME }}
+        password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+    - name: show tree # for debugging
+      run: tree
+    - name: Build and push
+      uses: docker/build-push-action@v3
+      with:
+        context: .
+        cache-from: type=gha # cache docker content
+        cache-to: type=gha, mode=max
+        file: ./backend/Dockerfile # creates backend container with this file
+        push: true
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/maze-runner:latest

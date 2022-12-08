@@ -1,3 +1,5 @@
+[![Build, test and analyze](https://github.com/fragjulian/ASE-WS22-MazeRunner/actions/workflows/build-test.yml/badge.svg)](https://github.com/fragjulian/ASE-WS22-MazeRunner/actions/workflows/build-test.yml)
+[![Deploy to Docker Hub](https://github.com/fragjulian/ASE-WS22-MazeRunner/actions/workflows/deploy.yml/badge.svg)](https://github.com/fragjulian/ASE-WS22-MazeRunner/actions/workflows/deploy.yml)
 # ASE-WS22-MazeRunner
 
 Main Repository for the Semester Project in Advanced Software Engineering WS22 / Group G
