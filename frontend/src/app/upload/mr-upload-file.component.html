@@ -43,7 +43,7 @@
     <button class="btn btn-primary" type="button" [disabled]="!solveButtonEnabled" (click)="onMazeSolve()">
       <div *ngIf="isLoading">
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-        <span class="sr-only"> Loading...</span>
+        <span class="sr-only"> Solving...</span>
       </div>
       <div *ngIf="!isLoading">
         <span class="sr-only">Solve Maze</span>
