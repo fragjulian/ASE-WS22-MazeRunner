@@ -1,15 +1,22 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AppComponent } from './app.component';
+import {MrNavbarComponent} from "./navbar/mr-navbar.component";
+import {MrUploadFileComponent} from "./upload/mr-upload-file.component";
+import {DxFileUploaderModule, DxProgressBarModule} from "devextreme-angular";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        DxProgressBarModule,
+        DxFileUploaderModule
       ],
       declarations: [
-        AppComponent
+        AppComponent,
+        MrNavbarComponent,
+        MrUploadFileComponent
       ],
     }).compileComponents();
   });
@@ -18,21 +25,5 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
     expect(app).toBeTruthy();
-  });
-
-  it(`should have as title 'frontend'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-
-    //test should fail now
-    expect(app.title).toEqual('frontend');
-
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('frontend app is running!');
   });
 });
