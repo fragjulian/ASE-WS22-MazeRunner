@@ -7,7 +7,7 @@ on: # run on push to main (only after successful pull-request)
   push:
     branches:
       - main
-      - CI-CD # todo remove after testing
+      #- CI-CD # only for testing
     paths-ignore:
       - 'README.md'
       - 'doc/**'
