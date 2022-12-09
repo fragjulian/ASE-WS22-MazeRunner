@@ -14,6 +14,9 @@ on: # run on push to main (only after successful pull-request)
 jobs:
   build-docker-backend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'backend'
     steps:
     - uses: actions/checkout@v3 # get project from gitHub
     - name: Login to Docker Hub
@@ -37,6 +40,9 @@ jobs:
 
   build-docker-frontend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'frontend'
     steps:
       - uses: actions/checkout@v3 # get project from gitHub
       - name: Login to Docker Hub
