@@ -7,13 +7,16 @@ on: # run on push to main (only after successful pull-request)
   push:
     branches:
       - main
-      - CI-CD # todo remove after testing
+      #- CI-CD # only for testing
     paths-ignore:
       - 'README.md'
       - 'doc/**'
 jobs:
-  build-docker:
+  build-docker-backend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'backend'
     steps:
     - uses: actions/checkout@v3 # get project from gitHub
     - name: Login to Docker Hub
@@ -25,7 +28,7 @@ jobs:
       uses: docker/setup-buildx-action@v2
     - name: show tree # for debugging
       run: tree
-    - name: Build and push
+    - name: Build and push backend
       uses: docker/build-push-action@v3
       with:
         context: .
@@ -33,4 +36,30 @@ jobs:
         cache-to: type=gha, mode=max
         file: ./backend/Dockerfile # creates backend container with this file
         push: true
-        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/maze-runner:latest
+        tags: ${{ secrets.DOCKER_HUB_USERNAME }}/maze-runner-backend:latest
+
+  build-docker-frontend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'frontend'
+    steps:
+      - uses: actions/checkout@v3 # get project from gitHub
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+      - name: show tree # for debugging
+        run: tree
+      - name: Build and push frontend
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          cache-from: type=gha # cache docker content
+          cache-to: type=gha, mode=max
+          file: ./frontend/Dockerfile # creates frontend container with this file
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/maze-runner-frontend:latest
