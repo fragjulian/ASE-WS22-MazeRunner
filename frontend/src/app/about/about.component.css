@@ -1,0 +1,11 @@
+h2 {
+  text-align: center;
+  padding: 50px;
+}
+
+.info {
+  margin: auto;
+  width: 640px;
+  font-family: 'Lexend Deca', sans-serif;
+  color: #2E475D;
+}
