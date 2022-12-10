@@ -1,0 +1,15 @@
+/* ensure that footer stays at bottom,
+   from https://stackoverflow.com/a/20352949 */
+
+body {
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+footer {
+  min-height: 50px;
+  background: PapayaWhip;
+  margin-top:auto;
+}

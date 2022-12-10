@@ -14,9 +14,12 @@ on: # run on any push except on main
   pull_request: # run for every pull request
     types: [opened, synchronize, reopened]
 jobs:
-  build:
-    name: Build and analyze
+  backend:
+    name: Build and analyze backend
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'backend'
     steps:
       - uses: actions/checkout@v3 # get project from gitHub
       - name: Set up JDK 17
@@ -37,6 +40,26 @@ jobs:
       - name: Generate test report  # create test report
         uses: dorny/test-reporter@v1.4.3
         with:
-          name: Build test report
+          name: Backend test report
           path: "**/surefire-reports/TEST-*.xml"
           reporter: java-junit
+
+  frontend:
+    name: Build and analyze frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'frontend'
+    steps:
+      - name: Checkout code from repo
+        uses: actions/checkout@v3
+      - name: show tree
+        run: tree
+      - name: Node.js setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+      - run: npm install
+      - run: npm run test:ci
