@@ -1,6 +1,3 @@
-/* ensure that footer stays at bottom,
-   from https://stackoverflow.com/a/20352949 */
-
 body {
   height: 100vh;
   margin: 0;
@@ -8,8 +5,5 @@ body {
   flex-direction: column;
 }
 
-footer {
-  min-height: 50px;
-  background: PapayaWhip;
-  margin-top:auto;
-}
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
