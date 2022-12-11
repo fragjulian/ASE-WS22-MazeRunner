@@ -18,6 +18,7 @@
               "devexpress-diagram",
               "devexpress-gantt",
               "devextreme-quill"
+
             ],
             "outputPath": "dist/frontend",
             "index": "src/index.html",
