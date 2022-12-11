@@ -10,6 +10,7 @@ import { NavbarNewComponent } from './navbar-new/navbar-new.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import { AboutComponent } from './about/about.component';
+import { FooterComponent } from './footer/footer.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { AboutComponent } from './about/about.component';
     MrUploadFileComponent,
     NavbarNewComponent,
     AboutComponent,
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
