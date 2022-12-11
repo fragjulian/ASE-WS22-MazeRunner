@@ -13,6 +13,8 @@ import { AboutComponent } from './about/about.component';
 import { FooterComponent } from './footer/footer.component';
 
 
+
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -20,6 +22,7 @@ import { FooterComponent } from './footer/footer.component';
     NavbarNewComponent,
     AboutComponent,
     FooterComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,7 @@ import { FooterComponent } from './footer/footer.component';
     DxFileUploaderModule,
     BrowserAnimationsModule,
     MatToolbarModule,
-    MatButtonModule
+    MatButtonModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
