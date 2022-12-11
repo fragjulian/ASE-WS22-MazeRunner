@@ -1,18 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NavbarNewComponent } from './navbar-new.component';
+import { NavbarComponent } from './navbar.component';
+import {MatToolbarModule} from "@angular/material/toolbar";
 
 describe('NavbarNewComponent', () => {
-  let component: NavbarNewComponent;
-  let fixture: ComponentFixture<NavbarNewComponent>;
+  let component: NavbarComponent;
+  let fixture: ComponentFixture<NavbarComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NavbarNewComponent ]
+      imports: [MatToolbarModule],
+      declarations: [ NavbarComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(NavbarNewComponent);
+    fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { MrUploadFileComponent } from './upload/mr-upload-file.component';
 import {DxFileUploaderModule, DxProgressBarModule} from "devextreme-angular";
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavbarNewComponent } from './navbar-new/navbar-new.component';
+import { NavbarComponent } from './navbar/navbar.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import { AboutComponent } from './about/about.component';
@@ -19,7 +19,7 @@ import { FooterComponent } from './footer/footer.component';
   declarations: [
     AppComponent,
     MrUploadFileComponent,
-    NavbarNewComponent,
+    NavbarComponent,
     AboutComponent,
     FooterComponent,
 
