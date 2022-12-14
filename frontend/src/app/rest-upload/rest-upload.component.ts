@@ -55,7 +55,7 @@ export class RestUploadComponent {
     * Looked up the response types here: https://stackoverflow.com/questions/46408537/angular-httpclient-http-failure-during-parsing
     * Port 8081 for Deployment
     */
-    this.httpClient.post('http://localhost:8081/api/maze', transformedImage, {observe: 'response', responseType: 'blob'})
+    this.httpClient.post('http://localhost:8080/api/maze', transformedImage, {observe: 'response', responseType: 'blob'})
       .subscribe((response) => {
 
           if (response.status === 200) {
