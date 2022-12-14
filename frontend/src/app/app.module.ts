@@ -14,6 +14,7 @@ import { FooterComponent } from './footer/footer.component';
 import { RestUploadComponent } from './rest-upload/rest-upload.component';
 import { HttpClientModule } from '@angular/common/http';
 import {FormsModule} from "@angular/forms";
+import { NgxDropzoneModule } from 'ngx-dropzone';
 
 
 
@@ -37,7 +38,8 @@ import {FormsModule} from "@angular/forms";
     MatToolbarModule,
     MatButtonModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    NgxDropzoneModule
   ],
   providers: [],
   bootstrap: [AppComponent]

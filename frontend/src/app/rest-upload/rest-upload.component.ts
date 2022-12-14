@@ -13,6 +13,7 @@ export class RestUploadComponent {
   constructor(private httpClient: HttpClient) {
   }
 
+
   uploadImage: any;
   solvedMaze: any;
   postResponse: any;
@@ -23,10 +24,20 @@ export class RestUploadComponent {
    * Saves the image to a variable.
    * @param event
    */
-  public onImageUpload(event:any) {
+  public onImageUpload(event: any) {
     this.uploadImage = event.target.files[0];
   }
 
+
+  onSelect(event: any) {
+    this.uploadImage = event.addedFiles[0];
+    console.log(this.uploadImage);
+  }
+
+  onRemove(event: any) {
+    console.log(event)
+    this.uploadImage = null;
+  }
 
   /***
    * This method takes the uploaded image, changes it to form-data with 'image' as key and the image as value.
@@ -55,7 +66,10 @@ export class RestUploadComponent {
     * Looked up the response types here: https://stackoverflow.com/questions/46408537/angular-httpclient-http-failure-during-parsing
     * Port 8081 for Deployment
     */
-    this.httpClient.post('http://localhost:8080/api/maze', transformedImage, {observe: 'response', responseType: 'blob'})
+    this.httpClient.post('http://localhost:8080/api/maze', transformedImage, {
+      observe: 'response',
+      responseType: 'blob'
+    })
       .subscribe((response) => {
 
           if (response.status === 200) {

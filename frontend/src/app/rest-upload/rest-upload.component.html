@@ -1,14 +1,25 @@
 <!--Changed version of this tutorial: https://www.techgeeknext.com/angular-upload-image-->
 <div class="container">
+  <br>
   <h1>Upload Image Example</h1>
   <br>
   <form>
+    <!-- Used this tutorial: https://stackblitz.com/edit/ngx-dropzone?file=src%2Fapp%2Fapp.component.html    -->
+    <ngx-dropzone (change)="onSelect($event)" [accept]="'image/*'">
+      <ngx-dropzone-label>Drop it, baby!</ngx-dropzone-label>
+      <ngx-dropzone-image-preview *ngIf="uploadImage" [file]="uploadImage" [removable]="true" (removed)="onRemove($event)">
+        <ngx-dropzone-label>{{ uploadImage.name }} ({{ uploadImage.type }})</ngx-dropzone-label>
+      </ngx-dropzone-image-preview>
+    </ngx-dropzone>
+
+    <br>
+
     <div class="form-group">
       <input type="file" (change)="onImageUpload($event)">
       <input type="button" (click)="imageUploadAction()" value="Upload Image" class="btn1">
     </div>
 
-
+    <br>
     <div>
       <output *ngIf=successResponse class="success"><b>{{successResponse}}</b></output>
     </div>
@@ -20,3 +31,8 @@
 
   </form>
 </div>
+
+
+
+
+
