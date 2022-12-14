@@ -6,6 +6,8 @@ import {DxFileUploaderModule, DxProgressBarModule} from "devextreme-angular";
 import {NavbarComponent} from "./navbar/navbar.component";
 import {FooterComponent} from "./footer/footer.component";
 import {MatToolbarModule} from "@angular/material/toolbar";
+import {HttpClientModule} from "@angular/common/http";
+import {FormsModule} from "@angular/forms";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -14,7 +16,9 @@ describe('AppComponent', () => {
         RouterTestingModule,
         DxProgressBarModule,
         DxFileUploaderModule,
-        MatToolbarModule
+        MatToolbarModule,
+        HttpClientModule,
+        FormsModule
       ],
       declarations: [
         AppComponent,

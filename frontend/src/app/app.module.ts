@@ -11,6 +11,9 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import { AboutComponent } from './about/about.component';
 import { FooterComponent } from './footer/footer.component';
+import { RestUploadComponent } from './rest-upload/rest-upload.component';
+import { HttpClientModule } from '@angular/common/http';
+import {FormsModule} from "@angular/forms";
 
 
 
@@ -22,6 +25,7 @@ import { FooterComponent } from './footer/footer.component';
     NavbarComponent,
     AboutComponent,
     FooterComponent,
+    RestUploadComponent,
 
   ],
   imports: [
@@ -32,6 +36,8 @@ import { FooterComponent } from './footer/footer.component';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
+    HttpClientModule,
+    FormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

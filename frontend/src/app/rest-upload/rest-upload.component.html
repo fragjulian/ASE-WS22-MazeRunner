@@ -1,0 +1,22 @@
+<!--Changed version of this tutorial: https://www.techgeeknext.com/angular-upload-image-->
+<div class="container">
+  <h1>Upload Image Example</h1>
+  <br>
+  <form>
+    <div class="form-group">
+      <input type="file" (change)="onImageUpload($event)">
+      <input type="button" (click)="imageUploadAction()" value="Upload Image" class="btn1">
+    </div>
+
+
+    <div>
+      <output *ngIf=successResponse class="success"><b>{{successResponse}}</b></output>
+    </div>
+    <br>
+
+    <div *ngIf=solvedMaze>
+      <img [src]="solvedMaze" alt="Solved Maze">
+    </div>
+
+  </form>
+</div>
