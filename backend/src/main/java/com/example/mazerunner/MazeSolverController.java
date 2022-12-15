@@ -24,13 +24,13 @@ public class MazeSolverController {
         File temp = File.createTempFile("maze", ".temp");
         file.transferTo(temp);
 
-        BufferedImage bufferedImage2 = ImageIO.read(temp);
-        Maze maze = new Maze(bufferedImage2);
+        BufferedImage bufferedImage = ImageIO.read(temp);
+        Maze maze = new Maze(bufferedImage);
         maze.solveMaze();
 
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage2, "png", byteArrayOutputStream);
+        ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
 
