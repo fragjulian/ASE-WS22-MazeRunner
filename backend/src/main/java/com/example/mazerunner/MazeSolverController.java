@@ -26,8 +26,7 @@ public class MazeSolverController {
 
         BufferedImage bufferedImage = ImageIO.read(temp);
         Maze maze = new Maze(bufferedImage);
-        maze.solveMaze();
-
+        bufferedImage = maze.solveMaze();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
