@@ -1,6 +1,5 @@
 package com.example.mazerunner;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 import java.util.LinkedList;
@@ -8,21 +7,32 @@ import java.util.List;
 
 public class Maze {
     //image type the targeted colours are in
-    private static final int IMAGE_TYPE = BufferedImage.TYPE_INT_RGB;
 
-    private static final int WALL = new Color(0, 0, 0).getRGB();
 
-    private static final int PATH = new Color(255, 0, 0).getRGB();
+    private final int PATH_COLOUR;
+
+    private final Heuristic heuristic;
+    private final WallDetector wallDetector;
 
     private final BufferedImage bufferedImage;
     private Position goal;
     private Position start;
     private boolean[][] walls;
-    private final DistanceMetric distanceMetric = new EuclideanDistance();
-    private final Heuristic heuristic = new RealDistanceHeuristic(distanceMetric);
-    WallDetector wallDetector = new ColourWallDetector(WALL);
 
-    public Maze(BufferedImage bufferedImage) {
+
+    /**
+     * This represents a solvable maze
+     *
+     * @param bufferedImage image of the maze in any ImageType
+     * @param heuristic     any heuristic to help with finding a solution
+     * @param wallDetector  any detector to detect walls and obstacles
+     * @param IMAGE_TYPE    the ImageType of the final image and of PATH_COLOUR and wallDetector
+     * @param PATH_COLOUR   the colour in which you want the path to be painted in ColourSpace of ImageType
+     */
+    public Maze(BufferedImage bufferedImage, Heuristic heuristic, WallDetector wallDetector, int IMAGE_TYPE, int PATH_COLOUR) {
+        this.heuristic = heuristic;
+        this.wallDetector = wallDetector;
+        this.PATH_COLOUR = PATH_COLOUR;
         //check if image is already in the correct colour space. If not, convert it
         if (bufferedImage.getType() == IMAGE_TYPE)
             this.bufferedImage = bufferedImage;
@@ -55,7 +65,7 @@ public class Maze {
         Position current = start;
         List<Position> alreadyVisited = new LinkedList<>();//todo implement backtracking
         while (!current.equals(goal)) {
-            bufferedImage.setRGB(current.getX(), current.getY(), PATH);
+            bufferedImage.setRGB(current.getX(), current.getY(), PATH_COLOUR);
             Position cheapestNeighbour = null;
             for (int x = current.getX() - 1; x <= current.getX() + 1; x++) {
                 for (int y = current.getY() - 1; y <= current.getY() + 1; y++) {
