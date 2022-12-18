@@ -21,7 +21,7 @@ public class MazeSolverController {
     private static final int WALL_COLOUR = new Color(0, 0, 0).getRGB();
 
     private static final int PATH_COLOUR = new Color(255, 0, 0).getRGB();
-    private static final WallDetector wallDetector = new ColourWallDetector(WALL_COLOUR);
+    private static final WallDetector DEFAULT_WALL_DETECTOR = new ColourWallDetector(WALL_COLOUR);
     private final DistanceMetric distanceMetric = new EuclideanDistance();
     private final Heuristic heuristic = new RealDistanceHeuristic(distanceMetric);
 
@@ -29,11 +29,26 @@ public class MazeSolverController {
             value = "/api/maze",
             produces = MediaType.IMAGE_JPEG_VALUE
     )
-    public byte[] uploadImage(@RequestParam("image") MultipartFile file) throws IOException {
+    public byte[] uploadImage(@RequestParam("image") MultipartFile file,
+                              @RequestParam(name = "walldetector", required = false) String wallDetectorParameter,
+                              @RequestParam(name = "wallcolour", required = false) Integer colour) throws IOException {
+        WallDetector wallDetector = DEFAULT_WALL_DETECTOR;
+        if (wallDetectorParameter != null)
+            if (wallDetectorParameter.equals("colourwalldetector")) {
+                if (colour == null)
+                    wallDetector = new ColourWallDetector(WALL_COLOUR);
+                else
+                    wallDetector = new ColourWallDetector(colour);
+            } else {
+                wallDetector = DEFAULT_WALL_DETECTOR;
+            }
+        return getSolvedMaze(file, wallDetector);
+    }
+
+    private byte[] getSolvedMaze(MultipartFile file, WallDetector wallDetector) throws IOException {
         //solve maze and return the solved image
         File temp = File.createTempFile("maze", ".temp");
         file.transferTo(temp);
-
         BufferedImage bufferedImage = ImageIO.read(temp);
         Maze maze = new Maze(bufferedImage, heuristic, wallDetector, IMAGE_TYPE, PATH_COLOUR);
         bufferedImage = maze.solveMaze();
@@ -42,7 +57,6 @@ public class MazeSolverController {
         ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
-
 
 
 }
