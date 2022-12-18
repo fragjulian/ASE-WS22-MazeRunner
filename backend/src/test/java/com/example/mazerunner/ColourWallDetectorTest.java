@@ -30,7 +30,7 @@ class ColourWallDetectorTest {
     @ValueSource(ints = {SIZE_SMALL, SIZE_MEDIUM, SIZE_LARGE, SIZE_EXTRA_LARGE})
     public void detectNoWalls(int size) {
         bufferedImage = new BufferedImage(size, size, IMG_TYPE);
-        initBufferedImageNoWalls(size, bufferedImage);
+        TestUtils.initBufferedImageNoWalls(size, bufferedImage);
         boolean[][] detectedWalls = wallDetector.detectWall(bufferedImage);
         boolean[][] expectedWalls = new boolean[size][size];
         assertArrayEquals(expectedWalls, detectedWalls);
@@ -40,7 +40,7 @@ class ColourWallDetectorTest {
     @ValueSource(ints = {SIZE_SMALL, SIZE_MEDIUM, SIZE_LARGE, SIZE_EXTRA_LARGE})
     public void detectWalls(int size) {
         bufferedImage = new BufferedImage(size, size, IMG_TYPE);
-        initBufferedImageNoWalls(size, bufferedImage);
+        TestUtils.initBufferedImageNoWalls(size, bufferedImage);
 
         boolean[][] realWalls = new boolean[size][size];
         for (int x = 0; x < size; x++) {
@@ -60,18 +60,7 @@ class ColourWallDetectorTest {
 
             }
         }
-
         boolean[][] detectedWalls = wallDetector.detectWall(bufferedImage);
         assertArrayEquals(realWalls, detectedWalls);
     }
-
-
-    private void initBufferedImageNoWalls(int size, BufferedImage bufferedImage) {
-        for (int x = 0; x < size; x++) {
-            for (int y = 0; y < size; y++) {
-                bufferedImage.setRGB(x, y, -1);
-            }
-        }
-    }
-
 }
