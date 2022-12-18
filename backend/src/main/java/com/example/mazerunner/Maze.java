@@ -35,6 +35,11 @@ public class Maze {
         }
     }
 
+    /**
+     * find a path out of the maze
+     *
+     * @return a bufferedImage of the maze with the path from start to goal included
+     */
     public BufferedImage solveMaze() {
         walls = wallDetector.detectWall(bufferedImage);
         //todo set targets
