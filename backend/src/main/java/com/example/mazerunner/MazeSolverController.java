@@ -22,8 +22,8 @@ public class MazeSolverController {
 
     private static final int PATH_COLOUR = new Color(255, 0, 0).getRGB();
     private static final WallDetector DEFAULT_WALL_DETECTOR = new ColourWallDetector(WALL_COLOUR);
-    private final DistanceMetric distanceMetric = new EuclideanDistance();
-    private final Heuristic heuristic = new RealDistanceHeuristic(distanceMetric);
+    private final DistanceMetric DEFAULT_DISTANCE_METRIC = new EuclideanDistance();
+    private final Heuristic DEFAULT_HEURISTIC = new RealDistanceHeuristic(DEFAULT_DISTANCE_METRIC);
 
     @PostMapping(
             value = "/api/maze",
@@ -31,7 +31,9 @@ public class MazeSolverController {
     )
     public byte[] uploadImage(@RequestParam("image") MultipartFile file,
                               @RequestParam(name = "walldetector", required = false) String wallDetectorParameter,
-                              @RequestParam(name = "wallcolour", required = false) Integer colour) throws IOException {
+                              @RequestParam(name = "wallcolour", required = false) Integer colour,//unfortunately cannot use the constant here due to spring
+                              @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
+                              @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter) throws IOException {
         WallDetector wallDetector = DEFAULT_WALL_DETECTOR;
         if (wallDetectorParameter != null)
             if (wallDetectorParameter.equals("colourwalldetector")) {
@@ -42,10 +44,19 @@ public class MazeSolverController {
             } else {
                 wallDetector = DEFAULT_WALL_DETECTOR;
             }
-        return getSolvedMaze(file, wallDetector);
-    }
+        DistanceMetric distanceMetric;
+        if (distanceMetricParameter.equals("euclidean")) {
+            distanceMetric = new EuclideanDistance();
+        } else {
+            distanceMetric = DEFAULT_DISTANCE_METRIC;
+        }
 
-    private byte[] getSolvedMaze(MultipartFile file, WallDetector wallDetector) throws IOException {
+        Heuristic heuristic;
+        if (heuristicParameter.equals("realdistanceheuristic")) {
+            heuristic = new RealDistanceHeuristic(distanceMetric);
+        } else {
+            heuristic = DEFAULT_HEURISTIC;
+        }
         //solve maze and return the solved image
         File temp = File.createTempFile("maze", ".temp");
         file.transferTo(temp);
@@ -57,6 +68,5 @@ public class MazeSolverController {
         ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
     }
-
 
 }
