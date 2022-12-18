@@ -23,6 +23,7 @@ public class MazeSolverController {
     private static final int PATH_COLOUR = new Color(255, 0, 0).getRGB();
     private static final WallDetector DEFAULT_WALL_DETECTOR = new ColourWallDetector(DEFAULT_WALL_COLOUR, DEFAULT_OBSTACLE_COLOUR, DEFAULT_SAFETY_DISTANCE);
     private final DistanceMetric DEFAULT_DISTANCE_METRIC = new EuclideanDistance();
+    private final SearchStrategy DEFAULT_SEARCH_STRATEGY = new DepthFirst();
     private final Heuristic DEFAULT_HEURISTIC = new RealDistanceHeuristic(DEFAULT_DISTANCE_METRIC);
 
     @PostMapping(
@@ -35,6 +36,7 @@ public class MazeSolverController {
                               @RequestParam(name = "obstaclecolour", required = false) Integer obstacleColourParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
+                              @RequestParam(name = "searchstrategy", required = false, defaultValue = "depthfirst") String searchStrategyParameter,
                               @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter) throws IOException {
 
         WallDetector wallDetector = switch (wallDetectorParameter) {
@@ -60,7 +62,10 @@ public class MazeSolverController {
         File temp = File.createTempFile("maze", ".temp");
         file.transferTo(temp);
         BufferedImage bufferedImage = ImageIO.read(temp);
-        Maze maze = new Maze(bufferedImage, heuristic, wallDetector, IMAGE_TYPE, PATH_COLOUR);
+        Maze maze = new Maze(bufferedImage, heuristic, wallDetector, switch (searchStrategyParameter) {
+            case "depthfirst" -> new DepthFirst();
+            default -> DEFAULT_SEARCH_STRATEGY;
+        }, IMAGE_TYPE, PATH_COLOUR);
         bufferedImage = maze.solveMaze();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
