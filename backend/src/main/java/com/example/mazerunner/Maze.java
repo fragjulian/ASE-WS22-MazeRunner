@@ -36,12 +36,12 @@ public class Maze {
         Position current = start;
         List<Position> alreadyVisited = new LinkedList<>();//todo implement backtracking
         while (!current.equals(goal)) {
-            bufferedImage.setRGB(current.x, current.y, -2368549);
+            bufferedImage.setRGB(current.getX(), current.getY(), -2368549);
             Position cheapestNeighbour = null;
-            for (int x = current.x - 1; x <= current.x + 1; x++) {
-                for (int y = current.y - 1; y <= current.y + 1; y++) {
+            for (int x = current.getX() - 1; x <= current.getX() + 1; x++) {
+                for (int y = current.getY() - 1; y <= current.getY() + 1; y++) {
                     //only iterate over neighbours or valid pixels
-                    if ((x == current.x && y == current.y) || x < 0 || x >= bufferedImage.getWidth() || y < 0 || y >= bufferedImage.getHeight() || walls[x][y] || alreadyVisited.contains(new Position(x, y)))
+                    if ((x == current.getX() && y == current.getY()) || x < 0 || x >= bufferedImage.getWidth() || y < 0 || y >= bufferedImage.getHeight() || walls[x][y] || alreadyVisited.contains(new Position(x, y)))
                         continue;
                     if (cheapestNeighbour == null || heuristic.getHeuristic(cheapestNeighbour) > heuristic.getHeuristic(new Position(x, y)) && !alreadyVisited.contains(cheapestNeighbour))
                         cheapestNeighbour = new Position(x, y);

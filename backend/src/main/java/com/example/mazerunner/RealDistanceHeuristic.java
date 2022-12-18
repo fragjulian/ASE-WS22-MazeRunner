@@ -26,17 +26,17 @@ public class RealDistanceHeuristic implements Heuristic {
         initHeuristic(width, height);
         //todo include error checking if we have calculated the distance to all valid pixels
         Queue<Position> processingStack = new LinkedBlockingQueue<>();
-        heuristic[goal.x][goal.y] = 0;//per definition the distance to the goal is 0
+        heuristic[goal.getX()][goal.getY()] = 0;//per definition the distance to the goal is 0
         processingStack.add(goal);
         while (!processingStack.isEmpty()) {
             Position current = processingStack.poll();
-            for (int x = current.x - 1; x <= current.x + 1; x++) {
-                for (int y = current.y - 1; y <= current.y + 1; y++) {
+            for (int x = current.getX() - 1; x <= current.getX() + 1; x++) {
+                for (int y = current.getY() - 1; y <= current.getY() + 1; y++) {
                     //only iterate over neighbours or valid pixels
-                    if ((x == current.x && y == current.y) || x < 0 || x >= width || y < 0 || y >= height || walls[x][y])
+                    if ((x == current.getX() && y == current.getY()) || x < 0 || x >= width || y < 0 || y >= height || walls[x][y])
                         continue;
 
-                    double newHeuristic = heuristic[current.x][current.y] + distanceMetric.getDistance(current, new Position(x, y));
+                    double newHeuristic = heuristic[current.getX()][current.getY()] + distanceMetric.getDistance(current, new Position(x, y));
                     if (newHeuristic < heuristic[x][y]) {
                         //if our distance changed we also need to re-calculate the distance of all our neighbours.
                         heuristic[x][y] = newHeuristic;
@@ -48,7 +48,7 @@ public class RealDistanceHeuristic implements Heuristic {
     }
 
     public double getHeuristic(Position position) {
-        return this.heuristic[position.x][position.y];
+        return this.heuristic[position.getX()][position.getY()];
     }
 
     public double[][] getHeuristic() {
