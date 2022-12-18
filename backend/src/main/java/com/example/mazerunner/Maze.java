@@ -27,7 +27,7 @@ public class Maze {
         goal = new Position(bufferedImage.getHeight() - 2, bufferedImage.getWidth() - 2);
         //todo set start
         start = new Position(0, 0);
-        heuristic.calculateHeuristic(bufferedImage, start, goal, walls);
+        heuristic.calculateHeuristic(bufferedImage.getWidth(), bufferedImage.getHeight(), start, goal, walls);
         calculateShortestPath();
         return bufferedImage;
     }

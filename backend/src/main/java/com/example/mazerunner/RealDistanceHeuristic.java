@@ -1,6 +1,5 @@
 package com.example.mazerunner;
 
-import java.awt.image.BufferedImage;
 import java.util.Queue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -12,19 +11,19 @@ public class RealDistanceHeuristic implements Heuristic {
         this.distanceMetric = distanceMetric;
     }
 
-    private void initHeuristic(BufferedImage bufferedImage) {
-        heuristic = new double[bufferedImage.getWidth()][bufferedImage.getHeight()];
+    private void initHeuristic(int width, int height) {
+        heuristic = new double[width][height];
         //init distance map
-        for (int x = 0; x < bufferedImage.getWidth(); x++) {
-            for (int y = 0; y < bufferedImage.getHeight(); y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
                 // init. every other pixel with infinity distance
                 heuristic[x][y] = Double.POSITIVE_INFINITY;
             }
         }
     }
 
-    public void calculateHeuristic(BufferedImage bufferedImage, Position start, Position goal, boolean[][] walls) {
-        initHeuristic(bufferedImage);
+    public void calculateHeuristic(int width, int height, Position start, Position goal, boolean[][] walls) {
+        initHeuristic(width, height);
         //todo include error checking if we have calculated the distance to all valid pixels
         Queue<Position> processingStack = new LinkedBlockingQueue<>();
         heuristic[goal.x][goal.y] = 0;//per definition the distance to the goal is 0
@@ -34,7 +33,7 @@ public class RealDistanceHeuristic implements Heuristic {
             for (int x = current.x - 1; x <= current.x + 1; x++) {
                 for (int y = current.y - 1; y <= current.y + 1; y++) {
                     //only iterate over neighbours or valid pixels
-                    if ((x == current.x && y == current.y) || x < 0 || x >= bufferedImage.getWidth() || y < 0 || y >= bufferedImage.getHeight() || walls[x][y])
+                    if ((x == current.x && y == current.y) || x < 0 || x >= width || y < 0 || y >= height || walls[x][y])
                         continue;
 
                     double newHeuristic = heuristic[current.x][current.y] + distanceMetric.getDistance(current, new Position(x, y));
@@ -50,5 +49,9 @@ public class RealDistanceHeuristic implements Heuristic {
 
     public double getHeuristic(Position position) {
         return this.heuristic[position.x][position.y];
+    }
+
+    public double[][] getHeuristic() {
+        return this.heuristic;
     }
 }
