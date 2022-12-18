@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
@@ -11,6 +12,8 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
 class ColourWallDetectorTest {
     private static final int WALL = -16777216;
+    private static final int DEFAULT_OBSTACLE_COLOUR = new Color(219, 219, 219).getRGB();
+    private static final int DEFAULT_SAFETY_DISTANCE = 1;
     private static final int SIZE_SMALL = 2;
     private static final int SIZE_MEDIUM = 20;
     private static final int SIZE_LARGE = 200;
@@ -23,7 +26,7 @@ class ColourWallDetectorTest {
 
     @BeforeEach
     public void setup() {
-        wallDetector = new ColourWallDetector(WALL);
+        wallDetector = new ColourWallDetector(WALL, DEFAULT_OBSTACLE_COLOUR, DEFAULT_SAFETY_DISTANCE);
     }
 
     @ParameterizedTest
