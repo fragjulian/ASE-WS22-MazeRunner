@@ -48,7 +48,7 @@ public class Maze {
     public BufferedImage solveMaze() {
         walls = wallDetector.detectWall(bufferedImage);
         //todo set targets
-        goal = new Position(bufferedImage.getHeight() - 2, bufferedImage.getWidth() - 2);
+        goal = new Position(bufferedImage.getWidth() - 2, bufferedImage.getHeight() - 2);
         //todo set start
         start = new Position(0, 0);
         heuristic.calculateHeuristic(bufferedImage.getWidth(), bufferedImage.getHeight(), start, goal, walls);
