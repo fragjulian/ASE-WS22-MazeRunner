@@ -3,7 +3,7 @@ package com.example.mazerunner;
 import java.awt.image.BufferedImage;
 
 public interface SearchStrategy {
-    void calculateShortestPath(BufferedImage bufferedImage, Heuristic heuristic, boolean[][] walls, Position start, Position goal, int PATH_COLOUR);
+    void calculateShortestPath(BufferedImage bufferedImage, Heuristic heuristic, boolean[][] walls, Position start, Position goal, int pathColour);
 
 
 }

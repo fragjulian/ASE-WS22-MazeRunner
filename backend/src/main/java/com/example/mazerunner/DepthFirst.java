@@ -5,11 +5,11 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DepthFirst implements SearchStrategy {
-    public void calculateShortestPath(BufferedImage bufferedImage, Heuristic heuristic, boolean[][] walls, Position start, Position goal, int PATH_COLOUR) {
+    public void calculateShortestPath(BufferedImage bufferedImage, Heuristic heuristic, boolean[][] walls, Position start, Position goal, int pathColor) {
         Position current = start;
         List<Position> alreadyVisited = new LinkedList<>();//todo implement backtracking
         while (!current.equals(goal)) {
-            bufferedImage.setRGB(current.getX(), current.getY(), PATH_COLOUR);
+            bufferedImage.setRGB(current.getX(), current.getY(), pathColor);
             Position cheapestNeighbour = null;
             for (int x = current.getX() - 1; x <= current.getX() + 1; x++) {
                 for (int y = current.getY() - 1; y <= current.getY() + 1; y++) {
