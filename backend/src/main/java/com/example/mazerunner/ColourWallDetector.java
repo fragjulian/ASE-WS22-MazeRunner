@@ -7,10 +7,10 @@ public class ColourWallDetector implements WallDetector {
     private final int OBSTACLE_COLOUR;
     private final int SAFETY_DISTANCE;
 
-    public ColourWallDetector(int WALL_COLOUR, int OBSTACLE_COLOUR, int safetyDistance) {
+    public ColourWallDetector(int WALL_COLOUR, int OBSTACLE_COLOUR, int SAFETY_DISTANCE) {
         this.WALL_COLOUR = WALL_COLOUR;
         this.OBSTACLE_COLOUR = OBSTACLE_COLOUR;
-        SAFETY_DISTANCE = safetyDistance;
+        this.SAFETY_DISTANCE = SAFETY_DISTANCE;
     }
 
     @Override

@@ -26,6 +26,18 @@ public class MazeSolverController {
     private final SearchStrategy DEFAULT_SEARCH_STRATEGY = new DepthFirst();
     private final Heuristic DEFAULT_HEURISTIC = new RealDistanceHeuristic(DEFAULT_DISTANCE_METRIC);
 
+    /**
+     * @param file                    multipart file containing the image
+     * @param wallDetectorParameter
+     * @param wallColourParameter
+     * @param obstacleColourParameter
+     * @param safetyDistanceParameter
+     * @param heuristicParameter
+     * @param searchStrategyParameter
+     * @param distanceMetricParameter
+     * @return
+     * @throws IOException
+     */
     @PostMapping(
             value = "/api/maze",
             produces = MediaType.IMAGE_JPEG_VALUE
