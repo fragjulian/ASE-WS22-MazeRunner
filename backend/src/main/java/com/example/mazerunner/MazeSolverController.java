@@ -21,6 +21,7 @@ public class MazeSolverController {
     private static final int DEFAULT_OBSTACLE_COLOUR = new Color(219, 219, 219).getRGB();
     private static final int DEFAULT_SAFETY_DISTANCE = 1;
     private static final int PATH_COLOUR = new Color(255, 0, 0).getRGB();
+    private static final int DEFAULT_BACKGROUND_COLOR = Color.WHITE.getRGB();
     private static final WallDetector DEFAULT_WALL_DETECTOR = new ColourWallDetector(DEFAULT_WALL_COLOUR, DEFAULT_OBSTACLE_COLOUR, DEFAULT_SAFETY_DISTANCE);
     private final DistanceMetric DEFAULT_DISTANCE_METRIC = new EuclideanDistance();
     private final SearchStrategy DEFAULT_SEARCH_STRATEGY = new DepthFirst();
@@ -77,7 +78,7 @@ public class MazeSolverController {
         Maze maze = new Maze(bufferedImage, heuristic, wallDetector, switch (searchStrategyParameter) {
             case "depthfirst" -> new DepthFirst();
             default -> DEFAULT_SEARCH_STRATEGY;
-        }, IMAGE_TYPE, PATH_COLOUR);
+        }, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR);
         bufferedImage = maze.solveMaze();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

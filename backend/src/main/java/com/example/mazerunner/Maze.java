@@ -1,5 +1,6 @@
 package com.example.mazerunner;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 
@@ -13,6 +14,7 @@ public class Maze {
     private Position goal;
     private Position start;
     private boolean[][] walls;
+    private static final Color COLOR_TRANSPARENT = new Color(0, 0, 0, 0);
 
 
     /**
@@ -24,7 +26,7 @@ public class Maze {
      * @param imageType     the ImageType of the final image and of pathColour and wallDetector
      * @param pathColour    the colour in which you want the path to be painted in ColourSpace of ImageType
      */
-    public Maze(BufferedImage bufferedImage, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, int imageType, int pathColour) {
+    public Maze(BufferedImage bufferedImage, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, int imageType, int pathColour, int backgroundColor) {
         this.heuristic = heuristic;
         this.wallDetector = wallDetector;
         this.searchStrategy = searchStrategy;
@@ -35,6 +37,11 @@ public class Maze {
         else {
             BufferedImage rgbImage = new BufferedImage(bufferedImage.getWidth(),
                     bufferedImage.getHeight(), imageType);
+            for (int x = 0; x < bufferedImage.getWidth(); x++)
+                for (int y = 0; y < bufferedImage.getHeight(); y++)
+                    if (bufferedImage.getRGB(x, y) == COLOR_TRANSPARENT.getRGB())
+                        rgbImage.setRGB(x, y, backgroundColor);
+
             ColorConvertOp op = new ColorConvertOp(null);
             op.filter(bufferedImage, rgbImage);
             this.bufferedImage = rgbImage;
