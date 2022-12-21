@@ -26,7 +26,7 @@ class ColourWallDetectorTest {
 
     @BeforeEach
     public void setup() {
-        wallDetector = new ColourWallDetector(WALL, DEFAULT_OBSTACLE_COLOUR, DEFAULT_SAFETY_DISTANCE);
+        wallDetector = new ColourWallDetector(WALL, DEFAULT_OBSTACLE_COLOUR, DEFAULT_SAFETY_DISTANCE, new EuclideanDistance());
     }
 
     @ParameterizedTest

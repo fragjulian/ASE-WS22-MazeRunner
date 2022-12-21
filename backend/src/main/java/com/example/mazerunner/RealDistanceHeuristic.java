@@ -30,18 +30,14 @@ public class RealDistanceHeuristic implements Heuristic {
         processingStack.add(goal);
         while (!processingStack.isEmpty()) {
             Position current = processingStack.poll();
-            for (int x = current.getX() - 1; x <= current.getX() + 1; x++) {
-                for (int y = current.getY() - 1; y <= current.getY() + 1; y++) {
-                    //only iterate over neighbours or valid pixels
-                    if ((x == current.getX() && y == current.getY()) || x < 0 || x >= width || y < 0 || y >= height || walls[x][y])
-                        continue;
-
-                    double newHeuristic = heuristic[current.getX()][current.getY()] + distanceMetric.getDistance(current, new Position(x, y));
-                    if (newHeuristic < heuristic[x][y]) {
-                        //if our distance changed we also need to re-calculate the distance of all our neighbours.
-                        heuristic[x][y] = newHeuristic;
-                        processingStack.add(new Position(x, y));
-                    }
+            for (Position neighbour : distanceMetric.getNeighbouringPixels(current, 1, width, height)) {
+                if (walls[neighbour.getX()][neighbour.getY()])
+                    continue;
+                double newHeuristic = heuristic[current.getX()][current.getY()] + distanceMetric.getDistance(current, neighbour);
+                if (newHeuristic < heuristic[neighbour.getX()][neighbour.getY()]) {
+                    //if our distance changed we also need to re-calculate the distance of all our neighbours.
+                    heuristic[neighbour.getX()][neighbour.getY()] = newHeuristic;
+                    processingStack.add(neighbour);
                 }
             }
         }

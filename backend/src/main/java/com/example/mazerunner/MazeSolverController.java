@@ -22,8 +22,8 @@ public class MazeSolverController {
     private static final int DEFAULT_SAFETY_DISTANCE = 1;
     private static final int PATH_COLOUR = new Color(255, 0, 0).getRGB();
     private static final int DEFAULT_BACKGROUND_COLOR = Color.WHITE.getRGB();
-    private static final WallDetector DEFAULT_WALL_DETECTOR = new ColourWallDetector(DEFAULT_WALL_COLOUR, DEFAULT_OBSTACLE_COLOUR, DEFAULT_SAFETY_DISTANCE);
-    private final DistanceMetric DEFAULT_DISTANCE_METRIC = new EuclideanDistance();
+    private static final DistanceMetric DEFAULT_DISTANCE_METRIC = new EuclideanDistance();
+    private static final WallDetector DEFAULT_WALL_DETECTOR = new ColourWallDetector(DEFAULT_WALL_COLOUR, DEFAULT_OBSTACLE_COLOUR, DEFAULT_SAFETY_DISTANCE, DEFAULT_DISTANCE_METRIC);
     private final SearchStrategy DEFAULT_SEARCH_STRATEGY = new DepthFirst();
     private final Heuristic DEFAULT_HEURISTIC = new RealDistanceHeuristic(DEFAULT_DISTANCE_METRIC);
 
@@ -57,7 +57,7 @@ public class MazeSolverController {
                 int wallColour = wallColourParameter == null ? DEFAULT_WALL_COLOUR : wallColourParameter;
                 int obstacleColour = obstacleColourParameter == null ? DEFAULT_OBSTACLE_COLOUR : obstacleColourParameter;
                 int safetyDistance = safetyDistanceParameter == null ? DEFAULT_SAFETY_DISTANCE : safetyDistanceParameter;
-                yield new ColourWallDetector(wallColour, obstacleColour, safetyDistance);
+                yield new ColourWallDetector(wallColour, obstacleColour, safetyDistance, DEFAULT_DISTANCE_METRIC);
             }
             default -> DEFAULT_WALL_DETECTOR;
         };

@@ -6,11 +6,13 @@ public class ColourWallDetector implements WallDetector {
     private final int wallColour;
     private final int obstacleColour;
     private final int safetyDistance;
+    private final DistanceMetric distanceMetric;
 
-    public ColourWallDetector(int wallColour, int obstacleColour, int safetyDistance) {
+    public ColourWallDetector(int wallColour, int obstacleColour, int safetyDistance, DistanceMetric distanceMetric) {
         this.wallColour = wallColour;
         this.obstacleColour = obstacleColour;
         this.safetyDistance = safetyDistance;
+        this.distanceMetric = distanceMetric;
     }
 
     @Override
@@ -20,13 +22,8 @@ public class ColourWallDetector implements WallDetector {
             for (int y = 0; y < bufferedImage.getHeight(); y++) {
                 result[x][y] = result[x][y] || bufferedImage.getRGB(x, y) == wallColour;//if the pixel has the wall colour, mark it as wall. If this pixel was already marked by an obstacle ignore it
                 if (bufferedImage.getRGB(x, y) == obstacleColour) {//see if some obstacle is near
-                    for (int xNeighbour = x - safetyDistance; xNeighbour <= x + safetyDistance; xNeighbour++) {
-                        for (int yNeighbour = y - safetyDistance; yNeighbour <= y + safetyDistance; yNeighbour++) {
-                            if (xNeighbour < 0 || xNeighbour >= bufferedImage.getWidth() || yNeighbour < 0 || yNeighbour >= bufferedImage.getHeight())
-                                continue;
-                            result[xNeighbour][yNeighbour] = true;
-                        }
-                    }
+                    for (Position neighbour : distanceMetric.getNeighbouringPixels(new Position(x, y), safetyDistance, bufferedImage.getWidth(), bufferedImage.getHeight()))
+                        result[neighbour.getX()][neighbour.getY()] = true;
                 }
             }
         }
