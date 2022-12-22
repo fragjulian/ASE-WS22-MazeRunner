@@ -3,7 +3,6 @@ package com.example.mazerunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class RealDistanceHeuristicTest {
@@ -25,14 +24,11 @@ public class RealDistanceHeuristicTest {
         Position start = new Position(0, 0);
         Position goal = new Position(size - 1, size - 1);
         realDistanceHeuristicEuclidean.calculateHeuristic(size, size, start, goal, walls);
-
-        double[][] expectedHeuristic = new double[size][size];
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
-                expectedHeuristic[x][y] = distanceMetric.getDistance(new Position(x, y), goal);
+                assertEquals(distanceMetric.getDistance(new Position(x, y), goal), realDistanceHeuristicEuclidean.getHeuristic(new Position(x, y)));
             }
         }
-        assertArrayEquals(expectedHeuristic, realDistanceHeuristicEuclidean.getHeuristic());
     }
 
     @Test

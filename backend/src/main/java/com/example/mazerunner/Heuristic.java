@@ -19,9 +19,4 @@ public interface Heuristic {
      * @return the heuristic value for a spesific position as double
      */
     double getHeuristic(Position position);
-
-    /**
-     * @return a 2d array containing the heuristic value for every pixel
-     */
-    double[][] getHeuristic();
 }

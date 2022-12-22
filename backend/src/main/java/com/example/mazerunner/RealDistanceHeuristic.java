@@ -46,8 +46,4 @@ public class RealDistanceHeuristic implements Heuristic {
     public double getHeuristic(Position position) {
         return this.heuristic[position.getX()][position.getY()];
     }
-
-    public double[][] getHeuristic() {
-        return this.heuristic;
-    }
 }
