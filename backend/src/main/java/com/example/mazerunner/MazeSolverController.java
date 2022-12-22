@@ -60,7 +60,7 @@ public class MazeSolverController {
         File temp = File.createTempFile("maze", ".temp");
         file.transferTo(temp);
         BufferedImage bufferedImage = ImageIO.read(temp);
-        Maze maze = new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR);
+        Maze maze = new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR, distanceMetric);
         bufferedImage = maze.solveMaze();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

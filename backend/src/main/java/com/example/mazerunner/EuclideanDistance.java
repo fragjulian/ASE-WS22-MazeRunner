@@ -14,7 +14,7 @@ public class EuclideanDistance implements DistanceMetric {
         List<Position> result = new ArrayList<>((int) Math.pow(radius * 2 + 1, 2));
         for (int xNeighbour = position.getX() - radius; xNeighbour <= position.getX() + radius; xNeighbour++) {
             for (int yNeighbour = position.getY() - radius; yNeighbour <= position.getY() + radius; yNeighbour++) {
-                if (xNeighbour < 0 || xNeighbour >= width || yNeighbour < 0 || yNeighbour >= height)
+                if (xNeighbour < 0 || xNeighbour >= width || yNeighbour < 0 || yNeighbour >= height || (position.getX() == xNeighbour && position.getY() == yNeighbour))
                     continue;
                 result.add(new Position(xNeighbour, yNeighbour));
             }
