@@ -1,6 +1,7 @@
 package com.example.mazerunner;
 
 import java.awt.*;
+import java.util.Arrays;
 
 public class MazeUtilsFactory {
     private static final int DEFAULT_WALL_COLOUR = new Color(0, 0, 0).getRGB();
@@ -15,17 +16,28 @@ public class MazeUtilsFactory {
         return mazeUtilsFactory;
     }
 
-    public WallDetector getWallDetector(String wallDetector, Integer wallColor, Integer obstacleColor, Integer safetyDistance, DistanceMetric distanceMetric) {
+    public WallDetector getWallDetector(String wallDetector, String wallColorParameter, String obstacleColorParameter, Integer safetyDistance, DistanceMetric distanceMetric) {
         return switch (wallDetector) {
             case "colorwalldetector" -> {
-                int wallColorInt = wallColor == null ? DEFAULT_WALL_COLOUR : wallColor;
-                int obstacleColorInt = obstacleColor == null ? DEFAULT_OBSTACLE_COLOUR : obstacleColor;
+                int wallColorInt = getColor(wallColorParameter, DEFAULT_WALL_COLOUR, "wallColor");
+                int obstacleColorInt = getColor(obstacleColorParameter, DEFAULT_OBSTACLE_COLOUR, "obstacleColor");
                 int safetyDistanceInt = safetyDistance == null ? DEFAULT_SAFETY_DISTANCE : safetyDistance;
                 yield new ColorWallDetector(wallColorInt, obstacleColorInt, safetyDistanceInt, new EuclideanDistance());
             }
-            default -> new ColorWallDetector(wallColor, obstacleColor, safetyDistance, distanceMetric);
+            default ->
+                    new ColorWallDetector(DEFAULT_WALL_COLOUR, DEFAULT_OBSTACLE_COLOUR, safetyDistance, distanceMetric);
         };
     }
+
+    private Integer getColor(String colorParameter, int defaultColor, String parameterDescription) {
+        if (colorParameter == null)
+            return defaultColor;
+        String[] colorParts = colorParameter.split(",");
+        if (!(colorParts.length == 3 && Arrays.stream(colorParts).allMatch(s -> s.matches("\\d+"))))
+            throw new IllegalArgumentException("parameter " + parameterDescription + " must be of the form r,g,b");
+        return new Color(Integer.parseInt(colorParts[0]), Integer.parseInt(colorParts[1]), Integer.parseInt(colorParts[2])).getRGB();
+    }
+
 
     public DistanceMetric getDistanceMetric(String distanceMetricParameter) {
         return switch (distanceMetricParameter) {
