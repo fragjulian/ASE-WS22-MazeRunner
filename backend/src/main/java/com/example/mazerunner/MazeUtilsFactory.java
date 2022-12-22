@@ -21,9 +21,9 @@ public class MazeUtilsFactory {
                 int wallColorInt = wallColor == null ? DEFAULT_WALL_COLOUR : wallColor;
                 int obstacleColorInt = obstacleColor == null ? DEFAULT_OBSTACLE_COLOUR : obstacleColor;
                 int safetyDistanceInt = safetyDistance == null ? DEFAULT_SAFETY_DISTANCE : safetyDistance;
-                yield new ColourWallDetector(wallColorInt, obstacleColorInt, safetyDistanceInt, new EuclideanDistance());
+                yield new ColorWallDetector(wallColorInt, obstacleColorInt, safetyDistanceInt, new EuclideanDistance());
             }
-            default -> new ColourWallDetector(wallColor, obstacleColor, safetyDistance, distanceMetric);
+            default -> new ColorWallDetector(wallColor, obstacleColor, safetyDistance, distanceMetric);
         };
     }
 

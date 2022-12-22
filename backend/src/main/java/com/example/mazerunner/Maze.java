@@ -5,8 +5,8 @@ import java.awt.image.BufferedImage;
 import java.awt.image.ColorConvertOp;
 
 public class Maze {
-    //image type the targeted colours are in
-    private final int pathColour;
+    //image type the targeted colors are in
+    private final int pathColor;
     private final Heuristic heuristic;
     private final WallDetector wallDetector;
     private final SearchStrategy searchStrategy;
@@ -16,22 +16,21 @@ public class Maze {
     private boolean[][] walls;
     private static final Color COLOR_TRANSPARENT = new Color(0, 0, 0, 0);
 
-
     /**
      * This represents a solvable maze
      *
      * @param bufferedImage image of the maze in any ImageType
      * @param heuristic     any heuristic to help with finding a solution
      * @param wallDetector  any detector to detect walls and obstacles
-     * @param imageType     the ImageType of the final image and of pathColour and wallDetector
-     * @param pathColour    the colour in which you want the path to be painted in ColourSpace of ImageType
+     * @param imageType     the ImageType of the final image and of pathColor and wallDetector
+     * @param pathColor     the color in which you want the path to be painted in ColorSpace of ImageType
      */
-    public Maze(BufferedImage bufferedImage, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, int imageType, int pathColour, int backgroundColor) {
+    public Maze(BufferedImage bufferedImage, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, int imageType, int pathColor, int backgroundColor) {
         this.heuristic = heuristic;
         this.wallDetector = wallDetector;
         this.searchStrategy = searchStrategy;
-        this.pathColour = pathColour;
-        //check if image is already in the correct colour space. If not, convert it
+        this.pathColor = pathColor;
+        //check if image is already in the correct color space. If not, convert it
         if (bufferedImage.getType() == imageType)
             this.bufferedImage = bufferedImage;
         else {
@@ -59,7 +58,7 @@ public class Maze {
         //todo set start
         start = new Position(0, 0);
         heuristic.calculateHeuristic(bufferedImage.getWidth(), bufferedImage.getHeight(), start, goal, walls);
-        searchStrategy.calculateShortestPath(bufferedImage, heuristic, walls, start, goal, pathColour);
+        searchStrategy.calculateShortestPath(bufferedImage, heuristic, walls, start, goal, pathColor);
         return bufferedImage;
     }
 }

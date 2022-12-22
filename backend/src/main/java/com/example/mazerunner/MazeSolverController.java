@@ -24,8 +24,8 @@ public class MazeSolverController {
     /**
      * @param file                    multipart file containing the image
      * @param wallDetectorParameter   which wall detector to use. Possible options: colorwalldetector, default is colorwalldetector
-     * @param wallColourParameter     wallColor parameter for the wall detector can be set if wall detector uses such a parameter
-     * @param obstacleColourParameter obstacleColor parameter for the wall detector can be set if wall detector uses such a parameter
+     * @param wallColorParameter      wallColor parameter for the wall detector can be set if wall detector uses such a parameter
+     * @param obstacleColorParameter  obstacleColor parameter for the wall detector can be set if wall detector uses such a parameter
      * @param safetyDistanceParameter minimum distance to obstacles measured by distanceMetric
      * @param heuristicParameter      which heuristic to use. Possible options: realdistanceheuristic, default is realdistanceheuristic
      * @param searchStrategyParameter which search strategy to use. Possible options: depthfirst, default is depthfirst
@@ -34,13 +34,13 @@ public class MazeSolverController {
      * @throws IOException
      */
     @PostMapping(value = "/api/maze", produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "walldetector", required = false, defaultValue = "colourwalldetector") String wallDetectorParameter, @RequestParam(name = "wallcolour", required = false) Integer wallColourParameter,//unfortunately cannot use the constant here as default due to spring
-                              @RequestParam(name = "obstaclecolour", required = false) Integer obstacleColourParameter,//unfortunately cannot use the constant here as default due to spring
+    public byte[] uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "walldetector", required = false, defaultValue = "colorwalldetector") String wallDetectorParameter, @RequestParam(name = "wallcolor", required = false) Integer wallColorParameter,//unfortunately cannot use the constant here as default due to spring
+                              @RequestParam(name = "obstaclecolor", required = false) Integer obstacleColorParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter, @RequestParam(name = "searchstrategy", required = false, defaultValue = "depthfirst") String searchStrategyParameter, @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter) throws IOException {
 
         DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
-        WallDetector wallDetector = mazeUtilsFactory.getWallDetector(wallDetectorParameter, wallColourParameter, obstacleColourParameter, safetyDistanceParameter, distanceMetric);
+        WallDetector wallDetector = mazeUtilsFactory.getWallDetector(wallDetectorParameter, wallColorParameter, obstacleColorParameter, safetyDistanceParameter, distanceMetric);
         Heuristic heuristic = mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric);
         SearchStrategy searchStrategy = mazeUtilsFactory.getSearchStrategy(searchStrategyParameter);
         File temp = File.createTempFile("maze", ".temp");

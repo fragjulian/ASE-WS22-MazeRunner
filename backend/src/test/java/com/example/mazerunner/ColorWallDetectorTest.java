@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 
-class ColourWallDetectorTest {
+class ColorWallDetectorTest {
     private static final int WALL = -16777216;
     private static final int DEFAULT_OBSTACLE_COLOUR = new Color(219, 219, 219).getRGB();
     private static final int DEFAULT_SAFETY_DISTANCE = 1;
@@ -26,7 +26,7 @@ class ColourWallDetectorTest {
 
     @BeforeEach
     public void setup() {
-        wallDetector = new ColourWallDetector(WALL, DEFAULT_OBSTACLE_COLOUR, DEFAULT_SAFETY_DISTANCE, new EuclideanDistance());
+        wallDetector = new ColorWallDetector(WALL, DEFAULT_OBSTACLE_COLOUR, DEFAULT_SAFETY_DISTANCE, new EuclideanDistance());
     }
 
     @ParameterizedTest
