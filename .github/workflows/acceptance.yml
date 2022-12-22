@@ -2,9 +2,9 @@
 name: Acceptance testing
 
 on: 
-  #push:
-  #  branches:
-  #    - CI-CD
+  push:
+    branches:
+      - 'CI-CD-sonar' # todo remove when testing is done
   pull_request:
     branches:
       - main
@@ -14,6 +14,36 @@ jobs:
   sonarcloud-backend:
     name: Build and analyze
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'BE'
     steps:
-    - name: initial sonarcloud workflow
-      run: echo "workflow works"
+    - name: Checkout code from repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Cache local Maven repository
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+    - name: Build and analyze with sonarcloud
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner
+

@@ -53,13 +53,13 @@ jobs:
     steps:
       - name: Checkout code from repo
         uses: actions/checkout@v3
-      - name: show tree
+      - name: show tree # for testing
         run: tree
-      - name: Node.js setup
+      - name: Node.js setup # node.js action to set up and cache node js
         uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: 'npm'
           cache-dependency-path: './frontend/package-lock.json'
-      - run: npm install
-      - run: npm run test:ci
+      - run: npm install  # install packages
+      - run: npm run test:ci # run karma tests
