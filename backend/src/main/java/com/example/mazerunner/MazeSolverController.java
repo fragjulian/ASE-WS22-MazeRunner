@@ -1,8 +1,8 @@
 package com.example.mazerunner;
 
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,11 +35,15 @@ public class MazeSolverController {
      * @return an image containing the solved maze
      * @throws IOException
      */
-    @PostMapping(value = "/api/maze", produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "walldetector", required = false, defaultValue = "colorwalldetector") String wallDetectorParameter, @RequestParam(name = "wallcolor", required = false) String wallColorParameter,//unfortunately cannot use the constant here as default due to spring
+    @PostMapping(value = "/api/maze/{wallDetector}/{heuristic}/{searchStrategy}", produces = MediaType.IMAGE_JPEG_VALUE)
+    public byte[] uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "wallcolor", required = false) String wallColorParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "obstaclecolor", required = false) String obstacleColorParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
-                              @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter, @RequestParam(name = "searchstrategy", required = false, defaultValue = "depthfirst") String searchStrategyParameter, @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter) throws IOException {
+                              @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter,
+                              @PathVariable(name = "wallDetector") String wallDetectorParameter,
+                              @PathVariable(name = "heuristic") String heuristicParameter,
+                              @PathVariable(name = "searchStrategy") String searchStrategyParameter
+    ) throws IOException {
 
         DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
         WallDetector wallDetector;
