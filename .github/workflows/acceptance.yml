@@ -1,0 +1,19 @@
+# will check the code quality with sonarcloud and do acceptance tests
+name: Acceptance testing
+
+on: 
+  #push:
+  #  branches:
+  #    - CI-CD
+  pull_request:
+    branches:
+      - main
+    types: [opened, synchronize, reopened]
+
+jobs:
+  sonarcloud-backend:
+    name: Build and analyze
+    runs-on: ubuntu-latest
+    steps:
+    - name: initial sonarcloud workflow
+      run: echo "workflow works"
