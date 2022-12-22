@@ -11,8 +11,8 @@ on: # run on any push except on main
     paths-ignore:
       - 'README.md'
       - 'doc/**'
-  pull_request: # run for every pull request
-    types: [opened, synchronize, reopened]
+  #pull_request: # run for every pull request
+  #  types: [opened, synchronize, reopened]
 jobs:
   backend:
     name: Build and analyze backend
