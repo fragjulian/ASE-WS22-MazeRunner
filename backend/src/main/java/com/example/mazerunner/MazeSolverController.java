@@ -66,7 +66,6 @@ public class MazeSolverController {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
-
     }
 
 }

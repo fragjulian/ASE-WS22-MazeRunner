@@ -58,7 +58,39 @@ public class Maze {
         //todo set start
         start = new Position(0, 0);
         heuristic.calculateHeuristic(bufferedImage.getWidth(), bufferedImage.getHeight(), start, goal, walls);
-        searchStrategy.calculateShortestPath(bufferedImage, heuristic, walls, start, goal, pathColor);
+        searchStrategy.calculateShortestPath(this);
         return bufferedImage;
+    }
+
+    public int getPathColor() {
+        return pathColor;
+    }
+
+    public void paintOnMaze(Position position, int color) {
+        bufferedImage.setRGB(position.getX(), position.getY(), color);
+    }
+
+    public Position getGoal() {
+        return goal;
+    }
+
+    public Position getStart() {
+        return start;
+    }
+
+    public boolean getWall(Position position) {
+        return walls[position.getX()][position.getY()];
+    }
+
+    public double getHeuristic(Position position) {
+        return heuristic.getHeuristic(position);
+    }
+
+    public int getWidth() {
+        return bufferedImage.getWidth();
+    }
+
+    public int getHeight() {
+        return bufferedImage.getHeight();
     }
 }
