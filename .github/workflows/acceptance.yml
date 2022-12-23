@@ -12,7 +12,7 @@ on:
 
 jobs:
   sonarcloud-backend:
-    name: Build and sonar analyze backend
+    name: Sonar analyze backend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -48,7 +48,7 @@ jobs:
       run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner
 
   sonarcloud-frontend:
-    name: Build and sonar analyze frontend
+    name: Sonar analyze frontend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -66,7 +66,7 @@ jobs:
         node-version: 16
         cache: 'npm'
         cache-dependency-path: './frontend/package-lock.json'
-    - run: npm install
+    - run: npm ci
     - run: npm run test:ci
     - name: SonarCloud Scan
       uses: sonarsource/sonarcloud-github-action@master

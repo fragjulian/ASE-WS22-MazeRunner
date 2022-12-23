@@ -2,7 +2,7 @@
 # Initial workflow to fetch repository from gitHub, build and test the source code
 # a test report is also generated at the end
 
-name: Build, test and analyze
+name: Build and test
 
 on: # run on any push except on main
   push:
@@ -15,7 +15,7 @@ on: # run on any push except on main
   #  types: [opened, synchronize, reopened]
 jobs:
   backend:
-    name: Build and analyze backend
+    name: Build and test backend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -45,7 +45,7 @@ jobs:
           reporter: java-junit
 
   frontend:
-    name: Build and analyze frontend
+    name: Build and test frontend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -61,5 +61,5 @@ jobs:
           node-version: 18
           cache: 'npm'
           cache-dependency-path: './frontend/package-lock.json'
-      - run: npm install  # install packages
+      - run: npm ci  # install packages
       - run: npm run test:ci # run karma tests
