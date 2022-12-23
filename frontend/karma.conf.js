@@ -15,6 +15,7 @@ module.exports = function(config) {
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
+      require('karma-firefox-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
       require('karma-requirejs'),
@@ -42,12 +43,13 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://www.npmjs.com/search?q=keywords:karma-reporter
-    reporters: ['progress', 'sonarqubeUnit', 'coverage'],
+    reporters: ['progress', 'sonarqubeUnit', 'coverage'], // sonarqubeUnit is needed for SonarCloud analysis
 
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
     },
 
+    // generic test report is required for SonarCloud analysis
     sonarQubeUnitReporter: {
       sonarQubeVersion: 'LATEST',
       outputFile: 'reports/report.xml',
@@ -57,6 +59,8 @@ module.exports = function(config) {
       useBrowserName: false
     },
 
+    // lcov coverage is required for SonarCloud analysis
+    // test-summary will be displayed in terminal after test run
     coverageReporter: {
       type : 'lcov',
       dir : 'reports',
