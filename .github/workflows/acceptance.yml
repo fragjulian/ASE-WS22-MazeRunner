@@ -12,7 +12,7 @@ on:
 
 jobs:
   sonarcloud-backend:
-    name: Build and analyze
+    name: Build and sonar analyze backend
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -46,4 +46,34 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner
+
+  sonarcloud-frontend:
+    name: Build and sonar analyze frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'frontend'
+    steps:
+    - name: Checkout code from repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - name: show tree
+      run: tree
+    - name: Node.js setup
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+        cache-dependency-path: './frontend/package-lock.json'
+    - run: npm install
+    - run: npm run test:ci
+    - name: SonarCloud Scan
+      uses: sonarsource/sonarcloud-github-action@master
+      with:
+        projectBaseDir: ./frontend
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
 
