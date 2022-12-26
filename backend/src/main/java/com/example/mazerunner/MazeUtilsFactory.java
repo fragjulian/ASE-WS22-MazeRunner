@@ -42,6 +42,7 @@ public class MazeUtilsFactory {
     public DistanceMetric getDistanceMetric(String distanceMetricParameter) {
         return switch (distanceMetricParameter) {
             case "euclidean" -> new EuclideanDistance();
+            case "square" -> new SquareDistance();
             default -> new EuclideanDistance();
         };
     }
