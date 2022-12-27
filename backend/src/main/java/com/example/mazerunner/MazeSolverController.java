@@ -42,6 +42,7 @@ public class MazeSolverController {
     here: https://spring.io/guides/gs/rest-service-cors/
 
     Now it allows cross-origin resource sharing.
+
     */
     @CrossOrigin()
 
