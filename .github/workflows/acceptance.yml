@@ -112,11 +112,11 @@ jobs:
                                     # wait for both the backend and frontend to start
         working-directory: ./backend
         run: |
-          mvn spring-boot:run -f ./backend/pom.xml &
+          mvn spring-boot:run &
           sleep 20
       - name: Run Selenium tests locally
         working-directory: ./selenium
-        run: mvn -DURL="http://localhost:" -DPORT=4200 -f ./selenium/pom.xml clean test
+        run: mvn -DURL="http://localhost:" -DPORT=4200 clean test
       - name: Test Reporter
         uses: dorny/test-reporter@v1.4.3
         with:
