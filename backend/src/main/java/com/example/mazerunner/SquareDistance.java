@@ -13,7 +13,7 @@ public class SquareDistance implements DistanceMetric {
     public List<Position> getNeighbouringPixels(Position position, int radius, int width, int height) {
         if (radius <= 0)
             return new LinkedList<>();
-        List<Position> result = new LinkedList();
+        List<Position> result = new LinkedList<>();
         for (int x = position.getX() - 1; x <= position.getX() + 1; x++) {
             for (int y = position.getY() - 1; y <= position.getY() + 1; y++) {
                 if ((x == position.getX() && y == position.getY()) || x < 0 || x >= width || y < 0 || y >= height || !(x == position.getX() || y == position.getY()))
@@ -22,9 +22,9 @@ public class SquareDistance implements DistanceMetric {
             }
         }
 
-        List<Position> recursiveResult = new LinkedList();
+        List<Position> recursiveResult = new LinkedList<>();
         for (Position resultPosition : result) {
-            recursiveResult.addAll(getNeighbouringPixels(resultPosition, radius - 1, width, height).stream().filter(p -> !recursiveResult.contains(p)).toList());
+            recursiveResult.addAll(getNeighbouringPixels(resultPosition, radius - 1, width, height).stream().filter(p -> !recursiveResult.contains(p) && !p.equals(position)).toList());
 
         }
         result.addAll(recursiveResult.stream().filter(p -> !result.contains(p)).toList());
