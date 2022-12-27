@@ -2,9 +2,9 @@
 name: Acceptance testing
 
 on: 
-  #push:
-  #  branches:
-  #    - 'CI-CD-sonar' # for testing
+  push:
+    branches:
+      - 'CI-CD-Selenium' # for testing todo: remove when done
   pull_request:
     branches:
       - main
@@ -77,4 +77,49 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-
+  selenium:
+    name: UI test frontend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code from repo
+        uses: actions/checkout@v3
+      - name: Frontend setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+      - name: Setup packages
+        working-directory: ./frontend
+        run: npm ci # install packages
+      - name: Start frontend locally #start the frontend in the background
+        working-directory: ./frontend
+        run: npm run start &
+      - name: Backend setup
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-  
+      - name: Start backend locally # starts the backend in the background
+                                    # wait for both the backend and frontend to start
+        working-directory: ./backend
+        run: |
+          mvn spring-boot:run -f ./backend/pom.xml &
+          sleep 20
+      - name: Run Selenium tests locally
+        working-directory: ./selenium
+        run: mvn -DURL="http://localhost:" -DPORT=4200 -f ./selenium/pom.xml clean test
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1.4.3
+        with:
+          name: Selenium test report
+          path: "./selenium/target/surefire-reports/TEST-*.xml"
+          reporter: java-junit
