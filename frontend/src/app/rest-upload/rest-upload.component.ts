@@ -49,6 +49,8 @@ export class RestUploadComponent {
     //Transform image into FormData for the post request
     const transformedImage = new FormData();
     transformedImage.append('image', this.uploadImage, this.uploadImage.name);
+    //transformedImage.append('walldetector', 'colorwalldetector');
+    //transformedImage.append('wallcolor', '0,0,0');
 
     //Helper function to turn blob response into a DataUrl for the image tags in HTML (https://stackoverflow.com/questions/18650168/convert-blob-to-base64)
     const blobToBase64 = (blob: Blob) => {
@@ -66,7 +68,7 @@ export class RestUploadComponent {
     * Looked up the response types here: https://stackoverflow.com/questions/46408537/angular-httpclient-http-failure-during-parsing
     * Port 8081 for Deployment
     */
-    this.httpClient.post('http://localhost:8080/api/maze', transformedImage, {
+    this.httpClient.post('http://localhost:8080/api/maze/colorwalldetector/realdistanceheuristic/depthfirst', transformedImage, {
       observe: 'response',
       responseType: 'blob'
     })
