@@ -90,9 +90,9 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-maven-
       - name: Wait for deployment to finish
-        run: sleep 180
+        run: sleep 90
       - name: Run Selenium tests on live server
-        run: mvn -DURL="https://ase.stulpinger.at" -DPORT= clean test # no port
+        run: mvn -DURL=https://ase.stulpinger.at -DPORT= clean test # no port
       - name: Test Reporter
         uses: dorny/test-reporter@v1.4.3
         with:
