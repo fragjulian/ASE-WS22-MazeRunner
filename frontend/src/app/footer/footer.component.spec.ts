@@ -117,7 +117,7 @@ describe('FooterComponent', () => {
     expect(footer_left_span.innerHTML).toContain("© 2022/23 Maze Runner / Maze icon created by ");
   });
 
-  it('footer-right-span should have innerHtml of " / Informatics / ASE"', () => {
+  it('footer-right-span should contain innerHtml of " / Informatics / ASE"', () => {
     const footer_right_span = fixture.debugElement.nativeElement.querySelector('#footer-right-span');
     expect(footer_right_span.innerHTML).toContain(" / Informatics / ASE");
   });
