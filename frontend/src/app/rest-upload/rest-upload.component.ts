@@ -19,16 +19,10 @@ export class RestUploadComponent {
   postResponse: any;
   successResponse: any;
 
-
   /***
    * Saves the image to a variable.
    * @param event
    */
-  public onImageUpload(event: any) {
-    this.uploadImage = event.target.files[0];
-  }
-
-
   onSelect(event: any) {
     this.uploadImage = event.addedFiles[0];
     console.log(this.uploadImage);
