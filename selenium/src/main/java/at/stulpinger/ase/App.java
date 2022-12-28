@@ -1,4 +1,4 @@
-package org.example;
+package at.stulpinger.ase;
 
 /**
  * Main not needed since only tests are run from this package
