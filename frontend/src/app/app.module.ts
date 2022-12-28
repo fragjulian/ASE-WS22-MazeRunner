@@ -15,6 +15,7 @@ import { RestUploadComponent } from './rest-upload/rest-upload.component';
 import { HttpClientModule } from '@angular/common/http';
 import {FormsModule} from "@angular/forms";
 import { NgxDropzoneModule } from 'ngx-dropzone';
+import { ColorPickerModule } from 'ngx-color-picker';
 
 
 
@@ -39,7 +40,8 @@ import { NgxDropzoneModule } from 'ngx-dropzone';
     MatButtonModule,
     HttpClientModule,
     FormsModule,
-    NgxDropzoneModule
+    NgxDropzoneModule,
+    ColorPickerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

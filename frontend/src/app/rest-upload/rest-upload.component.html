@@ -29,6 +29,10 @@
       <img [src]="solvedMaze" alt="Solved Maze">
     </div>
 
+    <input [style.background]="color"
+           [cpPresetColors]="['#fff', '#000', '#2889e9', '#e920e9', '#fff500', 'rgb(236,64,64)']"
+           [width]="230"
+           [(colorPicker)]="color"/>
   </form>
 </div>
 

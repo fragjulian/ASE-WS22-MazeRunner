@@ -18,6 +18,7 @@ export class RestUploadComponent {
   solvedMaze: any;
   postResponse: any;
   successResponse: any;
+  color: any;
 
 
   /***
@@ -50,7 +51,7 @@ export class RestUploadComponent {
     const transformedImage = new FormData();
     transformedImage.append('image', this.uploadImage, this.uploadImage.name);
     //transformedImage.append('walldetector', 'colorwalldetector');
-    //transformedImage.append('wallcolor', '0,0,0');
+    //transformedImage.append('wallcolor', '255,0,0');
 
     //Helper function to turn blob response into a DataUrl for the image tags in HTML (https://stackoverflow.com/questions/18650168/convert-blob-to-base64)
     const blobToBase64 = (blob: Blob) => {
