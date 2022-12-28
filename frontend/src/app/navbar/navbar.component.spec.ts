@@ -1,6 +1,6 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NavbarComponent } from './navbar.component';
+import {NavbarComponent} from './navbar.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 
 describe('NavbarNewComponent', () => {
@@ -10,9 +10,9 @@ describe('NavbarNewComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [MatToolbarModule],
-      declarations: [ NavbarComponent ]
+      declarations: [NavbarComponent]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(NavbarComponent);
     component = fixture.componentInstance;
@@ -22,4 +22,10 @@ describe('NavbarNewComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should have as title "Maze Runner"', () => {
+    const header = fixture.debugElement.nativeElement.querySelector('#navbar-header');
+    expect(header.innerHTML).toBe('Maze Runner');
+  });
+
 });
