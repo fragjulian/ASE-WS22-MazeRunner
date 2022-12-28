@@ -8,6 +8,8 @@ import {FooterComponent} from "./footer/footer.component";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {HttpClientModule} from "@angular/common/http";
 import {FormsModule} from "@angular/forms";
+import {RestUploadComponent} from "./rest-upload/rest-upload.component";
+import {NgxDropzoneModule} from "ngx-dropzone";
 
 describe('AppComponent', () => {
   beforeEach(async () => {
@@ -18,13 +20,15 @@ describe('AppComponent', () => {
         DxFileUploaderModule,
         MatToolbarModule,
         HttpClientModule,
-        FormsModule
+        FormsModule,
+        NgxDropzoneModule
       ],
       declarations: [
         AppComponent,
         MrUploadFileComponent,
         NavbarComponent,
-        FooterComponent
+        FooterComponent,
+        RestUploadComponent
       ],
     }).compileComponents();
   });
