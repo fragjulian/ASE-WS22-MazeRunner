@@ -23,6 +23,11 @@ describe('NavbarNewComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('toolbar should exist', () => {
+    const toolbar = fixture.debugElement.nativeElement.querySelector('#navbar-toolbar');
+    expect(toolbar).toBeTruthy();
+  });
+
   it('should have existing logo element', () => {
     const logo = fixture.debugElement.nativeElement.querySelector('#navbar-logo');
     expect(logo).toBeTruthy();
