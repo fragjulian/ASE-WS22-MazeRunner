@@ -23,9 +23,49 @@ describe('NavbarNewComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  it('should have existing logo element', () => {
+    const logo = fixture.debugElement.nativeElement.querySelector('#navbar-logo');
+    expect(logo).toBeTruthy();
+  });
+
+  it('logo width should be 40', () => {
+    const logo = fixture.debugElement.nativeElement.querySelector('#navbar-logo');
+    expect(logo.width).toBe(40);
+  });
+
+  it('logo height should be 40', () => {
+    const logo = fixture.debugElement.nativeElement.querySelector('#navbar-logo');
+    expect(logo.height).toBe(40);
+  });
+
+  it('should have existing title element', () => {
+    const header = fixture.debugElement.nativeElement.querySelector('#navbar-header');
+    expect(header).toBeTruthy();
+  });
+
   it('should have as title "Maze Runner"', () => {
     const header = fixture.debugElement.nativeElement.querySelector('#navbar-header');
     expect(header.innerHTML).toBe('Maze Runner');
+  });
+
+  it('home button should exist', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-home');
+    expect(btn).toBeTruthy();
+  });
+
+  it('about button should exist', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-about');
+    expect(btn).toBeTruthy();
+  });
+
+  it('home button should have text "Home"', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-home');
+    expect(btn.innerHTML).toBe('Home');
+  });
+
+  it('about button should have as text "About"', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-about');
+    expect(btn.innerHTML).toBe('About');
   });
 
 });
