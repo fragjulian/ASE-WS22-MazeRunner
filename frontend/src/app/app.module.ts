@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import {FormsModule} from "@angular/forms";
 import { NgxDropzoneModule } from 'ngx-dropzone';
 import { ColorPickerModule } from 'ngx-color-picker';
+import { ColorpickerComponent } from './colorpicker/colorpicker.component';
 
 
 
@@ -28,6 +29,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
     AboutComponent,
     FooterComponent,
     RestUploadComponent,
+    ColorpickerComponent,
 
   ],
   imports: [
