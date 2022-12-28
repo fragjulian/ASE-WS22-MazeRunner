@@ -9,8 +9,6 @@ const routes: Routes = [
   {path: '', component: RestUploadComponent},
   //about path
   {path: 'about', component: AboutComponent},
-  //home or upload path
-  {path: 'home', component: RestUploadComponent}
 ];
 
 @NgModule({
