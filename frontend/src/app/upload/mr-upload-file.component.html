@@ -40,7 +40,7 @@
   ></dx-file-uploader> <!--(onUploadStarted)="onUploadStarted($event)"-->
 
   <div class="solve-maze-btn">
-    <button class="btn btn-primary" type="button" [disabled]="!solveButtonEnabled" (click)="onMazeSolve()">
+    <button class="btn btn-primary" type="button" [disabled]="!solveButtonEnabled" (click)="onMazeSolve()" uitestid="solve-maze">
       <div *ngIf="isLoading">
         <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
         <span class="sr-only"> Solving...</span>
