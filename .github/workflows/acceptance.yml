@@ -1,10 +1,12 @@
 # will check the code quality with sonarcloud and do acceptance tests
+# SonarCloud will also be run on pushes to main to calculate overall code quality
 name: Acceptance testing
 
 on: 
   push:
     branches:
       - 'CI-CD-Selenium' # for testing todo: remove when done
+      - main
   pull_request:
     branches:
       - main
@@ -78,7 +80,8 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   selenium:
-    name: UI test frontend
+    name: UI testing
+    if : github.event_name == 'pull_request'  || github.ref == 'refs/heads/CI-CD-Selenium' # remove after testing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code from repo
@@ -92,9 +95,10 @@ jobs:
       - name: Setup packages
         working-directory: ./frontend
         run: npm ci # install packages
-      - name: Start frontend locally #start the frontend in the background
+      - name: Start frontend locally # in the background using the '&' operator
         working-directory: ./frontend
         run: npm run start &
+
       - name: Backend setup
         uses: actions/setup-java@v3
         with:
@@ -108,15 +112,16 @@ jobs:
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
           restore-keys: |
             ${{ runner.os }}-maven-  
-      - name: Start backend locally # starts the backend in the background
-                                    # wait for both the backend and frontend to start
+      - name: Start backend locally # in the background
+                                    # wait ~20s for both the backend and frontend to start
         working-directory: ./backend
         run: |
           mvn spring-boot:run &
           sleep 20
+
       - name: Run Selenium tests locally
         working-directory: ./selenium
-        run: mvn -DURL="http://localhost:" -DPORT=4200 clean test
+        run: mvn -DURL="http://localhost:" -DPORT=4200 clean test #4200 default port
       - name: Test Reporter
         uses: dorny/test-reporter@v1.4.3
         with:
