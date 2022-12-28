@@ -4,16 +4,16 @@ import {AboutComponent} from "./about/about.component";
 import {RestUploadComponent} from "./rest-upload/rest-upload.component";
 import {ColorpickerComponent} from "./colorpicker/colorpicker.component";
 
-
 const routes: Routes = [
-  //default path
-  {path: '', component: RestUploadComponent},
-  {path: '', component: ColorpickerComponent, outlet:'secondary'},
-  //about path
+  {
+    path: "",
+    children: [
+      {path: "", component: RestUploadComponent},
+      {path: "", component: ColorpickerComponent, outlet: "secondary"}
+    ]
+  },
   {path: 'about', component: AboutComponent},
-
 ];
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
