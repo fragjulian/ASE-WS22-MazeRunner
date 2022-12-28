@@ -8,9 +8,10 @@ import {ColorpickerComponent} from "./colorpicker/colorpicker.component";
 const routes: Routes = [
   //default path
   {path: '', component: RestUploadComponent},
+  {path: '', component: ColorpickerComponent, outlet:'secondary'},
   //about path
   {path: 'about', component: AboutComponent},
-  { path: '', component: ColorpickerComponent, outlet:'secondary' },
+
 ];
 
 @NgModule({

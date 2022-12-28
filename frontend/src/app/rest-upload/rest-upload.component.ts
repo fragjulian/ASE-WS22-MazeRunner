@@ -18,7 +18,7 @@ export class RestUploadComponent {
   solvedMaze: any;
   postResponse: any;
   successResponse: any;
-  color: any;
+
 
   /***
    * Saves the image to a variable.
