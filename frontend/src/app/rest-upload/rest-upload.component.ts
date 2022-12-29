@@ -61,7 +61,7 @@ export class RestUploadComponent {
     /*
     * Post request that sends the transformed image to the server. It gets the solved image as an answer.
     * Looked up the response types here: https://stackoverflow.com/questions/46408537/angular-httpclient-http-failure-during-parsing
-    * Port 8081 for Deployment
+    * Port 8081 for Deployment on live server
     */
     this.httpClient.post('http://localhost:8080/api/maze/colorwalldetector/realdistanceheuristic/depthfirst', transformedImage, {
       observe: 'response',
