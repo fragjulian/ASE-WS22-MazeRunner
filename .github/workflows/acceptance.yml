@@ -5,7 +5,7 @@ name: Acceptance testing
 on: 
   push:
     branches:
-      - 'CI-CD-Selenium' # for testing todo: remove when done
+      #- 'CI-CD-Selenium' # only for testing
       - main
   pull_request:
     branches:
@@ -81,7 +81,7 @@ jobs:
 
   selenium:
     name: UI testing
-    if : github.event_name == 'pull_request'  || github.ref == 'refs/heads/CI-CD-Selenium' # remove after testing
+    if : github.event_name == 'pull_request' # || github.ref == 'refs/heads/CI-CD-Selenium' # only for testing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code from repo

@@ -11,6 +11,7 @@ on: # run on any push except on main
     paths-ignore:
       - 'README.md'
       - 'doc/**'
+      - 'selenium'
   #pull_request: # run for every pull request
   #  types: [opened, synchronize, reopened]
 jobs:
