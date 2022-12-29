@@ -56,6 +56,11 @@ describe('FooterComponent', () => {
     expect(footer).toBeTruthy();
   });
 
+  it('footer should have two child elements', () => {
+    const footer = fixture.debugElement.nativeElement.querySelector('#footer');
+    expect(footer.children.length).toBe(2);
+  });
+
   it('footer should have left footer element as first child', () => {
     const footer = fixture.debugElement.nativeElement.querySelector('#footer');
     const footer_left = fixture.debugElement.nativeElement.querySelector('#footer-left');

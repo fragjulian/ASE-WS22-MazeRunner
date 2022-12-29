@@ -28,6 +28,11 @@ describe('NavbarNewComponent', () => {
     expect(toolbar).toBeTruthy();
   });
 
+  it('toolbar should have three child elements', () => {
+    const toolbar = fixture.debugElement.nativeElement.querySelector('#navbar-toolbar');
+    expect(toolbar.children.length).toBe(3);
+  });
+
   it('should have existing logo element', () => {
     const logo = fixture.debugElement.nativeElement.querySelector('#navbar-logo');
     expect(logo).toBeTruthy();
