@@ -5,7 +5,7 @@ name: Acceptance testing
 on: 
   push:
     branches:
-      - 'FE-Bugfix-Issue#51' # only for testing
+      #- 'FE-Bugfix-Issue#51' # only for testing
       - main
   pull_request:
     branches:
@@ -81,7 +81,7 @@ jobs:
 
   selenium:
     name: UI testing
-    if : github.event_name == 'pull_request'  || github.ref == 'refs/heads/FE-Bugfix-Issue#51' # only for testing
+    if : github.event_name == 'pull_request' # || github.ref == 'refs/heads/FE-Bugfix-Issue#51' # only for testing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code from repo
