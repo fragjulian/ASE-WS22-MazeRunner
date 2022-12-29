@@ -18,8 +18,8 @@ export class RestUploadComponent {
   solvedMaze: any;
   postResponse: any;
   successResponse: any;
-  rgbvaluewall: any;
-  rgbvalueobstacle: any;
+  rgbvaluewall: string = '0,0,0';
+  rgbvalueobstacle: string = '219,219,219';
 
   /***
    * Saves the image to a variable.
@@ -46,8 +46,12 @@ export class RestUploadComponent {
     const transformedImage = new FormData();
     transformedImage.append('image', this.uploadImage, this.uploadImage.name);
     //transformedImage.append('walldetector', 'colorwalldetector');
-    //transformedImage.append('wallcolor', '255,0,0');
-
+    if(this.rgbvaluewall) {
+      transformedImage.append('wallcolor', this.rgbvaluewall);
+    }
+    if(this.rgbvalueobstacle) {
+      transformedImage.append('obstaclecolor', this.rgbvalueobstacle);
+    }
     //Helper function to turn blob response into a DataUrl for the image tags in HTML (https://stackoverflow.com/questions/18650168/convert-blob-to-base64)
     const blobToBase64 = (blob: Blob) => {
       const reader = new FileReader();
@@ -58,6 +62,7 @@ export class RestUploadComponent {
         };
       });
     };
+
 
     /*
     * Post request that sends the transformed image to the server. It gets the solved image as an answer.
