@@ -69,7 +69,7 @@ jobs:
   selenium-on-deployment:
     name: Run UI tests on live server
     needs: [build-docker-backend, build-docker-frontend] # wait for previous steps
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: 'selenium'
