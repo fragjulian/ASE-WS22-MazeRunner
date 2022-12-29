@@ -60,7 +60,7 @@ export class ColorpickerComponent {
     var y=event.clientY-boundingRect.top;
     var px=this.canvasrenderingcontext.getImageData(x,y,1,1);
     var data_array=px.data;
-    var pixelColor="rgba("+data_array[0]+","+data_array[1]+","+data_array[2]+","+data_array[3]+")";
+    var pixelColor= data_array[0]+","+data_array[1]+","+data_array[2];
     this.rgbvalue=pixelColor;
     var dColor = data_array[2] + 256 * data_array[1] + 65536 * data_array[0];
     this.hexvalue=('#'+dColor.toString(16));
