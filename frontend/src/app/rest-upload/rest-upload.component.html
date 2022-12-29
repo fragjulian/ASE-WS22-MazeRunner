@@ -1,9 +1,14 @@
 <!--Changed version of this tutorial: https://www.techgeeknext.com/angular-upload-image-->
 <div class="container">
+
   <br>
+
   <h1>Upload Image Example</h1>
+
   <br>
+
   <form>
+
     <!-- Used this tutorial: https://stackblitz.com/edit/ngx-dropzone?file=src%2Fapp%2Fapp.component.html    -->
     <ngx-dropzone (change)="onSelect($event)" [accept]="'image/*'">
       <ngx-dropzone-label>Drop it, baby!</ngx-dropzone-label>
@@ -13,13 +18,17 @@
     </ngx-dropzone>
 
     <br>
+
     <div class="form-group">
       <input type="button" (click)="imageUploadAction()" value="Upload Image" class="btn1">
     </div>
+
     <br>
+
     <div>
       <output *ngIf=successResponse class="success"><b>{{successResponse}}</b></output>
     </div>
+
     <br>
     <h2>RGB Value of the Wall:</h2>
     <p><input type="text" id="rgbvaluewall" name="rgbvaluewall" [(ngModel)]="rgbvaluewall"></p>
@@ -27,9 +36,12 @@
     <h2>RGB Value of the Obstacle:</h2>
     <p><input type="text" id="rgbvalueobstacle" name="rgbvalueobstacle" [(ngModel)]="rgbvalueobstacle"></p>
 
+    <br>
+
     <div *ngIf=solvedMaze>
       <img [src]="solvedMaze" alt="Solved Maze">
     </div>
+
   </form>
 </div>
 
