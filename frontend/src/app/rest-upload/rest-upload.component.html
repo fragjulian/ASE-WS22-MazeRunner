@@ -23,6 +23,10 @@
       <output *ngIf=successResponse class="success"><b>{{successResponse}}</b></output>
     </div>
     <br>
+    <h2>RGBA Value of the Wall:</h2>
+    <input type="text" value={{rgbvaluewall}}>
+    <h2>RGBA Value of the Obstacle:</h2>
+    <input type="text" value={{rgbvalueobstacle}}>
 
     <div *ngIf=solvedMaze>
       <img [src]="solvedMaze" alt="Solved Maze">
