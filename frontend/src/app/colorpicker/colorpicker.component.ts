@@ -61,13 +61,12 @@ export class ColorpickerComponent {
     var px=this.canvasrenderingcontext.getImageData(x,y,1,1);
     var data_array=px.data;
     var pixelColor=data_array[0]+","+data_array[1]+","+data_array[2];
-
-    //var pixelColor2=data_array[0]+","+data_array[1]+","+data_array[2]+","+data_array[3]+")";
+    var pixelColorbox="rgba("+data_array[0]+","+data_array[1]+","+data_array[2]+","+data_array[3]+")";
 
     this.rgbvalue=pixelColor;
     var dColor = data_array[2] + 256 * data_array[1] + 65536 * data_array[0];
     this.hexvalue=('#'+dColor.toString(16));
-    this.colorbox.style.cssText = "--bgcolorval:"+pixelColor;
+    this.colorbox.style.cssText = "--bgcolorval:"+pixelColorbox;
     this.outputColor.emit(this.hexvalue+" "+this.rgbvalue);
   }
 
