@@ -60,6 +60,7 @@ public class MazeSolverController {
         File temp = File.createTempFile("maze", ".temp");
         file.transferTo(temp);
         BufferedImage bufferedImage = ImageIO.read(temp);
+        //todo handle nullpointer exception if image parameter does not contain a file
         Maze maze = new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR, distanceMetric);
         bufferedImage = maze.solveMaze();
 
