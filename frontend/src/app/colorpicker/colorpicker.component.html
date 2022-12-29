@@ -1,1 +1,16 @@
-<p>colorpicker works!</p>
+<!--// Source for Image Picker: https://stackblitz.com/edit/angular-image-color-picker?file=src%2Fapp%2Fapp.component.css,src%2Fapp%2Fimgcol%2Fimgcol.component.html,src%2Fapp%2Fimgcol%2Fimgcol.component.ts,package.json-->
+<p>Click on the image to get the color of the wall and the obstacles.</p>
+<body>
+<input type='file' accept="image/*" (change)="readUrl($event)"><br/><br/>
+
+<div class="main">
+  <canvas width="500" height="400" #canvasval class="hideData" [class.displayData]="displayData" (click)="getPixel($event)">
+  </canvas>
+  <div class="data hideData" [class.displayData]="displayData">
+    <h2>Preview</h2>
+    <div #colboxval class="colorval" [class.displayCol]="displayCol"></div>
+    <h2>RGBA Value:</h2>
+    <input type="text" value={{rgbvalue}}>
+  </div>
+</div>
+</body>

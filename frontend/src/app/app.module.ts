@@ -38,7 +38,7 @@ import { ColorpickerComponent } from './colorpicker/colorpicker.component';
     HttpClientModule,
     FormsModule,
     NgxDropzoneModule,
-    ColorPickerModule
+    ColorPickerModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

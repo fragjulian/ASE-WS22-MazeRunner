@@ -5,14 +5,10 @@ import {RestUploadComponent} from "./rest-upload/rest-upload.component";
 import {ColorpickerComponent} from "./colorpicker/colorpicker.component";
 
 const routes: Routes = [
-  {
-    path: "",
-    children: [
-      {path: "", component: RestUploadComponent},
-      {path: "", component: ColorpickerComponent, outlet: "secondary"}
-    ]
-  },
+
   {path: 'about', component: AboutComponent},
+  {path: '', component: RestUploadComponent},
+  {path: 'colorpicker', component: ColorpickerComponent},
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
