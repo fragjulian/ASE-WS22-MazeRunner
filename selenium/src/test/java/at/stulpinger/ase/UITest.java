@@ -46,6 +46,11 @@ public class UITest {
     driver.get(homeUrl);
   }
 
+  private void openApplicationWithPath(final String path) {
+    final var homeUrl = this.url + port + "/" + path + "/";
+    driver.get(homeUrl);
+  }
+
   @Test
   public void headerBar_hasCorrectTitle() {
     openApplication();
@@ -109,6 +114,34 @@ public class UITest {
     assertThat(aboutText).isNotBlank();
     final var navigateToHomePage = WebApp.findByTestId(driver, "nav-home");
     navigateToHomePage.click();
+  }
+
+  @Test
+  public void reload_about() {
+    openApplicationWithPath("about");
+    final var aboutHeaderTextBefore = WebApp.findFirstByHtmlTag(driver, "h1").getText();
+    assertThat(aboutHeaderTextBefore).isEqualTo("About Maze Runner");
+    driver.navigate().refresh();
+    final var aboutHeaderTextAfter = WebApp.findFirstByHtmlTag(driver, "h1").getText();
+    assertThat(aboutHeaderTextAfter).isEqualTo("About Maze Runner");
+  }
+
+  @Test
+  public void reload_home() {
+    openApplicationWithPath("home");
+    WebApp.findByTestId(driver, "app-title");
+    driver.navigate().refresh();
+    WebApp.findByTestId(driver, "app-title");
+  }
+
+  @Test
+  public void navigate_toHomeAndReload() {
+    openApplication();
+    final var navigateToHome = WebApp.findByTestId(driver, "nav-home");
+    navigateToHome.click();
+    WebApp.findByTestId(driver, "app-title");
+    driver.navigate().refresh();
+    WebApp.findByTestId(driver, "app-title");
   }
 
 }
