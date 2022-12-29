@@ -17,8 +17,10 @@ import org.openqa.selenium.firefox.FirefoxOptions;
  * To test the deployed server: "mvn -DURL=https://ase.stulpinger.at -DPORT= clean test"
  */
 public class UITest {
-  private final String port = System.getProperty("PORT");
-  private final String url = System.getProperty("URL");
+  private final String HOME_PATH = "home";
+  private final String ABOUT_PATH = "about";
+  private final String PORT = System.getProperty("PORT");
+  private final String URL = System.getProperty("URL");
   private WebDriver driver;
 
   @BeforeEach
@@ -42,7 +44,12 @@ public class UITest {
   }
 
   private void openApplication() {
-    final var homeUrl = url + port + "/";
+    final var homeUrl = URL + PORT + "/";
+    driver.get(homeUrl);
+  }
+
+  private void openApplicationWithPath(final String path) {
+    final var homeUrl = this.URL + PORT + "/" + path + "/";
     driver.get(homeUrl);
   }
 
@@ -109,6 +116,34 @@ public class UITest {
     assertThat(aboutText).isNotBlank();
     final var navigateToHomePage = WebApp.findByTestId(driver, "nav-home");
     navigateToHomePage.click();
+  }
+
+  @Test
+  public void reload_about() {
+    openApplicationWithPath(ABOUT_PATH);
+    final var aboutHeaderTextBefore = WebApp.findFirstByHtmlTag(driver, "h1").getText();
+    assertThat(aboutHeaderTextBefore).isEqualTo("About Maze Runner");
+    driver.navigate().refresh();
+    final var aboutHeaderTextAfter = WebApp.findFirstByHtmlTag(driver, "h1").getText();
+    assertThat(aboutHeaderTextAfter).isEqualTo("About Maze Runner");
+  }
+
+  @Test
+  public void reload_home() {
+    openApplicationWithPath(HOME_PATH);
+    WebApp.findByTestId(driver, "app-title");
+    driver.navigate().refresh();
+    WebApp.findByTestId(driver, "app-title");
+  }
+
+  @Test
+  public void navigate_toHomeAndReload() {
+    openApplication();
+    final var navigateToHome = WebApp.findByTestId(driver, "nav-home");
+    navigateToHome.click();
+    WebApp.findByTestId(driver, "app-title");
+    driver.navigate().refresh();
+    WebApp.findByTestId(driver, "app-title");
   }
 
 }
