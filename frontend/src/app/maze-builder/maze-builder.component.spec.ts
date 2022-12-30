@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { MazeBuilderComponent } from './maze-builder.component';
+import {MazeBuilderComponent} from './maze-builder.component';
+import {FormsModule} from "@angular/forms";
 
 describe('MazeBuilderComponent', () => {
   let component: MazeBuilderComponent;
@@ -8,7 +9,8 @@ describe('MazeBuilderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MazeBuilderComponent ]
+      declarations: [ MazeBuilderComponent ],
+      imports: [ FormsModule ]
     })
     .compileComponents();
 
