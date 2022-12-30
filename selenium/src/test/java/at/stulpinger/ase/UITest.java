@@ -102,7 +102,7 @@ public class UITest {
     final var solveMazeButton = WebApp.findByTestId(driver, "solve-maze");
     assertThat(solveMazeButton.isDisplayed()).isTrue();
     assertThat(solveMazeButton.isEnabled()).isTrue();
-    assertThat(solveMazeButton.getText()).isEqualTo("Upload Image");
+    assertThat(solveMazeButton.getText()).isEqualTo("");
   }
 
   @Test
