@@ -1,10 +1,12 @@
 # will check the code quality with sonarcloud and do acceptance tests
+# SonarCloud will also be run on pushes to main to calculate overall code quality
 name: Acceptance testing
 
 on: 
-  #push:
-  #  branches:
-  #    - CI-CD
+  push:
+    branches:
+      #- 'FE-Bugfix-Issue#51' # only for testing
+      - main
   pull_request:
     branches:
       - main
@@ -12,8 +14,117 @@ on:
 
 jobs:
   sonarcloud-backend:
-    name: Build and analyze
+    name: Sonar analyze backend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'backend'
+    steps:
+    - name: Checkout code from repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # needs to be 0 for better Sonar results
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        cache: maven
+    - name: Cache local Maven repository
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+    - name: Cache SonarCloud packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.sonar/cache
+        key: ${{ runner.os }}-sonar
+        restore-keys: ${{ runner.os }}-sonar
+    - name: Build and analyze with sonarcloud
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      # for java code SonarCloud analysis can be triggered through maven
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner
+
+  sonarcloud-frontend:
+    name: Sonar analyze frontend
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: 'frontend'
+    steps:
+    - name: Checkout code from repo
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0 # needs to be 0 for better Sonar results
+    - name: show tree
+      run: tree
+    - name: Node.js setup
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16
+        cache: 'npm'
+        cache-dependency-path: './frontend/package-lock.json'
+    - run: npm ci # installs packages
+    - run: npm run test:ci # run tests
+    - name: SonarCloud scan # will push the code to SonarCloud for analysis
+      uses: sonarsource/sonarcloud-github-action@master # requires sonar-project.properties
+      with:
+        projectBaseDir: ./frontend # base directory has to be defined
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+
+  selenium:
+    name: UI testing
+    if : github.event_name == 'pull_request' # || github.ref == 'refs/heads/FE-Bugfix-Issue#51' # only for testing
     runs-on: ubuntu-latest
     steps:
-    - name: initial sonarcloud workflow
-      run: echo "workflow works"
+      - name: Checkout code from repo
+        uses: actions/checkout@v3
+      - name: Frontend setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: './frontend/package-lock.json'
+      - name: Setup packages
+        working-directory: ./frontend
+        run: npm ci # install packages
+      - name: Start frontend locally # in the background using the '&' operator
+        working-directory: ./frontend
+        run: npm run start &
+
+      - name: Backend setup
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-  
+      - name: Start backend locally # in the background
+                                    # wait ~20s for both the backend and frontend to start
+        working-directory: ./backend
+        run: |
+          mvn spring-boot:run &
+          sleep 20
+
+      - name: Run Selenium tests locally
+        working-directory: ./selenium
+        run: "mvn -DURL=http://localhost: -DPORT=4200 clean test" #4200 default port
+      - name: Test Reporter
+        uses: dorny/test-reporter@v1.4.3
+        with:
+          name: Selenium test report
+          path: "./selenium/target/surefire-reports/TEST-*.xml"
+          reporter: java-junit
