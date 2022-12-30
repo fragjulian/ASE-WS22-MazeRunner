@@ -1,5 +1,8 @@
 package com.example.mazerunner;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,7 +10,7 @@ public class DepthFirst implements SearchStrategy {
     public void calculateShortestPath(Maze maze) {
         Position current = maze.getStart();
         List<Position> alreadyVisited = new LinkedList<>();//todo implement backtracking
-        while (!current.equals(maze.getGoal())) {
+        while (current != null && !current.equals(maze.getGoal())) {
             maze.paintOnMaze(current, maze.getPathColor());
             Position cheapestNeighbour = null;
             for (Position currentNeighbour : maze.getDistanceMetric().getNeighbouringPixels(current, 1, maze.getWidth(), maze.getHeight())) {
@@ -20,5 +23,7 @@ public class DepthFirst implements SearchStrategy {
             alreadyVisited.add(current);
             current = cheapestNeighbour;
         }
+        if (current == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "maze is unsolvable");
     }
 }
