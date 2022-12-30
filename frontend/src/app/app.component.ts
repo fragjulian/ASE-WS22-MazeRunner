@@ -6,9 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  getcolval(event: any)
-  {
-    console.log(event);
-  }
 
 }
