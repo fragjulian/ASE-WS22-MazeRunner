@@ -9,6 +9,8 @@ import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
 import { AboutComponent } from './about/about.component';
 import { FooterComponent } from './footer/footer.component';
+import { MazeBuilderComponent } from './maze-builder/maze-builder.component';
+import {FormsModule} from "@angular/forms";
 import { RestUploadComponent } from './rest-upload/rest-upload.component';
 import { HttpClientModule } from '@angular/common/http';
 import {FormsModule} from "@angular/forms";
@@ -25,6 +27,7 @@ import { ColorpickerComponent } from './colorpicker/colorpicker.component';
     NavbarComponent,
     AboutComponent,
     FooterComponent,
+    MazeBuilderComponent,
     RestUploadComponent,
     ColorpickerComponent,
 
@@ -35,6 +38,7 @@ import { ColorpickerComponent } from './colorpicker/colorpicker.component';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
+    FormsModule,
     HttpClientModule,
     FormsModule,
     NgxDropzoneModule,
