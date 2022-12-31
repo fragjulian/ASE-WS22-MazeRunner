@@ -18,7 +18,7 @@ export class MazeBuilderComponent {
   context: CanvasRenderingContext2D | undefined;
   colorPicker: HTMLElement | undefined;
 
-  pixelSize = 20;
+  pixelSize = 15;
   cursorPosX = 0;
   cursorPosY = 0;
   brushColor = this.initialBrushColor;
