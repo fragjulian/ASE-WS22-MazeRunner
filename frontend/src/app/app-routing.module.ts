@@ -8,10 +8,10 @@ import {MazeBuilderComponent} from "./maze-builder/maze-builder.component";
 
 const routes: Routes = [
 
-  {path: 'about', component: AboutComponent},
   {path: '', component: RestUploadComponent},
+  {path: 'builder', component: MazeBuilderComponent},
   {path: 'colorpicker', component: ColorpickerComponent},
-  {path: 'builder', component: MazeBuilderComponent}
+  {path: 'about', component: AboutComponent}
 ];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
