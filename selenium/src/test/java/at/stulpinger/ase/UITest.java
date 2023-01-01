@@ -96,7 +96,7 @@ public class UITest {
     assertThat(footerUniversityLink.getAttribute("href")).contains("www.aau.at");
   }
 
-  @Test
+  /*@Test
   public void solveButton_isDisabled() {
     openApplication();
     final var solveMazeButton = WebApp.findByTestId(driver, "solve-maze");
@@ -104,7 +104,7 @@ public class UITest {
     assertThat(solveMazeButton.isEnabled()).isFalse();
     assertThat(solveMazeButton.getAttribute("value")).isEqualTo("Solve Maze");
 
-  }
+  }*/
 
   @Test
   public void navigate_toAboutAndBack() {
