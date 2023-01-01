@@ -20,7 +20,7 @@
     <br>
 
     <div class="form-group" >
-      <input uitestid="solve-maze" type="button" *ngIf="uploadImage" (click)="imageUploadAction()" value="Solve Maze" class="btn1">
+      <input uitestid="solve-maze" type="button" [disabled]="!uploadImage" (click)="imageUploadAction()" value="Solve Maze" class="btn1">
     </div>
 
     <br>
@@ -39,7 +39,7 @@
     <br>
 
     <div *ngIf=solvedMaze >
-      <img [src]="solvedMaze" alt="Solved Maze" style="max-height:300px;max-width:300px;height:auto;width:auto;">
+      <img [src]="solvedMaze" alt="Solved Maze">
     </div>
 
   </form>
