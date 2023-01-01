@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 
@@ -19,23 +20,23 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 public class UITest {
   private final String HOME_PATH = "home";
   private final String ABOUT_PATH = "about";
-  private final String PORT = System.getProperty("PORT");
+  private final String PORT = "4200";/*System.getProperty("PORT");*/
   private final String URL = System.getProperty("URL");
   private WebDriver driver;
 
   @BeforeEach
   public void setUp() {
     // for manual testing with installed browser
-//    WebDriverManager.chromedriver().setup();
-//    driver = new ChromeDriver();
+    WebDriverManager.chromedriver().setup();
+    driver = new ChromeDriver();
 
     // headless browser like in CI-CD pipeline
-    WebDriverManager.firefoxdriver().setup();
+    /*WebDriverManager.firefoxdriver().setup();
     FirefoxOptions options = new FirefoxOptions();
     options.addArguments("--no-sandbox");
     options.addArguments("--disable-dev-shm-usage");
     options.addArguments("--headless");
-    driver = new FirefoxDriver(options);
+    driver = new FirefoxDriver(options);*/
   }
 
   @AfterEach
@@ -96,7 +97,7 @@ public class UITest {
     assertThat(footerUniversityLink.getAttribute("href")).contains("www.aau.at");
   }
 
-  /*@Test
+  @Test
   public void solveButton_isDisabled() {
     openApplication();
     final var solveMazeButton = WebApp.findByTestId(driver, "solve-maze");
@@ -104,7 +105,7 @@ public class UITest {
     assertThat(solveMazeButton.isEnabled()).isFalse();
     assertThat(solveMazeButton.getAttribute("value")).isEqualTo("Solve Maze");
 
-  }*/
+  }
 
   @Test
   public void navigate_toAboutAndBack() {
