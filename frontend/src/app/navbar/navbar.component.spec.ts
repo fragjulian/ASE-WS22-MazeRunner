@@ -33,9 +33,9 @@ describe('NavbarNewComponent', () => {
     expect(toolbar.children.length).toBe(3);
   });
 
-  it('last child of toolbar (buttons on the right) should have three child elements', () => {
+  it('last child of toolbar (buttons on the right) should have four child elements', () => {
     const last_child_of_toolbar = fixture.debugElement.nativeElement.querySelector('#navbar-toolbar').children[2];
-    expect(last_child_of_toolbar.children.length).toBe(3);
+    expect(last_child_of_toolbar.children.length).toBe(4);
   });
 
   it('should have existing logo element', () => {

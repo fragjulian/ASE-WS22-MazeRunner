@@ -27,7 +27,6 @@ import {ColorpickerComponent} from './colorpicker/colorpicker.component';
     MazeBuilderComponent,
     RestUploadComponent,
     ColorpickerComponent,
-
   ],
   imports: [
     BrowserModule,
