@@ -26,8 +26,8 @@ public class UITest {
   @BeforeEach
   public void setUp() {
     // for manual testing with installed browser
-//    WebDriverManager.chromedriver().setup();
-//    driver = new ChromeDriver();
+    //WebDriverManager.chromedriver().setup();
+    //driver = new ChromeDriver();
 
     // headless browser like in CI-CD pipeline
     WebDriverManager.firefoxdriver().setup();
@@ -102,7 +102,8 @@ public class UITest {
     final var solveMazeButton = WebApp.findByTestId(driver, "solve-maze");
     assertThat(solveMazeButton.isDisplayed()).isTrue();
     assertThat(solveMazeButton.isEnabled()).isFalse();
-    assertThat(solveMazeButton.getText()).isEqualTo("Solve Maze");
+    assertThat(solveMazeButton.getAttribute("value")).isEqualTo("Solve Maze");
+
   }
 
   @Test

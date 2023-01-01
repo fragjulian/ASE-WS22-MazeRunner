@@ -2,10 +2,7 @@ package com.example.mazerunner;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -35,6 +32,20 @@ public class MazeSolverController {
      * @return an image containing the solved maze
      * @throws IOException
      */
+
+    /*Found a solution for this fail message:
+
+    Access to XMLHttpRequest at 'http://localhost:8080/api/maze'
+    from origin >'http://localhost:4200/' has been blocked by CORS policy:
+    No 'Access-Control->Allow-Origin' header is present on the requested resource.
+
+    here: https://spring.io/guides/gs/rest-service-cors/
+
+    Now it allows cross-origin resource sharing.
+
+    */
+    @CrossOrigin()
+
     @PostMapping(value = "/api/maze/{wallDetector}/{heuristic}/{searchStrategy}", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "wallcolor", required = false) String wallColorParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "obstaclecolor", required = false) String obstacleColorParameter,//unfortunately cannot use the constant here as default due to spring
