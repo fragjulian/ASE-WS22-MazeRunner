@@ -1,22 +1,21 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NavbarComponent } from './navbar/navbar.component';
+import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {NavbarComponent} from './navbar/navbar.component';
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatButtonModule} from "@angular/material/button";
-import { AboutComponent } from './about/about.component';
-import { FooterComponent } from './footer/footer.component';
-import { RestUploadComponent } from './rest-upload/rest-upload.component';
-import { HttpClientModule } from '@angular/common/http';
+import {AboutComponent} from './about/about.component';
+import {FooterComponent} from './footer/footer.component';
+import {MazeBuilderComponent} from './maze-builder/maze-builder.component';
 import {FormsModule} from "@angular/forms";
-import { NgxDropzoneModule } from 'ngx-dropzone';
-import { ColorPickerModule } from 'ngx-color-picker';
-import { ColorpickerComponent } from './colorpicker/colorpicker.component';
-
-
+import {RestUploadComponent} from './rest-upload/rest-upload.component';
+import {HttpClientModule} from '@angular/common/http';
+import {NgxDropzoneModule} from 'ngx-dropzone';
+import {ColorPickerModule} from 'ngx-color-picker';
+import {ColorpickerComponent} from './colorpicker/colorpicker.component';
 
 
 @NgModule({
@@ -25,9 +24,9 @@ import { ColorpickerComponent } from './colorpicker/colorpicker.component';
     NavbarComponent,
     AboutComponent,
     FooterComponent,
+    MazeBuilderComponent,
     RestUploadComponent,
     ColorpickerComponent,
-
   ],
   imports: [
     BrowserModule,
@@ -35,6 +34,7 @@ import { ColorpickerComponent } from './colorpicker/colorpicker.component';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
+    FormsModule,
     HttpClientModule,
     FormsModule,
     NgxDropzoneModule,
@@ -43,4 +43,5 @@ import { ColorpickerComponent } from './colorpicker/colorpicker.component';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+}
