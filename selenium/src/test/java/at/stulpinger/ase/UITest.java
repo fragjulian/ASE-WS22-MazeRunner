@@ -101,8 +101,9 @@ public class UITest {
     openApplication();
     final var solveMazeButton = WebApp.findByTestId(driver, "solve-maze");
     assertThat(solveMazeButton.isDisplayed()).isTrue();
-    assertThat(solveMazeButton.isEnabled()).isTrue();
-    assertThat(solveMazeButton.getText()).isEqualTo("");
+    assertThat(solveMazeButton.isEnabled()).isFalse();
+    assertThat(solveMazeButton.getAttribute("value")).isEqualTo("Solve Maze");
+
   }
 
   @Test
