@@ -25,16 +25,20 @@
 
     <br>
 
-    <div>
-      <output *ngIf=successResponse class="success"><b>{{successResponse}}</b></output>
-    </div>
-
-    <br>
     <h2>RGB Value of the Wall:</h2>
     <p><input type="text" id="rgbvaluewall" name="rgbvaluewall" [(ngModel)]="rgbvaluewall"></p>
 
     <h2>RGB Value of the Obstacle:</h2>
     <p><input type="text" id="rgbvalueobstacle" name="rgbvalueobstacle" [(ngModel)]="rgbvalueobstacle"></p>
+
+    <br>
+
+    <div>
+      <output *ngIf=successResponse class="success"><b>{{successResponse}}</b></output>
+    </div>
+
+    <!-- Display the error message if it exists -->
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
     <br>
 
