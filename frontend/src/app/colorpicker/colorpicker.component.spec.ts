@@ -1,21 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ColorpickerComponent } from './colorpicker.component';
+import { ElementRef } from '@angular/core';
 import {By} from "@angular/platform-browser";
 
 describe('ColorpickerComponent', () => {
   let component: ColorpickerComponent;
   let fixture: ComponentFixture<ColorpickerComponent>;
+  let elementRef: ElementRef;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
       declarations: [ ColorpickerComponent ]
     })
-    .compileComponents();
+      .compileComponents();
+  }));
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(ColorpickerComponent);
     component = fixture.componentInstance;
+    elementRef = fixture.debugElement.injector.get(ElementRef);
     fixture.detectChanges();
   });
 
@@ -36,4 +39,27 @@ describe('ColorpickerComponent', () => {
     const dataElement = fixture.debugElement.query(By.css('.data'));
     expect(dataElement).toBeTruthy();
   });
+
+  it('should display the selected image when "displayData" is true', () => {
+    component.displayData = true;
+    fixture.detectChanges();
+    const imageElement = fixture.nativeElement.querySelector('canvas');
+    expect(imageElement).toBeTruthy();
+  });
+
+  it('should display the color box when "displayCol" is true', () => {
+    component.displayCol = true;
+    fixture.detectChanges();
+    const colorBoxElement = fixture.nativeElement.querySelector('.colorval');
+    expect(colorBoxElement).toBeTruthy();
+  });
+
+  it('should call the "getPixel" function when the canvas element is clicked', () => {
+    spyOn(component, 'getPixel');
+    const canvasElement = fixture.nativeElement.querySelector('canvas');
+    canvasElement.click();
+    expect(component.getPixel).toHaveBeenCalled();
+  });
+
+
 });
