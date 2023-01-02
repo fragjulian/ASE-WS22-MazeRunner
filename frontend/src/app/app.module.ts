@@ -16,6 +16,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxDropzoneModule} from 'ngx-dropzone';
 import {ColorPickerModule} from 'ngx-color-picker';
 import {ColorpickerComponent} from './colorpicker/colorpicker.component';
+import {RestService} from "./rest-upload/rest.service";
 
 
 @NgModule({
@@ -40,7 +41,7 @@ import {ColorpickerComponent} from './colorpicker/colorpicker.component';
     NgxDropzoneModule,
     ColorPickerModule,
   ],
-  providers: [],
+  providers: [RestService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
