@@ -1,28 +1,48 @@
-<!--// Source for Image Picker: https://stackblitz.com/edit/angular-image-color-picker?file=src%2Fapp%2Fapp.component.css,src%2Fapp%2Fimgcol%2Fimgcol.component.html,src%2Fapp%2Fimgcol%2Fimgcol.component.ts,package.json-->
+<!-- Source for Image Picker: https://stackblitz.com/edit/angular-image-color-picker?file=src%2Fapp%2Fapp.component.css,src%2Fapp%2Fimgcol%2Fimgcol.component.html,src%2Fapp%2Fimgcol%2Fimgcol.component.ts,package.json-->
+<!-- This code creates a color picker tool that allows users to select a color from an image.
+     The source of the code is provided in a comment at the top of the file. -->
+<!-- The heading element provides instructions for using the color picker tool. -->
 <h1 id="colorpicker-heading">Click on the image to get the color of the wall and the obstacles.</h1>
 
+<!-- The body element contains the color picker tool. -->
 <body id="colorpicker-body">
 
-  <input id="colorpicker-body-input" type='file' accept="image/*" (change)="readUrl($event)"><br/><br/>
+<!-- The file input element allows the user to select an image file.
+     When the user selects a file, the "readUrl" function is called. -->
+<input id="colorpicker-body-input" type='file' accept="image/*" (change)="readUrl($event)"><br/><br/>
 
-  <div class="main">
+<!-- The main element contains the canvas element and the data display element. -->
+<div class="main">
 
-    <canvas width="500" height="400" #canvasval class="hideData" [class.displayData]="displayData"
+  <!-- The canvas element is used to display the selected image.
+       It has a width of 500 and a height of 400.
+       The "canvasval" template variable is assigned to the canvas element.
+       The "displayData" class is added to the element based on the value of the "displayData" variable.
+       When the canvas element is clicked, the "getPixel" function is called. -->
+  <canvas width="500" height="400" #canvasval class="hideData" [class.displayData]="displayData"
           (click)="getPixel($event)">
-    </canvas>
+  </canvas>
 
-    <div class="data hideData" [class.displayData]="displayData">
+  <!-- The data display element contains the color preview and the RGB value of the selected color.
+       The "displayData" class is added to the element based on the value of the "displayData" variable. -->
+  <div class="data hideData" [class.displayData]="displayData">
 
-      <h2>Preview</h2>
+    <!-- The heading element displays the text "Preview". -->
+    <h2>Preview</h2>
 
-      <div #colboxval class="colorval" [class.displayCol]="displayCol"></div>
+    <!-- The color box element displays the selected color.
+         The "displayCol" class is added to the element based on the value of the "displayCol" variable. -->
+    <div #colboxval class="colorval" [class.displayCol]="displayCol"></div>
 
-      <h2>RGB Value:</h2>
+    <!-- The heading element displays the text "RGB Value:". -->
+    <h2>RGB Value:</h2>
 
-      <input type="text" value={{rgbValue}}>
-
-    </div>
+    <!-- The input element displays the RGB value of the selected color.
+         The value is bound to the "rgbValue" variable. -->
+    <input type="text" value={{rgbValue}}>
 
   </div>
+
+</div>
 
 </body>
