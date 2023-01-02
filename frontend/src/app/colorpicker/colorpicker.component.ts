@@ -1,74 +1,75 @@
-// Source for Image Picker: https://stackblitz.com/edit/angular-image-color-picker?file=src%2Fapp%2Fapp.component.css,src%2Fapp%2Fimgcol%2Fimgcol.component.html,src%2Fapp%2Fimgcol%2Fimgcol.component.ts,package.json
-import { Component,ViewChild,Output,EventEmitter,ElementRef,ViewEncapsulation } from '@angular/core';
+import {Component, ViewChildren, QueryList, Output, EventEmitter, ViewEncapsulation, ElementRef} from '@angular/core';
+
 @Component({
   selector: 'app-colorpicker',
   templateUrl: './colorpicker.component.html',
   styleUrls: ['./colorpicker.component.css'],
-  encapsulation:ViewEncapsulation.Emulated
+  encapsulation: ViewEncapsulation.Emulated
 })
 export class ColorpickerComponent {
-
-  @ViewChild('canvasval')
-  canvasval!: ElementRef;
-  @ViewChild('colboxval')colboxval:any;
+  @ViewChildren('canvasval, colboxval')
+  elements!: QueryList<ElementRef>;
   url: any;
-  displayData=false;
-  displayCol=false;
-   canvas: any;
-   canvasrenderingcontext!: CanvasRenderingContext2D;
-   image: any;
-   colorbox: any;
-   rgbvalue: any;
-   hexvalue: any;
+  displayData = false;
+  displayCol = false;
+  canvas: any;
+  canvasRenderingContext!: CanvasRenderingContext2D;
+  image: any;
+  colorBox: any;
+  rgbValue: any;
+  hexValue: any;
 
+  @Output() outputColor = new EventEmitter<string>();
 
-  @Output() outputColor=new EventEmitter();
-
-  readUrl(event:any) {
-    this.displayData=true;
-    this.displayCol=true;
-    if (event.target.files && event.target.files[0])  {
-      var reader = new FileReader();
-      reader.onload = (event:any) => {
+  readUrl(event: any) {
+    this.displayData = true;
+    this.displayCol = true;
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (event: any) => {
         this.url = event.target.result;
-        this.getimg(this.url);
-      }
+        this.getImg(this.url);
+      };
       reader.readAsDataURL(event.target.files[0]);
     }
   }
 
-  getimg(url:string)
-  {
-    this.colorbox=this.colboxval.nativeElement;
-    this.colorbox.style.cssText = "--bgcolorval:rgba(0,0,0,0)";
-    this.hexvalue="";
-    this.rgbvalue="";
-    this.canvas = this.canvasval.nativeElement;
-    this.canvasrenderingcontext = this.canvas.getContext("2d");
-    this.image=document.createElement("img"),
-      this.image.crossOrigin = 'anonymous';
+  getImg(url: string) {
+    this.colorBox = this.elements.toArray()[1].nativeElement;
+    this.colorBox.style.cssText = '--bgcolorval:rgba(0,0,0,0)';
+    this.hexValue = '';
+    this.rgbValue = '';
+    this.canvas = this.elements.first.nativeElement;
+    this.canvasRenderingContext = this.canvas.getContext('2d');
+    this.image = document.createElement('img');
+    this.image.crossOrigin = 'anonymous';
     this.image.src = this.url;
-    this.canvasrenderingcontext.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.image.onload=(()=>
-      this.canvasrenderingcontext.drawImage(this.image, 0, 0,this.image.width,this.image.height,0, 0,this.canvas.width, this.canvas.height));
+    this.canvasRenderingContext.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.image.onload = (() =>
+        this.canvasRenderingContext.drawImage(
+          this.image,
+          0,
+          0,
+          this.image.width,
+          this.image.height,
+          0,
+          0,
+          this.canvas.width,
+          this.canvas.height
+        )
+    );
   }
 
-  getPixel(event: any)
-  {
-    var boundingRect=this.canvas.getBoundingClientRect();
-    var x=event.clientX-boundingRect.left;
-    var y=event.clientY-boundingRect.top;
-    var px=this.canvasrenderingcontext.getImageData(x,y,1,1);
-    var data_array=px.data;
-    var pixelColor=data_array[0]+","+data_array[1]+","+data_array[2];
-    var pixelColorbox="rgba("+data_array[0]+","+data_array[1]+","+data_array[2]+","+data_array[3]+")";
+  getPixel(event: MouseEvent) {
+    const px = this.canvasRenderingContext.getImageData(event.offsetX, event.offsetY, 1, 1);
+    const dataArray = px.data;
+    const pixelColor = `${dataArray[0]},${dataArray[1]},${dataArray[2]}`;
+    const pixelColorBox = `rgba(${dataArray[0]},${dataArray[1]},${dataArray[2]},${dataArray[3]})`;
 
-    this.rgbvalue=pixelColor;
-    var dColor = data_array[2] + 256 * data_array[1] + 65536 * data_array[0];
-    this.hexvalue=('#'+dColor.toString(16));
-    this.colorbox.style.cssText = "--bgcolorval:"+pixelColorbox;
-    this.outputColor.emit(this.hexvalue+" "+this.rgbvalue);
+    this.rgbValue = pixelColor;
+    const dColor = dataArray[2] + 256 * dataArray[1] + 65536 * dataArray[0];
+    this.hexValue = `#${dColor.toString(16)}`;
+    this.colorBox.style.cssText = `--bgcolorval:${pixelColorBox}`;
+    this.outputColor.emit(`${this.hexValue} ${this.rgbValue}`);
   }
-
-
 }
