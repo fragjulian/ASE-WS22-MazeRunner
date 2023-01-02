@@ -1,21 +1,26 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient} from '@angular/common/http';
 import {catchError} from "rxjs";
 
+// Declare the service and its dependencies
 @Injectable({
   providedIn: 'root'
 })
 export class RestService {
 
+  // Inject the HttpClient module
   constructor(private http: HttpClient) { }
 
+  // Function to send a POST request to the server with the given form data
   solveMaze(formData: FormData) {
-    // Send the POST request to the server
+    // Send the POST request to the server with the specified endpoint and form data
+    // Set the response type to "blob" to receive a binary response
     return this.http.post('http://localhost:8081/api/maze/colorwalldetector/realdistanceheuristic/depthfirst', formData, { responseType: "blob" })
+      // Catch and handle any errors that occur
       .pipe(
         catchError((error: any) => {
           console.error(error);
-          // Handle the error and return a suitable value
+          // Return the error message
           return error.error;
         })
       );
