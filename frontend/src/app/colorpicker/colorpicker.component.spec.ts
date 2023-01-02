@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+
 import { ColorpickerComponent } from './colorpicker.component';
+import {By} from "@angular/platform-browser";
 
 describe('ColorpickerComponent', () => {
   let component: ColorpickerComponent;
@@ -21,20 +23,17 @@ describe('ColorpickerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have "Click on the image to get the color of the wall and the obstacles." as text in heading', () => {
-    const heading = fixture.debugElement.nativeElement.querySelector('#colorpicker-heading');
-    expect(heading.innerHTML).toBe('Click on the image to get the color of the wall and the obstacles.');
-  });
+  it('should display the image preview and color data when an image is selected', () => {
+    // Set up test image file
+    const imageFile = new File([], 'test.jpg', { type: 'image/jpeg' });
+    const fileInput = fixture.debugElement.query(By.css('#colorpicker-body-input'));
+    fileInput.triggerEventHandler('change', { target: { files: [imageFile] } });
+    fixture.detectChanges();
 
-  it('should have body element', () => {
-    const body = fixture.debugElement.nativeElement.querySelector('#colorpicker-body')
-    expect(body).toBeTruthy();
+    // Check that the canvas and data elements are displayed
+    const canvasElement = fixture.debugElement.query(By.css('canvas'));
+    expect(canvasElement).toBeTruthy();
+    const dataElement = fixture.debugElement.query(By.css('.data'));
+    expect(dataElement).toBeTruthy();
   });
-
-  it('colorpicker-body should have colorpicker-body-input as first child', () => {
-    const colorpicker_body = fixture.debugElement.nativeElement.querySelector('#colorpicker-body');
-    const colorpicker_body_input = fixture.debugElement.nativeElement.querySelector('#colorpicker-body-input');
-    expect(colorpicker_body.firstChild).toBe(colorpicker_body_input);
-  });
-
 });
