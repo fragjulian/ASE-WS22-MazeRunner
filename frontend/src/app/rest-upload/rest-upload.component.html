@@ -42,8 +42,15 @@
 
     <br>
 
-    <div *ngIf=solvedMaze >
-      <img [src]="solvedMaze" alt="Solved Maze">
+    <div *ngIf="showPopup">
+      <div class="popup-overlay">
+        <div class="popup-content">
+          <img [src]="solvedMaze" alt="Solved Maze">
+          <br>
+          <button (click)="downloadImage()">Download Image</button>
+          <button (click)="showPopup = false">Close</button>
+        </div>
+      </div>
     </div>
 
   </form>

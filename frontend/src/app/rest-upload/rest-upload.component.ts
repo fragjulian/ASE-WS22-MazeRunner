@@ -15,6 +15,7 @@ export class RestUploadComponent {
   rgbvaluewall = '0,0,0';
   rgbvalueobstacle = '219,219,219';
   errorMessage: any;
+  showPopup = false;
 
   onSelect(event: any) {
     this.uploadImage = event.addedFiles[0];
@@ -27,6 +28,7 @@ export class RestUploadComponent {
   imageUploadAction() {
     this.solvedMaze = null;
     this.errorMessage = null;
+    this.showPopup = false;
     const transformedImage = new FormData();
     transformedImage.append('image', this.uploadImage, this.uploadImage.name);
     if (this.rgbvaluewall) {
@@ -55,6 +57,7 @@ export class RestUploadComponent {
           //Used this link to know how to use the DataURL: https://en.wikipedia.org/wiki/Data_URI_scheme
           this.solvedMaze = res;
         });
+        this.showPopup = true;
       },
       (error: any) => {
         console.error(error);
@@ -62,5 +65,12 @@ export class RestUploadComponent {
         this.errorMessage = error.message;
       }
     );
+  }
+
+  downloadImage() {
+    const link = document.createElement('a');
+    link.href = this.solvedMaze;
+    link.download = 'solved-maze.jpg';
+    link.click();
   }
 }
