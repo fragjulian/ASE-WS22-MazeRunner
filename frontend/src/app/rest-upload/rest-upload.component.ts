@@ -28,6 +28,11 @@ export class RestUploadComponent {
   // Event handler for when a file is removed
   onRemove(event: any) {
     this.uploadImage = null;
+    // Reset the solved maze image and error message
+    this.solvedMaze = null;
+    this.errorMessage = null;
+    this.showPopup = false;
+    this.successResponse = null;
   }
 
   // Function to submit the image to the REST API for solving
