@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {RestService} from "../rest.service";
+import {RestService} from "./rest.service";
 
 
 @Component({
