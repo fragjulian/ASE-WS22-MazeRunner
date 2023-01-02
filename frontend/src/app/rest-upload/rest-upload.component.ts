@@ -7,7 +7,7 @@ import {RestService} from "./rest.service";
   styleUrls: ['./rest-upload.component.css']
 })
 export class RestUploadComponent {
-  // Declare instance variables
+
   uploadImage: any;
   solvedMaze: any;
   successResponse: any;
@@ -28,7 +28,7 @@ export class RestUploadComponent {
   // Event handler for when a file is removed
   onRemove(event: any) {
     this.uploadImage = null;
-    // Reset the solved maze image and error message
+    // Reset the solved maze image, error message, popup and successresponse
     this.solvedMaze = null;
     this.errorMessage = null;
     this.showPopup = false;

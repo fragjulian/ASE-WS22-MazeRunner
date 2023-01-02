@@ -1,39 +1,38 @@
-<!-- Container element for the maze canvas and button group -->
+
 <div class="widget-container flex-box">
-  <!-- Label for the maze canvas -->
+
   <span>Draw your maze here</span>
 
-  <!-- Maze canvas element -->
+
   <!-- The width and height must be defined here -->
   <canvas id="maze-canvas" width="1200" height="600"></canvas>
 
-  <!-- Spacing element -->
+
   <br>
-  <!-- Container element for the buttons -->
+
   <div class="row">
-    <!-- Button group -->
+
     <div class="btn-group" role="group">
-      <!-- Clear maze button -->
+
       <button class="btn btn-outline-danger" type="button" (click)="clearMaze()">
         Clear Maze
       </button>
-      <!-- Export maze button -->
+
       <button class="btn btn btn-outline-primary" type="button" (click)="exportMazeAsImage()">
         Export Maze
       </button>
-      <!-- Draw border button -->
+
       <button class="btn btn btn-outline-primary" type="button" (click)="drawMazeBorder()">
         Draw Border
       </button>
-      <!-- Open color picker button -->
+
       <button class="btn btn-outline-primary" type="button" (click)="openColorPickerDialog()">
         Pick Color
       </button>
     </div>
 
-    <!-- Color picker element -->
+
     <!-- This element is hidden and only used to store the selected color -->
-    <!-- The color picker dialog can be opened via the button above -->
     <input type="color" id="color-picker" [(ngModel)]="brushColor" />
   </div>
 </div>

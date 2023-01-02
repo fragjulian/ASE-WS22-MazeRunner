@@ -1,6 +1,5 @@
 // This component allows the user to select an image and display the color of a pixel on the image when clicked on.
 
-// The component imports various Angular and TypeScript modules, including the "Component" decorator, the "ViewChildren" and "QueryList" decorators, the "Output" and "EventEmitter" classes, the "ViewEncapsulation" enumeration, and the "ElementRef" class.
 import {Component, ViewChildren, QueryList, Output, EventEmitter, ViewEncapsulation, ElementRef} from '@angular/core';
 
 // The component decorator provides metadata about the component, including the component's selector, template, and styles.
@@ -54,9 +53,6 @@ export class ColorpickerComponent {
 
   // The "getImg" function displays the selected image on the canvas element.
   getImg(url: string) {
-    // The "colorBox" property is set to the "colboxval" element.
-    // The "cssText" property of the "colorBox" element is set to an empty color value to clear the previously selected color.
-    // The "hexValue" and "rgbValue" properties are also set to empty strings to clear the previously selected color values.
     this.colorBox = this.elements.toArray()[1].nativeElement;
     this.colorBox.style.cssText = '--bgcolorval:rgba(0,0,0,0)';
     this.hexValue = '';

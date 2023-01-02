@@ -14,11 +14,11 @@ export class MazeBuilderComponent {
   // Default file name when exporting the maze as an image
   private readonly mazeDefaultFileName = 'my-maze.png';
 
-  // Canvas element
+
   canvas: HTMLCanvasElement | undefined;
-  // 2D rendering context of the canvas element
+
   context: CanvasRenderingContext2D | undefined;
-  // Color picker element
+
   colorPicker: HTMLElement | undefined;
 
   // Size of the pixels in the maze
@@ -51,7 +51,6 @@ export class MazeBuilderComponent {
 
   // Event handler for the click event on the canvas
   handleClick(event: MouseEvent) {
-    // Draw a pixel at the current mouse position
     this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
   }
 
@@ -65,19 +64,16 @@ export class MazeBuilderComponent {
     if (event.buttons !== this.primaryMouseButton) {
       return;
     }
-    // Draw a pixel at the current mouse position
     this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
   }
 
   // Event handler for the mousedown event on the canvas
   handleMouseDown(event: MouseEvent) {
-    // Set the isDrawing flag to true
     this.isDrawing = true;
   }
 
   // Event handler for the mouseup event on the canvas
   handleMouseUp(event: MouseEvent) {
-    // Set the isDrawing flag to false
     this.isDrawing = false;
   }
 
@@ -128,7 +124,7 @@ export class MazeBuilderComponent {
   drawMazeBorder() {
     // Set the stroke style to the current brush color
     this.context!.strokeStyle = this.brushColor;
-    // Set the line width to twice the size of a single pixel
+    // Set the line width
     this.context!.lineWidth = 2 * this.pixelSize;
     // Get the width and height of the canvas
     const width = this.canvas!.width;
@@ -138,7 +134,7 @@ export class MazeBuilderComponent {
   }
 
   // Opens the color picker dialog
-  openColorPickerDialog() {// Click the color picker element to open the dialog
+  openColorPickerDialog() {
     this.colorPicker!.click();
   }
 }

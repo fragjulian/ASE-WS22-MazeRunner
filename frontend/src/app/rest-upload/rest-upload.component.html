@@ -1,4 +1,3 @@
-<!-- This is the HTML template for the RestUploadComponent. -->
 <!-- The template includes a dropzone component for selecting and removing the image file. -->
 <!-- It also includes input fields for specifying the wall and obstacle colors. -->
 <!-- There are buttons for submitting the image and downloading the solved image. -->
@@ -6,18 +5,19 @@
 <!-- If the solved maze image is displayed, the template includes a popover with a close button and a download button. -->
 <!-- The template uses one-way data binding directives to bind the component's instance variables to the template's input fields and output elements. -->
 <!-- The template also includes a uitestid attribute for automated testing. -->
+
 <div class="container">
 
-  <!-- Spacing element -->
+
   <br>
 
-  <!-- Title for the template -->
+
   <h1>Maze Upload</h1>
 
-  <!-- Spacing element -->
+
   <br>
 
-  <!-- Form for the input fields and buttons -->
+
   <form>
 
     <!-- Dropzone component for selecting and removing the image file -->
@@ -30,16 +30,16 @@
       </ngx-dropzone-image-preview>
     </ngx-dropzone>
 
-    <!-- Spacing element -->
+
     <br>
 
     <!-- Button for submitting the image to the REST API for solving -->
     <div class="form-group" >
-      <!-- uitestid attribute for automated testing -->
+
       <input uitestid="solve-maze" type="button" [disabled]="!uploadImage" (click)="imageUploadAction()" value="Solve Maze" class="btn1">
     </div>
 
-    <!-- Spacing element -->
+
     <br>
 
     <!-- Label and input field for the wall color -->
@@ -50,17 +50,21 @@
     <h2>RGB Value of the Obstacle:</h2>
     <p><input type="text" id="rgbvalueobstacle" name="rgbvalueobstacle" [(ngModel)]="rgbvalueobstacle"></p>
 
-    <!-- Spacing element -->
+
     <br>
+
     <!-- Output element for the success message -->
     <div>
       <output *ngIf=successResponse class="success"><b>{{successResponse}}</b></output>
     </div>
+
     <!-- Output element for the error message -->
     <!-- Only displayed if the errorMessage instance variable is truthy -->
     <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
-    <!-- Spacing element -->
+
+
     <br>
+
     <!-- Popover element for the solved maze image -->
     <!-- Only displayed if the showPopup instance variable is truthy -->
     <div *ngIf="showPopup">
@@ -68,10 +72,12 @@
         <div class="popup-content">
           <!-- Image element for the solved maze image -->
           <img [src]="solvedMaze" alt="Solved Maze">
-          <!-- Spacing element -->
+
           <br>
+
           <!-- Button for downloading the solved maze image -->
           <button (click)="downloadImage()">Download Image</button>
+
           <!-- Button for closing the popover -->
           <button (click)="showPopup = false">Close</button>
         </div>
