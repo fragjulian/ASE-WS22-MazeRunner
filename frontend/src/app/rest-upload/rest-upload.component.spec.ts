@@ -52,4 +52,8 @@ describe('RestUploadComponent', () => {
     expect(button.value).toBe('Solve Maze');
   });
 
+  it('solve-maze button should have correct uitestid attribute', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#solve-maze-button');
+    expect(btn.getAttribute('uitestid')).toBe('solve-maze');
+  });
 });
