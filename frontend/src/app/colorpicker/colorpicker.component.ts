@@ -96,10 +96,7 @@ export class ColorpickerComponent {
     const pixelColor = `${dataArray[0]},${dataArray[1]},${dataArray[2]}`;
     const pixelColorBox = `rgba(${dataArray[0]},${dataArray[1]},${dataArray[2]},${dataArray[3]})`;
 
-    // The "rgbValue" property is set to the RGB color value of the pixel.
-    // The "hexValue" property is set to the hexadecimal color value of the pixel.
-    // The "cssText" property of the "colorBox" element is set to the RGBA color value of the pixel.
-    // The "outputColor" event is emitted with the hexadecimal and RGB color values of the pixel.
+    //dColor is a manual way of creating the hex value for the color of the pixel
     this.rgbValue = pixelColor;
     const dColor = dataArray[2] + 256 * dataArray[1] + 65536 * dataArray[0];
     this.hexValue = `#${dColor.toString(16)}`;
