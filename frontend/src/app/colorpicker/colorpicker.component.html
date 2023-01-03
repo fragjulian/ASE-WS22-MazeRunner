@@ -5,13 +5,20 @@
   <br>
 
   <span id="colorp">Color Picker</span>
+  <br>
 <p>Click on the image to get the color (RGB value) of the wall and the obstacles.</p>
-
+  <br>
 <body id="colorpicker-body">
 
 <!-- The file input element allows the user to select an image file.
      When the user selects a file, the "readUrl" function is called. -->
-<input id="colorpicker-body-input" type='file' accept="image/*" (change)="readUrl($event)"><br/><br/>
+
+
+
+<label for="images" class="drop-container">
+  <p class="drop-title">Drop png/jpeg here</p>
+  <input id="images" type='file' accept="image/png, image/jpeg" (change)="readUrl($event)"><br/><br/>
+</label>
 
 
 <div class="main">
