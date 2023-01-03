@@ -99,20 +99,19 @@ export class MazeBuilderComponent {
 
   // Clears the entire canvas
   clearMaze() {
-    // Get the width and height of the canvas
     const width = this.canvas!.width;
     const height = this.canvas!.height;
-    // Clear the canvas using the clearRect method of the canvas context
+    // Clear the canvas
     this.context!.clearRect(0, 0, width, height);
   }
 
   // Exports the current state of the canvas as an image file
   exportMazeAsImage() {
-    // Get the data URL for the canvas
+
     const dataUrl = this.canvas!.toDataURL();
-    // Create a link element
+
     const link = document.createElement('a');
-    // Set the link's href to the data URL
+
     link.href = dataUrl;
     // Set the download attribute of the link to the default file name for the maze image
     link.download = this.mazeDefaultFileName;
@@ -124,9 +123,9 @@ export class MazeBuilderComponent {
   drawMazeBorder() {
     // Set the stroke style to the current brush color
     this.context!.strokeStyle = this.brushColor;
-    // Set the line width
+
     this.context!.lineWidth = 2 * this.pixelSize;
-    // Get the width and height of the canvas
+
     const width = this.canvas!.width;
     const height = this.canvas!.height;
     // Draw the border around the canvas using the strokeRect method of the canvas context
