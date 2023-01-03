@@ -33,13 +33,13 @@ export class MazeBuilderComponent {
   isDrawing = false;
 
   ngOnInit() {
-    // Get the canvas element
+
     this.canvas = document.getElementById('maze-canvas') as HTMLCanvasElement;
 
-    // Get the 2D rendering context of the canvas element
+
     this.context = this.canvas.getContext('2d') ?? undefined;
 
-    // Get the color picker element
+
     this.colorPicker = document.getElementById('color-picker') as HTMLElement;
 
     // Add event listeners to the canvas element
@@ -49,12 +49,12 @@ export class MazeBuilderComponent {
     this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
   }
 
-  // Event handler for the click event on the canvas
+
   handleClick(event: MouseEvent) {
     this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
   }
 
-  // Event handler for the mousemove event on the canvas
+
   handleMouseMove(event: MouseEvent) {
     // Check if the user is currently drawing on the canvas
     if (!this.isDrawing) {
@@ -67,12 +67,12 @@ export class MazeBuilderComponent {
     this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
   }
 
-  // Event handler for the mousedown event on the canvas
+
   handleMouseDown(event: MouseEvent) {
     this.isDrawing = true;
   }
 
-  // Event handler for the mouseup event on the canvas
+
   handleMouseUp(event: MouseEvent) {
     this.isDrawing = false;
   }
