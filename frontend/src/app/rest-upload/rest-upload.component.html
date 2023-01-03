@@ -23,7 +23,7 @@
     <!-- Dropzone component for selecting and removing the image file -->
     <!-- Used this tutorial: https://stackblitz.com/edit/ngx-dropzone?file=src%2Fapp%2Fapp.component.html -->
     <ngx-dropzone (change)="onSelect($event)" [accept]="'image/png, image/jpeg'">
-      <ngx-dropzone-label>Drop it, baby!</ngx-dropzone-label>
+      <ngx-dropzone-label class="drop-title">Drop png/jpeg here</ngx-dropzone-label>
       <!-- Image preview for the selected image file -->
       <ngx-dropzone-image-preview *ngIf="uploadImage" [file]="uploadImage" [removable]="true" (removed)="onRemove($event)">
         <ngx-dropzone-label>{{ uploadImage.name }} ({{ uploadImage.type }})</ngx-dropzone-label>

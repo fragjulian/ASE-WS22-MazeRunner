@@ -15,3 +15,11 @@ span {
   float: left;
   width: 100%;
 }
+
+.drop-title {
+  color: #444;
+  font-size: 20px;
+  font-weight: bold;
+  text-align: center;
+  transition: color .2s ease-in-out;
+}
