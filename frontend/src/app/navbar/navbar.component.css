@@ -3,3 +3,7 @@
   flex-direction: row;
   justify-content: space-between;
 }
+
+#navbar-header{
+font-size: x-large;
+}
