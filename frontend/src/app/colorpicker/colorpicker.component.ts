@@ -19,19 +19,19 @@ export class ColorpickerComponent {
 
   // The "url" property stores the URL of the selected image.
   // The "displayData" and "displayCol" properties determine whether the image and color box should be displayed, respectively.
-  url: any;
+  url!: string;
   displayData = false;
   displayCol = false;
 
   // The "canvas", "canvasRenderingContext", "image", and "colorBox" properties reference the canvas, canvas rendering context, image, and color box elements, respectively.
-  canvas: any;
+  canvas!: HTMLCanvasElement;
   canvasRenderingContext!: CanvasRenderingContext2D;
-  image: any;
-  colorBox: any;
+  image!: HTMLImageElement;
+  colorBox!: HTMLElement;
 
   // The "rgbValue" and "hexValue" properties store the RGB and hexadecimal values of the selected color, respectively.
-  rgbValue: any;
-  hexValue: any;
+  rgbValue!: string;
+  hexValue!: string;
 
   // The "outputColor" property is an event emitter that emits the selected color as a string when the "getPixel" function is called.
   @Output() outputColor = new EventEmitter<string>();
@@ -60,7 +60,7 @@ export class ColorpickerComponent {
 
     // The "canvas" and "canvasRenderingContext" properties are set to the "canvasval" element and its 2D rendering context, respectively.
     this.canvas = this.elements.first.nativeElement;
-    this.canvasRenderingContext = this.canvas.getContext('2d');
+    this.canvasRenderingContext = this.canvas.getContext('2d')!;
 
     // An image element is created and its "src" property is set to the selected image's URL.
     // The canvas is cleared and the image is drawn on the canvas when it finishes loading.
