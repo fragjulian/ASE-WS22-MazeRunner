@@ -41,4 +41,15 @@ describe('RestUploadComponent', () => {
     const title_obstacle = fixture.debugElement.nativeElement.querySelector('#title-rgb-obstacle');
     expect(title_obstacle).toBeTruthy();
   });
+
+  it('solve-maze button should exist', () => {
+    const button = fixture.debugElement.nativeElement.querySelector('#solve-maze-button');
+    expect(button).toBeTruthy();
+  });
+
+  it('solve-maze button should have text "Solve Maze"', () => {
+    const button = fixture.debugElement.nativeElement.querySelector('#solve-maze-button');
+    expect(button.value).toBe('Solve Maze');
+  });
+
 });
