@@ -29,7 +29,7 @@ export class MazeBuilderComponent {
   cursorPosY = 0;
   // Current color of the brush
   brushColor = this.initialBrushColor;
-  // Flag to track if the user is currently drawing on the canvas
+  // Flag: the user is drawing as long as they have the primary mouse button pressed
   isDrawing = false;
 
   ngOnInit() {
