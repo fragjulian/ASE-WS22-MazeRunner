@@ -6,3 +6,12 @@ ngx-dropzone {
   display: flex;
   justify-content: center;
 }
+
+span {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  text-align: center;
+  float: left;
+  width: 100%;
+}
