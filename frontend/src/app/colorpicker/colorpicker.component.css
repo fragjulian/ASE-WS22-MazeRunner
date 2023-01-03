@@ -135,22 +135,23 @@ input[type=file] {
   color: #444;
   background: #fff;
   border-radius: 10px;
-  border: 1px solid #555;
+
 }
 
 input[type=file]::file-selector-button {
   margin-right: 20px;
-  border: none;
-  background: #673ab7;
-  padding: 10px 20px;
+  background: white;
+  padding: 5px 5px;
   border-radius: 10px;
-  color: #fff;
+  border-color: #673ab7;
+  color: #673ab7;
   cursor: pointer;
   transition: background .2s ease-in-out;
 }
 
 input[type=file]::file-selector-button:hover {
   background: #4d2d85;
+  color: white;
 }
 
 .colorpicker-heading{
