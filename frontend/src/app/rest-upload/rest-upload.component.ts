@@ -11,7 +11,9 @@ export class RestUploadComponent {
   uploadImage: any;
   solvedMaze: any;
   successResponse: any;
+  //the default rgb value for the wall color in the backend
   rgbvaluewall = '0,0,0';
+  //the default rgb value for the obstacle color in the backend
   rgbvalueobstacle = '219,219,219';
   errorMessage: any;
   showPopup = false;
