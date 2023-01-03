@@ -70,7 +70,7 @@ export class RestUploadComponent {
       // If the request is successful, store the response and display the solved maze image
       (response: any) => {
         console.log(response);
-        this.successResponse = 'Answer from server';
+        this.successResponse = 'Solved Maze';
         blobToBase64(response).then(res => {
           this.solvedMaze = res;
         });

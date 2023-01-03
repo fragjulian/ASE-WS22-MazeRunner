@@ -36,7 +36,7 @@
     <!-- Button for submitting the image to the REST API for solving -->
     <div class="form-group" >
 
-      <input uitestid="solve-maze" type="button" [disabled]="!uploadImage" (click)="imageUploadAction()" value="Solve Maze" class="btn btn-outline-success">
+      <input uitestid="solve-maze" type="button" mat-button [disabled]="!uploadImage" (click)="imageUploadAction()" value="Solve Maze" class="btn btn-outline-primary">
     </div>
 
     <br>
@@ -75,10 +75,10 @@
           <br>
 
           <!-- Button for downloading the solved maze image -->
-          <button (click)="downloadImage()" class="btn btn-outline-dark">Download Image</button>
+          <button (click)="downloadImage()" mat-button class="btn btn-outline-dark">Download Image</button>
 
           <!-- Button for closing the popover -->
-          <button (click)="showPopup = false" class="btn btn-outline-danger">Close</button>
+          <button (click)="showPopup = false" mat-button class="btn btn-outline-danger">Close</button>
         </div>
       </div>
     </div>
