@@ -160,6 +160,7 @@ input[type=file]::file-selector-button:hover {
   font-weight: bold;
   padding-bottom: 10px;
 }
+
 @media only screen and (max-width :400px){
   .main{
     flex-direction: column;
