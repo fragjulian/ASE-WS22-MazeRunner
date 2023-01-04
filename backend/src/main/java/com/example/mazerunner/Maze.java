@@ -7,6 +7,8 @@ import java.awt.image.ColorConvertOp;
 public class Maze {
     //image type the targeted colors are in
     private final int pathColor;
+    private final int startColor;
+    private final int goalColor;
     private final Heuristic heuristic;
     private final WallDetector wallDetector;
     private final SearchStrategy searchStrategy;
@@ -25,10 +27,14 @@ public class Maze {
      * @param wallDetector   any detector to detect walls and obstacles
      * @param imageType      the ImageType of the final image and of pathColor and wallDetector
      * @param pathColor      the color in which you want the path to be painted in ColorSpace of ImageType
-     * @param distanceMetric
+     * @param distanceMetric the metric how distance between two positions is calculated
+     * @param startColor     the color of the start pixel to solve the maze
+     * @param goalColor      the color of the goal pixel to solve the maze
      */
-    public Maze(BufferedImage bufferedImage, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, int imageType, int pathColor, int backgroundColor, DistanceMetric distanceMetric) {
+    public Maze(BufferedImage bufferedImage, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, int imageType, int pathColor, int backgroundColor, DistanceMetric distanceMetric, int startColor, int goalColor) {
         this.heuristic = heuristic;
+        this.startColor = startColor;
+        this.goalColor = goalColor;
         this.wallDetector = wallDetector;
         this.searchStrategy = searchStrategy;
         this.pathColor = pathColor;
@@ -56,10 +62,8 @@ public class Maze {
      */
     public BufferedImage solveMaze() {
         walls = wallDetector.detectWall(bufferedImage);
-        //todo set targets
-        goal = new Position(bufferedImage.getWidth() - 5, bufferedImage.getHeight() - 5);
-        //todo set start
-        start = new Position(5, 5);
+        start = PositionDetectorColor.getPositionByColor(bufferedImage, this.startColor);
+        goal = PositionDetectorColor.getPositionByColor(bufferedImage, this.goalColor);
         heuristic.calculateHeuristic(bufferedImage.getWidth(), bufferedImage.getHeight(), start, goal, walls);
         searchStrategy.calculateShortestPath(this);
         return bufferedImage;

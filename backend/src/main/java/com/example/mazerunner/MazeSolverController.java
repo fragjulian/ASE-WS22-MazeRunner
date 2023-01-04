@@ -40,6 +40,8 @@ public class MazeSolverController {
                               @RequestParam(name = "obstaclecolor", required = false) String obstacleColorParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter,
+                              @RequestParam(name = "startcolor", required = false) String startColorParameter,//unfortunately cannot use the constant here as default due to spring
+                              @RequestParam(name = "goalcolor", required = false) String goalColorParameter,//unfortunately cannot use the constant here as default due to spring
                               @PathVariable(name = "wallDetector") String wallDetectorParameter,
                               @PathVariable(name = "heuristic") String heuristicParameter,
                               @PathVariable(name = "searchStrategy") String searchStrategyParameter
@@ -47,10 +49,14 @@ public class MazeSolverController {
 
         DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
         WallDetector wallDetector;
+        Integer startColor;
+        Integer goalColor;
         try {
             wallDetector = mazeUtilsFactory.getWallDetector(wallDetectorParameter,
                     wallColorParameter, obstacleColorParameter,
                     safetyDistanceParameter, distanceMetric);
+            startColor = mazeUtilsFactory.getStartColor(startColorParameter);
+            goalColor = mazeUtilsFactory.getGoalColor(goalColorParameter);
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, e.getMessage(), e);
@@ -60,7 +66,7 @@ public class MazeSolverController {
         File temp = File.createTempFile("maze", ".temp");
         file.transferTo(temp);
         BufferedImage bufferedImage = ImageIO.read(temp);
-        Maze maze = new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR, distanceMetric);
+        Maze maze = new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR, distanceMetric, startColor, goalColor);
         bufferedImage = maze.solveMaze();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

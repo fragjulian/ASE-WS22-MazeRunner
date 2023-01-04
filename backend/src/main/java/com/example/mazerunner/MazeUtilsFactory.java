@@ -6,6 +6,8 @@ import java.util.Arrays;
 public class MazeUtilsFactory {
     private static final int DEFAULT_WALL_COLOUR = new Color(0, 0, 0).getRGB();
     private static final int DEFAULT_OBSTACLE_COLOUR = new Color(219, 219, 219).getRGB();
+    private static final int DEFAULT_START_COLOR = new Color(196, 4, 36).getRGB();
+    private static final int DEFAULT_GOAL_COLOR = new Color(63, 72, 204).getRGB();
     private static final int DEFAULT_SAFETY_DISTANCE = 1;
     private static final MazeUtilsFactory mazeUtilsFactory = new MazeUtilsFactory();
 
@@ -59,5 +61,13 @@ public class MazeUtilsFactory {
             case "depthfirst" -> new DepthFirst();
             default -> new DepthFirst();
         };
+    }
+
+    public Integer getStartColor(String startColor) {
+        return getColor(startColor, DEFAULT_START_COLOR, "Start Color");
+    }
+
+    public Integer getGoalColor(String goalColor) {
+        return getColor(goalColor, DEFAULT_GOAL_COLOR, "Goal Color");
     }
 }
