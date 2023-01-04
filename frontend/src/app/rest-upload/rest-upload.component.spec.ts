@@ -66,5 +66,15 @@ describe('RestUploadComponent', () => {
     const button = fixture.debugElement.nativeElement.querySelector('#rgbvalueobstacle');
     expect(button).toBeTruthy();
   });
+
+  it('input text field for wall rgb values should have correct uitestid attribute', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#rgbvaluewall');
+    expect(btn.getAttribute('uitestid')).toBe('rgb-wall-input');
+  });
+
+  it('input text field for obstacle rgb values should have correct uitestid attribute', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#rgbvalueobstacle');
+    expect(btn.getAttribute('uitestid')).toBe('rgb-obstacle-input');
+  });
 });
 
