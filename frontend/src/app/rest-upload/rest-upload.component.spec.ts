@@ -56,4 +56,15 @@ describe('RestUploadComponent', () => {
     const btn = fixture.debugElement.nativeElement.querySelector('#solve-maze-button');
     expect(btn.getAttribute('uitestid')).toBe('solve-maze');
   });
+
+  it('input text field for wall rgb values should exist', () => {
+    const button = fixture.debugElement.nativeElement.querySelector('#rgbvaluewall');
+    expect(button).toBeTruthy();
+  });
+
+  it('input text field for obstacle rgb values should exist', () => {
+    const button = fixture.debugElement.nativeElement.querySelector('#rgbvalueobstacle');
+    expect(button).toBeTruthy();
+  });
 });
+
