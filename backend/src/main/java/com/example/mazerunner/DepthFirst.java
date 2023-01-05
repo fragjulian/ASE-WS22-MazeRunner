@@ -7,11 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 public class DepthFirst implements SearchStrategy {
-    public void calculateShortestPath(Maze maze) {
+    public Path calculateShortestPath(Maze maze) {
+        Path path = new Path();
         Position current = maze.getStart();
         List<Position> alreadyVisited = new LinkedList<>();//todo implement backtracking
         while (current != null && !current.equals(maze.getGoal())) {
-            maze.paintOnMaze(current, maze.getPathColor());
+            //maze.paintOnMaze(current, maze.getPathColor());
+            path.addStep(current);
             Position cheapestNeighbour = null;
             for (Position currentNeighbour : maze.getDistanceMetric().getNeighbouringPixels(current, 1, maze.getWidth(), maze.getHeight())) {
                 if (maze.getWall(currentNeighbour) || alreadyVisited.contains(currentNeighbour))
@@ -25,5 +27,6 @@ public class DepthFirst implements SearchStrategy {
         }
         if (current == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "maze is unsolvable");
+        return path;
     }
 }

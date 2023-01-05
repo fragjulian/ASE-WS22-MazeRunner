@@ -2,10 +2,8 @@ package com.example.mazerunner;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -35,6 +33,19 @@ public class MazeSolverController {
      * @return an image containing the solved maze
      * @throws IOException
      */
+
+    /*Found a solution for this fail message:
+
+    Access to XMLHttpRequest at 'http://localhost:8080/api/maze'
+    from origin >'http://localhost:4200/' has been blocked by CORS policy:
+    No 'Access-Control->Allow-Origin' header is present on the requested resource.
+
+    here: https://spring.io/guides/gs/rest-service-cors/
+
+    Now it allows cross-origin resource sharing.
+
+    */
+    @CrossOrigin()
     @PostMapping(value = "/api/maze/{wallDetector}/{heuristic}/{searchStrategy}", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "wallcolor", required = false) String wallColorParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "obstaclecolor", required = false) String obstacleColorParameter,//unfortunately cannot use the constant here as default due to spring
@@ -62,11 +73,22 @@ public class MazeSolverController {
         BufferedImage bufferedImage = ImageIO.read(temp);
         //todo handle nullpointer exception if image parameter does not contain a file
         Maze maze = new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR, distanceMetric);
-        bufferedImage = maze.solveMaze();
+        bufferedImage = maze.getSolvedMaze();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
+    }
+
+    @CrossOrigin()
+    @PostMapping(value = "/api/path/{sizeX}/{sizeY}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Path> uploadMazeData(@RequestBody JsonWallDetector wallDetector,
+                                               @PathVariable(name = "sizeX") int sizeX,
+                                               @PathVariable(name = "sizeY") int sizeY
+    ) {
+        wallDetector.setDistanceMetric(new EuclideanDistance());
+        Maze maze = new Maze(sizeX, sizeY, new RealDistanceHeuristic(new EuclideanDistance()), wallDetector, new DepthFirst(), new EuclideanDistance());
+        return ResponseEntity.ok(maze.getSolutionPath());
     }
 
 }

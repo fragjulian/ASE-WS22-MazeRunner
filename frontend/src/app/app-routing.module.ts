@@ -1,19 +1,18 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 import {AboutComponent} from "./about/about.component";
-import {MrUploadFileComponent} from "./upload/mr-upload-file.component";
-
+import {RestUploadComponent} from "./rest-upload/rest-upload.component";
+import {ColorpickerComponent} from "./colorpicker/colorpicker.component";
+import {MazeBuilderComponent} from "./maze-builder/maze-builder.component";
 
 
 const routes: Routes = [
-  //default path
-  {path: '', component: MrUploadFileComponent},
-  //about path
-  {path: 'about', component: AboutComponent},
-  //home or upload path
-  {path: 'home', component: MrUploadFileComponent}
-];
 
+  {path: '', component: RestUploadComponent},
+  {path: 'builder', component: MazeBuilderComponent},
+  {path: 'colorpicker', component: ColorpickerComponent},
+  {path: 'about', component: AboutComponent}
+];
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

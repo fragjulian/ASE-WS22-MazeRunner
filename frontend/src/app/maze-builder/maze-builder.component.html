@@ -1,0 +1,33 @@
+<div class="widget-container flex-box">
+  <span>Draw your maze here</span>
+
+  <!-- width and height have to be defined here! -->
+  <canvas id="maze-canvas" width="1200" height="600"></canvas>
+
+  <br>
+  <div class="row">
+    <div class="btn-group" role="group">
+
+      <button class="btn btn-outline-danger" type="button" (click)="clearMaze()">
+        Clear Maze
+      </button>
+
+      <button class="btn btn btn-outline-primary" type="button" (click)="exportMazeAsImage()">
+        Export Maze
+      </button>
+
+      <button class="btn btn btn-outline-primary" type="button" (click)="drawMazeBorder()">
+        Draw Border
+      </button>
+
+      <button class="btn btn-outline-primary" type="button" (click)="openColorPickerDialog()">
+        Pick Color
+      </button>
+
+    </div>
+
+    <!-- hide the color picker and just open the color picker dialog via the button above -->
+    <input type="color" id="color-picker" [(ngModel)]="brushColor" />
+
+  </div>
+</div>
