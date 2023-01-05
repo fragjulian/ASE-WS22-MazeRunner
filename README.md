@@ -1,6 +1,7 @@
 [![Build, test and analyze](https://github.com/fragjulian/ASE-WS22-MazeRunner/actions/workflows/build-test.yml/badge.svg)](https://github.com/fragjulian/ASE-WS22-MazeRunner/actions/workflows/build-test.yml)
 [![Deploy to Docker Hub](https://github.com/fragjulian/ASE-WS22-MazeRunner/actions/workflows/deploy.yml/badge.svg)](https://github.com/fragjulian/ASE-WS22-MazeRunner/actions/workflows/deploy.yml)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fragjulian_ASE-WS22-MazeRunner&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fragjulian_ASE-WS22-MazeRunner)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fragjulian_ASE-WS22-MazeRunner_backend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fragjulian_ASE-WS22-MazeRunner_backend)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=fragjulian_ASE-WS22-MazeRunner_frontend&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=fragjulian_ASE-WS22-MazeRunner_frontend)
 
 # ASE-WS22-MazeRunner
 
