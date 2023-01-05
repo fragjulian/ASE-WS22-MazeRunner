@@ -3,12 +3,15 @@ package com.example.mazerunner;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import static java.awt.image.BufferedImage.TYPE_INT_ARGB;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.mockito.Mockito.when;
 
 class ColorWallDetectorTest {
     private static final int WALL = -16777216;
@@ -23,9 +26,12 @@ class ColorWallDetectorTest {
 
     private WallDetector wallDetector;
 
+    @Mock
+    Maze maze;
 
     @BeforeEach
     public void setup() {
+        MockitoAnnotations.initMocks(this);
         wallDetector = new ColorWallDetector(WALL, DEFAULT_OBSTACLE_COLOUR, DEFAULT_SAFETY_DISTANCE, new EuclideanDistance());
     }
 
@@ -34,7 +40,8 @@ class ColorWallDetectorTest {
     public void detectNoWalls(int size) {
         bufferedImage = new BufferedImage(size, size, IMG_TYPE);
         TestUtils.initBufferedImageNoWalls(size, bufferedImage);
-        boolean[][] detectedWalls = wallDetector.detectWall(bufferedImage);
+        when(maze.getBufferedImage()).thenReturn(bufferedImage);
+        boolean[][] detectedWalls = wallDetector.detectWall(maze);
         boolean[][] expectedWalls = new boolean[size][size];
         assertArrayEquals(expectedWalls, detectedWalls);
     }
@@ -63,7 +70,8 @@ class ColorWallDetectorTest {
 
             }
         }
-        boolean[][] detectedWalls = wallDetector.detectWall(bufferedImage);
+        when(maze.getBufferedImage()).thenReturn(bufferedImage);
+        boolean[][] detectedWalls = wallDetector.detectWall(maze);
         assertArrayEquals(realWalls, detectedWalls);
     }
 }
