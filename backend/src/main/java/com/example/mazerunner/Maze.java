@@ -10,9 +10,11 @@ public class Maze {
     private final Heuristic heuristic;
     private final WallDetector wallDetector;
     private final SearchStrategy searchStrategy;
-    private final BufferedImage bufferedImage;
+    private final int sizeX;
     private final DistanceMetric distanceMetric;
     private Position goal;
+    private final int sizeY;
+    private BufferedImage bufferedImage;
     private Position start;
     private boolean[][] walls;
     private static final Color COLOR_TRANSPARENT = new Color(0, 0, 0, 0);
@@ -33,12 +35,28 @@ public class Maze {
         this.searchStrategy = searchStrategy;
         this.pathColor = pathColor;
         this.distanceMetric = distanceMetric;
+        setBufferedImage(bufferedImage, imageType, backgroundColor);
+        sizeX = bufferedImage.getWidth();
+        sizeY = bufferedImage.getHeight();
+    }
+
+    public Maze(int sizeX, int sizeY, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, DistanceMetric distanceMetric) {
+        this.sizeY = sizeY;
+        this.sizeX = sizeX;
+        this.wallDetector = wallDetector;
+        this.searchStrategy = searchStrategy;
+        this.distanceMetric = distanceMetric;
+        this.heuristic = heuristic;
+        this.pathColor = 0;//todo remove
+    }
+
+    private void setBufferedImage(BufferedImage bufferedImage, int imageType, int backgroundColor) {
         //check if image is already in the correct color space. If not, convert it
         if (bufferedImage.getType() == imageType)
             this.bufferedImage = bufferedImage;
         else {
             BufferedImage rgbImage = new BufferedImage(bufferedImage.getWidth(),
-                    bufferedImage.getHeight(), imageType);
+                    bufferedImage.getHeight(), imageType);//todo nicely use parameters from beginning
             for (int x = 0; x < bufferedImage.getWidth(); x++)
                 for (int y = 0; y < bufferedImage.getHeight(); y++)
                     if (bufferedImage.getRGB(x, y) == COLOR_TRANSPARENT.getRGB())
@@ -50,18 +68,24 @@ public class Maze {
         }
     }
 
+    private BufferedImage getBufferedImage() {
+        if (bufferedImage == null)
+            bufferedImage = new BufferedImage(this.sizeX, this.sizeY, BufferedImage.TYPE_INT_RGB);
+        return bufferedImage;
+    }
+
     /**
      * find a path out of the maze
      * @return a bufferedImage of the maze with the path from start to goal included
      */
     public BufferedImage solveMaze() {
-        walls = wallDetector.detectWall(bufferedImage);
+        walls = wallDetector.detectWall(getBufferedImage());
         //todo set targets
-        goal = new Position(bufferedImage.getWidth() - 5, bufferedImage.getHeight() - 5);
+        goal = new Position(sizeX - 5, sizeY - 5);
         //todo set start
         start = new Position(5, 5);
-        heuristic.calculateHeuristic(bufferedImage.getWidth(), bufferedImage.getHeight(), start, goal, walls);
-        searchStrategy.calculateShortestPath(this);
+        heuristic.calculateHeuristic(sizeX, sizeY, start, goal, walls);
+        bufferedImage = searchStrategy.calculateShortestPath(this).drawPath(this.getBufferedImage(), pathColor);
         return bufferedImage;
     }
 
