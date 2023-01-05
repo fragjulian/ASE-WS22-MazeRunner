@@ -5,7 +5,7 @@ name: Acceptance testing
 on: 
   push:
     branches:
-      - 'CI-CD-Sonar-Issue#62' # only for testing
+      #- 'CI-CD-Sonar-Issue#62' # only for testing
       - main
   pull_request:
     branches:
