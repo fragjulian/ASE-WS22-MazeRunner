@@ -29,7 +29,7 @@ describe('ColorpickerComponent', () => {
   it('should display the image preview and color data when an image is selected', () => {
     // Set up test image file
     const imageFile = new File([], 'test.jpg', { type: 'image/jpeg' });
-    const fileInput = fixture.debugElement.query(By.css('#colorpicker-body-input'));
+    const fileInput = fixture.debugElement.query(By.css('#images'));
     fileInput.triggerEventHandler('change', { target: { files: [imageFile] } });
     fixture.detectChanges();
 
