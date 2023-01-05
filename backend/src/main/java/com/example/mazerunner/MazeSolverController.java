@@ -1,5 +1,6 @@
 package com.example.mazerunner;
 
+import org.apache.tika.Tika;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -55,6 +56,12 @@ public class MazeSolverController {
                               @PathVariable(name = "heuristic") String heuristicParameter,
                               @PathVariable(name = "searchStrategy") String searchStrategyParameter
     ) throws IOException {
+
+        file.getContentType();
+        Tika tika = new Tika();
+        if (!(tika.detect(file.getBytes()).equals(file.getContentType()) && file.getContentType().equals("image/png") || file.getContentType().equals("image/jpg")))
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, "unsupported file type");
 
         DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
         WallDetector wallDetector;
