@@ -18,4 +18,7 @@ public class Path {
         //todo check if this is allowed
     }
 
+    public LinkedList<Position> getPath() {
+        return path;
+    }
 }

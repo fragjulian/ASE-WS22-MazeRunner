@@ -2,6 +2,7 @@ package com.example.mazerunner;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -72,11 +73,21 @@ public class MazeSolverController {
         file.transferTo(temp);
         BufferedImage bufferedImage = ImageIO.read(temp);
         Maze maze = new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR, distanceMetric);
-        bufferedImage = maze.solveMaze();
+        bufferedImage = maze.getSolvedMaze();
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
         return byteArrayOutputStream.toByteArray();
+    }
+
+    @PostMapping(value = "/api/path/{sizeX}/{sizeY}", consumes = "application/json", produces = "application/json")
+    public ResponseEntity<Path> uploadMazeData(@RequestBody JsonWallDetector wallDetector,
+                                               @PathVariable(name = "sizeX") int sizeX,
+                                               @PathVariable(name = "sizeY") int sizeY
+    ) {
+        wallDetector.setDistanceMetric(new EuclideanDistance());
+        Maze maze = new Maze(sizeX, sizeY, new RealDistanceHeuristic(new EuclideanDistance()), wallDetector, new DepthFirst(), new EuclideanDistance());
+        return ResponseEntity.ok(maze.getSolutionPath());
     }
 
 }

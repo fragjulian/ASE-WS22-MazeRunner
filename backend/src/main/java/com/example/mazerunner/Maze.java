@@ -6,7 +6,7 @@ import java.awt.image.ColorConvertOp;
 
 public class Maze {
     //image type the targeted colors are in
-    private final int pathColor;
+    private final int pathColor;//todo move out of constructor
     private final Heuristic heuristic;
     private final WallDetector wallDetector;
     private final SearchStrategy searchStrategy;
@@ -68,7 +68,7 @@ public class Maze {
         }
     }
 
-    private BufferedImage getBufferedImage() {
+    public BufferedImage getBufferedImage() {
         if (bufferedImage == null)
             bufferedImage = new BufferedImage(this.sizeX, this.sizeY, BufferedImage.TYPE_INT_RGB);
         return bufferedImage;
@@ -76,18 +76,25 @@ public class Maze {
 
     /**
      * find a path out of the maze
+     *
      * @return a bufferedImage of the maze with the path from start to goal included
      */
-    public BufferedImage solveMaze() {
-        walls = wallDetector.detectWall(getBufferedImage());
+    public BufferedImage getSolvedMaze() {
+
+        bufferedImage = getSolutionPath().drawPath(this.getBufferedImage(), pathColor);
+        return bufferedImage;
+    }
+
+    public Path getSolutionPath() {
+        walls = wallDetector.detectWall(this);
         //todo set targets
         goal = new Position(sizeX - 5, sizeY - 5);
         //todo set start
         start = new Position(5, 5);
         heuristic.calculateHeuristic(sizeX, sizeY, start, goal, walls);
-        bufferedImage = searchStrategy.calculateShortestPath(this).drawPath(this.getBufferedImage(), pathColor);
-        return bufferedImage;
+        return searchStrategy.calculateShortestPath(this);
     }
+
 
     public int getPathColor() {
         return pathColor;
@@ -114,11 +121,11 @@ public class Maze {
     }
 
     public int getWidth() {
-        return bufferedImage.getWidth();
+        return this.sizeX;
     }
 
     public int getHeight() {
-        return bufferedImage.getHeight();
+        return this.sizeY;
     }
 
     public DistanceMetric getDistanceMetric() {
