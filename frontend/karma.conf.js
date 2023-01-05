@@ -15,10 +15,12 @@ module.exports = function(config) {
     plugins: [
       require('karma-jasmine'),
       require('karma-chrome-launcher'),
+      require('karma-firefox-launcher'),
       require('karma-jasmine-html-reporter'),
       require('karma-coverage'),
       require('karma-requirejs'),
-      require('@angular-devkit/build-angular/plugins/karma')
+      require('@angular-devkit/build-angular/plugins/karma'),
+      require('karma-sonarqube-unit-reporter')
     ],
 
     // list of files / patterns to load in the browser
@@ -41,17 +43,30 @@ module.exports = function(config) {
     // test results reporter to use
     // possible values: 'dots', 'progress'
     // available reporters: https://www.npmjs.com/search?q=keywords:karma-reporter
-    reporters: ['progress'],
+    reporters: ['progress', 'sonarqubeUnit', 'coverage'], // sonarqubeUnit is needed for SonarCloud analysis
 
     jasmineHtmlReporter: {
       suppressAll: true // removes the duplicated traces
     },
 
+    // generic test report is required for SonarCloud analysis
+    sonarQubeUnitReporter: {
+      sonarQubeVersion: 'LATEST',
+      outputFile: 'reports/report.xml',
+      overrideTestDescription: true,
+      testPaths: ['./src'],
+      testFilePattern: '.spec.ts',
+      useBrowserName: false
+    },
+
+    // lcov coverage is required for SonarCloud analysis
+    // test-summary will be displayed in terminal after test run
     coverageReporter: {
-      dir: require('path').join(__dirname, './coverage/'),
-      subdir: '.',
+      type : 'lcov',
+      dir : 'reports',
+      subdir : 'coverage',
       reporters: [
-        { type: 'html' },
+        { type: 'lcov'},
         { type: 'text-summary' }
       ]
     },
