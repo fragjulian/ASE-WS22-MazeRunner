@@ -81,7 +81,7 @@ jobs:
 
   selenium:
     name: UI testing
-    if : github.event_name == 'pull_request'  || github.ref == 'refs/heads/CI-CD-Sonar-Issue#62' # only for testing
+    if : github.event_name == 'pull_request' # || github.ref == 'refs/heads/CI-CD-Sonar-Issue#62' # only for testing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code from repo
