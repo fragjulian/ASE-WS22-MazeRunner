@@ -46,7 +46,6 @@ public class MazeSolverController {
 
     */
     @CrossOrigin()
-
     @PostMapping(value = "/api/maze/{wallDetector}/{heuristic}/{searchStrategy}", produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "wallcolor", required = false) String wallColorParameter,//unfortunately cannot use the constant here as default due to spring
                               @RequestParam(name = "obstaclecolor", required = false) String obstacleColorParameter,//unfortunately cannot use the constant here as default due to spring
@@ -80,6 +79,7 @@ public class MazeSolverController {
         return byteArrayOutputStream.toByteArray();
     }
 
+    @CrossOrigin()
     @PostMapping(value = "/api/path/{sizeX}/{sizeY}", consumes = "application/json", produces = "application/json")
     public ResponseEntity<Path> uploadMazeData(@RequestBody JsonWallDetector wallDetector,
                                                @PathVariable(name = "sizeX") int sizeX,
