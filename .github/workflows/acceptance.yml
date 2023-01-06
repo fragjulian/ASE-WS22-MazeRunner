@@ -5,7 +5,7 @@ name: Acceptance testing
 on: 
   push:
     branches:
-      #- 'FE-Bugfix-Issue#51' # only for testing
+      #- 'CI-CD-Sonar-Issue#62' # only for testing
       - main
   pull_request:
     branches:
@@ -46,9 +46,9 @@ jobs:
     - name: Build and analyze with sonarcloud
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACKEND }}
       # for java code SonarCloud analysis can be triggered through maven
-      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar #-Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner not needed?
 
   sonarcloud-frontend:
     name: Sonar analyze frontend
@@ -77,11 +77,11 @@ jobs:
         projectBaseDir: ./frontend # base directory has to be defined
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
 
   selenium:
     name: UI testing
-    if : github.event_name == 'pull_request' # || github.ref == 'refs/heads/FE-Bugfix-Issue#51' # only for testing
+    if : github.event_name == 'pull_request' # || github.ref == 'refs/heads/CI-CD-Sonar-Issue#62' # only for testing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code from repo
