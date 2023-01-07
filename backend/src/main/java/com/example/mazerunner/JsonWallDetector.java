@@ -1,8 +1,7 @@
 package com.example.mazerunner;
 
 public class JsonWallDetector implements WallDetector {
-    private boolean[][] walls;
-    private Position[] positionsWalls;
+    private Position[] walls;
     private int safetyDistance;
     private Position[] obstacles;
     private DistanceMetric distanceMetric;
@@ -11,7 +10,7 @@ public class JsonWallDetector implements WallDetector {
     }
 
     public void setWalls(Position[] positions) {
-        this.positionsWalls = positions;
+        this.walls = positions;
         /*this.walls=new boolean[100][100];
         for (Position position:positions) {
             this.walls[position.getX()][position.getY()]=true;
@@ -39,7 +38,7 @@ public class JsonWallDetector implements WallDetector {
     public boolean[][] detectWall(Maze maze) {
         boolean walls[][] = new boolean[maze.getWidth()][maze.getHeight()];
         //walls
-        for (Position wall : this.positionsWalls) {
+        for (Position wall : this.walls) {
             walls[wall.getX()][wall.getY()] = true;
         }
         //obstacles
