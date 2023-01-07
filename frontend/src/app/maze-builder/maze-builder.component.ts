@@ -37,13 +37,15 @@ export class MazeBuilderComponent {
   context: CanvasRenderingContext2D | undefined;
   colorPicker: HTMLElement | undefined;
   private walls = new Set<Position>();
+  brushColor = this.initialBrushColor;//todo change to array
   pixelSize = 15;
   cursorPosX = 0;
   cursorPosY = 0;
   private currentPath: Position[] = [];
-  brushColor = this.initialBrushColor;
+  selectedBrush = "wall"
 
   isDrawing = false;
+  private obstacles = new Set<Position>();
 
   constructor(private httpClient: HttpClient) {
   }
@@ -92,6 +94,7 @@ export class MazeBuilderComponent {
     const height = this.canvas!.height;
     this.context!.clearRect(0, 0, width, height);
     this.walls = new Set<Position>();
+    this.obstacles = new Set<Position>();
   }
 
   getSolvedPath() {
@@ -99,7 +102,7 @@ export class MazeBuilderComponent {
     //var returnObject={walls:this.walls}
     let returnObject = {
       walls: Array.from(this.walls.values()),
-      obstacles: [new Position(3, 3)]//todo obstacles
+      obstacles: Array.from(this.obstacles.values())
     }
     this.httpClient.post(`http://localhost:8081/api/maze/path?sizeX=${this.canvas!.width / this.pixelSize}&sizeY=${this.canvas!.height / this.pixelSize}`, returnObject, {//todo set size correctly
       observe: 'response',
@@ -126,7 +129,10 @@ export class MazeBuilderComponent {
     this.cursorPosX = Math.floor(offsetX / this.pixelSize);
     this.cursorPosY = Math.floor(offsetY / this.pixelSize);
     this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
-    this.walls.add(new Position(this.cursorPosX, this.cursorPosY));
+    if (this.selectedBrush == "wall")
+      this.walls.add(new Position(this.cursorPosX, this.cursorPosY));
+    if (this.selectedBrush == "obstacle")
+      this.obstacles.add(new Position(this.cursorPosX, this.cursorPosY));
   }
 
   private drawPixel(xCoord: number, yCoord: number, color: string) {

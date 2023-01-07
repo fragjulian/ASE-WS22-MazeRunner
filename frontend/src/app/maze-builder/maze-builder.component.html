@@ -24,6 +24,12 @@
         Pick Color
       </button>
 
+      <input [(ngModel)]="selectedBrush" id="wall" name="paintingType" type="radio" value="wall">
+      <label for="wall">wall</label><br>
+      <input [(ngModel)]="selectedBrush" id="obstacle" name="paintingType" type="radio" value="obstacle">
+      <label for="obstacle">obstacle</label><br>
+      <input [(ngModel)]="selectedBrush" id="other" name="paintingType" type="radio" value="other">
+      <label for="other">other</label><br>
     </div>
 
     <!-- hide the color picker and just open the color picker dialog via the button above -->
