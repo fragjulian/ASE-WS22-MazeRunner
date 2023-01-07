@@ -93,10 +93,10 @@ jobs:
         run: sleep 90
       - name: Run Selenium tests on live server
         run: mvn -DURL=https://ase.stulpinger.at -DPORT= clean test # no port
-      - name: Test Reporter
-        uses: dorny/test-reporter@v1.4.3
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
         with:
-          name: Selenium life server test report
-          path: "./selenium/target/surefire-reports/TEST-*.xml"
-          reporter: java-junit
+          junit_files: "./selenium/target/surefire-reports/TEST-*.xml"
+          check_name: "Selenium live server UI tests"
 
