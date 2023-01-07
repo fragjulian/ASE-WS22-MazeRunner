@@ -158,8 +158,7 @@ jobs:
         working-directory: ./jmeter
         run: maven clean verify
       - name: Upload Results
-        working-directory: ./jmeter
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: jmeter-results
-          path: ./target/jmeter
+          path: ./jmeter/target/jmeter
