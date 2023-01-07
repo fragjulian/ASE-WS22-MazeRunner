@@ -48,7 +48,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACKEND }}
       # for java code SonarCloud analysis can be triggered through maven
-      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar #-Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner not needed?
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pcoverage #-Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner not needed?
 
   sonarcloud-frontend:
     name: Sonar analyze frontend
