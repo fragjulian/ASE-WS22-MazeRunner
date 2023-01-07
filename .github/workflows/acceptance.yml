@@ -152,7 +152,7 @@ jobs:
       - name: Start backend locally # in the background, wait a bit
         working-directory: ./backend
         run: |
-          mvn spring-boot:run &
+          mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Xms1024m -Xmx8192m" &
           sleep 5
       - name: Run performance tests
         working-directory: ./jmeter
