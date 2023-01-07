@@ -24,7 +24,7 @@ public class MazeUtilsFactory {
                 int wallColorInt = getColor(wallColorParameter, DEFAULT_WALL_COLOUR, "wallColor");
                 int obstacleColorInt = getColor(obstacleColorParameter, DEFAULT_OBSTACLE_COLOUR, "obstacleColor");
                 int safetyDistanceInt = safetyDistance == null ? DEFAULT_SAFETY_DISTANCE : safetyDistance;
-                yield new ColorWallDetector(wallColorInt, obstacleColorInt, safetyDistanceInt, new EuclideanDistance());
+                yield new ColorWallDetector(wallColorInt, obstacleColorInt, safetyDistanceInt, distanceMetric);
             }
             case "edgeDetection" -> new EdgeDetectionWallDetector();
             default -> throw new IllegalArgumentException("invalid wall detector selection");
