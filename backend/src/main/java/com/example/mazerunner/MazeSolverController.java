@@ -53,40 +53,40 @@ public class MazeSolverController {
     @PostMapping(value = "/api/maze/image", produces = MediaType.IMAGE_JPEG_VALUE)
     public CompletableFuture<byte[]> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "wallcolor", required = false) String wallColorParameter,//unfortunately cannot use the constant here as default due to spring
                                                  @RequestParam(name = "obstaclecolor", required = false) String obstacleColorParameter,//unfortunately cannot use the constant here as default due to spring
-                                                 @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
+                                                 @RequestParam(name = "safetydistance", required = false, defaultValue = "1") Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
                                                  @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter,
                                                  @RequestParam(name = "wallDetector", required = false, defaultValue = "colorwalldetector") String wallDetectorParameter,
                                                  @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
                                                  @RequestParam(name = "searchStrategy", required = false, defaultValue = "depthfirst") String searchStrategyParameter
     ) throws IOException {
+        if (file == null || file.isEmpty())
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "image parameter must contain a valid maze");
         file.getContentType();
         Tika tika = new Tika();
         if (!(tika.detect(file.getBytes()).equals(file.getContentType()) && file.getContentType().equals("image/png") || file.getContentType().equals("image/jpg")))
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "unsupported file type");
-
-        DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
-        WallDetector wallDetector;
         try {
+            DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
+            WallDetector wallDetector;
             wallDetector = mazeUtilsFactory.getWallDetector(wallDetectorParameter,
                     wallColorParameter, obstacleColorParameter,
                     safetyDistanceParameter, distanceMetric);
+            Heuristic heuristic = mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric);
+            SearchStrategy searchStrategy = mazeUtilsFactory.getSearchStrategy(searchStrategyParameter);
+            File temp = File.createTempFile("maze", ".temp");
+            file.transferTo(temp);
+            BufferedImage bufferedImage = ImageIO.read(temp);
+            Maze maze = new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR, distanceMetric);
+            bufferedImage = maze.getSolvedMaze();
+
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
+            return CompletableFuture.completedFuture(byteArrayOutputStream.toByteArray());
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, e.getMessage(), e);
         }
-        Heuristic heuristic = mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric);
-        SearchStrategy searchStrategy = mazeUtilsFactory.getSearchStrategy(searchStrategyParameter);
-        File temp = File.createTempFile("maze", ".temp");
-        file.transferTo(temp);
-        BufferedImage bufferedImage = ImageIO.read(temp);
-        //todo handle nullpointer exception if image parameter does not contain a file
-        Maze maze = new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR, distanceMetric);
-        bufferedImage = maze.getSolvedMaze();
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
-        return CompletableFuture.completedFuture(byteArrayOutputStream.toByteArray());
     }
 
     @Async
@@ -100,12 +100,16 @@ public class MazeSolverController {
                                                                   @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
                                                                   @RequestParam(name = "searchStrategy", defaultValue = "depthfirst", required = false) String searchStrategyParameter
     ) {
-        if (safetyDistanceParameter != null)
-            wallDetector.setSafetyDistance(safetyDistanceParameter);
-        wallDetector.setDistanceMetric(new EuclideanDistance());
-        DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
-        Maze maze = new Maze(sizeX, sizeY, mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric), wallDetector, mazeUtilsFactory.getSearchStrategy(searchStrategyParameter), distanceMetric);
-        return CompletableFuture.completedFuture(ResponseEntity.ok(maze.getSolutionPath()));
+        try {
+            if (safetyDistanceParameter != null)
+                wallDetector.setSafetyDistance(safetyDistanceParameter);
+            wallDetector.setDistanceMetric(new EuclideanDistance());
+            DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
+            Maze maze = new Maze(sizeX, sizeY, mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric), wallDetector, mazeUtilsFactory.getSearchStrategy(searchStrategyParameter), distanceMetric);
+            return CompletableFuture.completedFuture(ResponseEntity.ok(maze.getSolutionPath()));
+        } catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST, e.getMessage(), e);
+        }
     }
-
 }

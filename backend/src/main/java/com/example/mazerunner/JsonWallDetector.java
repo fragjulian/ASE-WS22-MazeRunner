@@ -19,6 +19,8 @@ public class JsonWallDetector implements WallDetector {
     }
 
     public void setSafetyDistance(int safetyDistance) {
+        if (safetyDistance < 1 || safetyDistance > 20)
+            throw new IllegalArgumentException("safety distance must be between 1 and 20");
         this.safetyDistance = safetyDistance;
     }
 

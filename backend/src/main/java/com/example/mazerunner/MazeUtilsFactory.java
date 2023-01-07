@@ -17,6 +17,8 @@ public class MazeUtilsFactory {
     }
 
     public WallDetector getWallDetector(String wallDetector, String wallColorParameter, String obstacleColorParameter, Integer safetyDistance, DistanceMetric distanceMetric) {
+        if (safetyDistance < 1 || safetyDistance > 20)
+            throw new IllegalArgumentException("safety distance must be between 1 and 20");
         return switch (wallDetector) {
             case "colorwalldetector" -> {
                 int wallColorInt = getColor(wallColorParameter, DEFAULT_WALL_COLOUR, "wallColor");
@@ -25,8 +27,7 @@ public class MazeUtilsFactory {
                 yield new ColorWallDetector(wallColorInt, obstacleColorInt, safetyDistanceInt, new EuclideanDistance());
             }
             case "edgeDetection" -> new EdgeDetectionWallDetector();
-            default ->
-                    new ColorWallDetector(DEFAULT_WALL_COLOUR, DEFAULT_OBSTACLE_COLOUR, safetyDistance, distanceMetric);
+            default -> throw new IllegalArgumentException("invalid wall detector selection");
         };
     }
 
@@ -44,21 +45,21 @@ public class MazeUtilsFactory {
         return switch (distanceMetricParameter) {
             case "euclidean" -> new EuclideanDistance();
             case "square" -> new SquareDistance();
-            default -> new EuclideanDistance();
+            default -> throw new IllegalArgumentException("invalid distance metric selection");
         };
     }
 
     public Heuristic getHeuristic(String heuristic, DistanceMetric distanceMetric) {
         return switch (heuristic) {
             case "realdistanceheuristic" -> new RealDistanceHeuristic(distanceMetric);
-            default -> new RealDistanceHeuristic(distanceMetric);
+            default -> throw new IllegalArgumentException("invalid heuristic selection");
         };
     }
 
     public SearchStrategy getSearchStrategy(String searchStrategy) {
         return switch (searchStrategy) {
             case "depthfirst" -> new DepthFirst();
-            default -> new DepthFirst();
+            default -> throw new IllegalArgumentException("invalid search strategy selection");
         };
     }
 }
