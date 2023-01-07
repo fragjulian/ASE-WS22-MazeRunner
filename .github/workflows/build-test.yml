@@ -12,6 +12,7 @@ on: # run on any push except on main
       - 'README.md'
       - 'doc/**'
       - 'selenium'
+      - 'jmeter'
   #pull_request: # run for every pull request
   #  types: [opened, synchronize, reopened]
 jobs:
