@@ -26,6 +26,7 @@ class Position {
 export class MazeBuilderComponent {
 
   private readonly initialBrushColor = 'black';
+  private readonly initialBrushColors = ['black', 'gray', 'green'];
 
   // usually the left mouse button
   private readonly primaryMouseButton = 1;
@@ -42,6 +43,7 @@ export class MazeBuilderComponent {
   cursorPosX = 0;
   cursorPosY = 0;
   private currentPath: Position[] = [];
+  private brushColors = this.initialBrushColors;
   selectedBrush = "wall"
 
   isDrawing = false;
@@ -62,6 +64,25 @@ export class MazeBuilderComponent {
     this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
     this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
+  }
+
+  saveBrushColor() {
+    if (this.selectedBrush == "wall")
+      this.brushColors[0] = this.brushColor;
+    if (this.selectedBrush == "obstacles")
+      this.brushColors[1] = this.brushColor
+    if (this.selectedBrush == "other")
+      this.brushColors[2] = this.brushColor
+  }
+
+  restoreBrushColor() {
+    if (this.selectedBrush == "wall")
+      this.brushColor = this.brushColors[0];
+    if (this.selectedBrush == "obstacle")
+      this.brushColor = this.brushColors[1]
+    if (this.selectedBrush == "other")
+      this.brushColor = this.brushColors[2]
+
   }
 
   handleClick(event: MouseEvent) {
@@ -125,14 +146,9 @@ export class MazeBuilderComponent {
       );
   }
 
-  private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
-    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
-    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
-    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
-    if (this.selectedBrush == "wall")
-      this.walls.add(new Position(this.cursorPosX, this.cursorPosY));
-    if (this.selectedBrush == "obstacle")
-      this.obstacles.add(new Position(this.cursorPosX, this.cursorPosY));
+  openColorPickerDialog() {
+    this.colorPicker!.click();
+    this.saveBrushColor()
   }
 
   private drawPixel(xCoord: number, yCoord: number, color: string) {
@@ -158,8 +174,15 @@ export class MazeBuilderComponent {
     this.context!.strokeRect(0, 0, width, height);
   }
 
-  openColorPickerDialog() {
-    this.colorPicker!.click();
+  private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
+    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
+    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
+    this.restoreBrushColor();
+    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
+    if (this.selectedBrush == "wall")
+      this.walls.add(new Position(this.cursorPosX, this.cursorPosY));
+    if (this.selectedBrush == "obstacle")
+      this.obstacles.add(new Position(this.cursorPosX, this.cursorPosY));
   }
 
   private clearCurrentPath() {
