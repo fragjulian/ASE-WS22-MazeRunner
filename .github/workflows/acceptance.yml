@@ -156,7 +156,7 @@ jobs:
           sleep 5
       - name: Run performance tests
         working-directory: ./jmeter
-        run: maven clean verify
+        run: mvn clean verify
       - name: Upload Results
         uses: actions/upload-artifact@v3
         with:
