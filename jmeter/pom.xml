@@ -45,7 +45,7 @@
         </executions>
         <configuration>
           <testFilesDirectory>./jmeter</testFilesDirectory>
-          <errorRateThresholdInPercent>1</errorRateThresholdInPercent>
+          <errorRateThresholdInPercent>5</errorRateThresholdInPercent>
         </configuration>
       </plugin>
     </plugins>

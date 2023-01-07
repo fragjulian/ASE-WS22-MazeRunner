@@ -49,6 +49,11 @@ jobs:
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACKEND }}
       # for java code SonarCloud analysis can be triggered through maven
       run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pcoverage #-Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner not needed?
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        junit_files: "./backend/target/surefire-reports/TEST-*.xml"
 
   sonarcloud-frontend:
     name: Sonar analyze frontend
@@ -122,12 +127,11 @@ jobs:
       - name: Run Selenium tests locally
         working-directory: ./selenium
         run: "mvn -DURL=http://localhost: -DPORT=4200 clean test" #4200 default port
-      - name: Test Reporter
-        uses: dorny/test-reporter@v1.4.3
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
         with:
-          name: Selenium test report
-          path: "./selenium/target/surefire-reports/TEST-*.xml"
-          reporter: java-junit
+          junit_files: "./selenium/target/surefire-reports/TEST-*.xml"
 
   jmeter:
     name: Performance testing
