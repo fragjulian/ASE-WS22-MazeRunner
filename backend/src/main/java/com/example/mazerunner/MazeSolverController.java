@@ -89,15 +89,16 @@ public class MazeSolverController {
         return CompletableFuture.completedFuture(byteArrayOutputStream.toByteArray());
     }
 
+    @Async
     @CrossOrigin()
     @PostMapping(value = "/api/path/{sizeX}/{sizeY}", consumes = "application/json", produces = "application/json")
-    public ResponseEntity<Path> uploadMazeData(@RequestBody JsonWallDetector wallDetector,
-                                               @PathVariable(name = "sizeX") int sizeX,
-                                               @PathVariable(name = "sizeY") int sizeY
+    public CompletableFuture<ResponseEntity<Path>> uploadMazeData(@RequestBody JsonWallDetector wallDetector,
+                                                                  @PathVariable(name = "sizeX") int sizeX,
+                                                                  @PathVariable(name = "sizeY") int sizeY
     ) {
         wallDetector.setDistanceMetric(new EuclideanDistance());
         Maze maze = new Maze(sizeX, sizeY, new RealDistanceHeuristic(new EuclideanDistance()), wallDetector, new DepthFirst(), new EuclideanDistance());
-        return ResponseEntity.ok(maze.getSolutionPath());
+        return CompletableFuture.completedFuture(ResponseEntity.ok(maze.getSolutionPath()));
     }
 
 }
