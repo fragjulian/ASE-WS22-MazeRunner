@@ -101,7 +101,7 @@ export class MazeBuilderComponent {
       walls: Array.from(this.walls.values()),
       obstacles: [new Position(3, 3)]//todo obstacles
     }
-    this.httpClient.post(`http://localhost:8081/api/path/${this.canvas!.width / this.pixelSize}/${this.canvas!.height / this.pixelSize}`, returnObject, {//todo set size correctly
+    this.httpClient.post(`http://localhost:8081/api/maze/path?sizeX=${this.canvas!.width / this.pixelSize}&sizeY=${this.canvas!.height / this.pixelSize}`, returnObject, {//todo set size correctly
       observe: 'response',
       responseType: 'json'
     })

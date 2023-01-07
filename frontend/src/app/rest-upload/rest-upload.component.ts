@@ -69,7 +69,7 @@ export class RestUploadComponent {
     * Looked up the response types here: https://stackoverflow.com/questions/46408537/angular-httpclient-http-failure-during-parsing
     * Port 8081 for Deployment on live server
     */
-    this.httpClient.post('http://localhost:8081/api/maze/colorwalldetector/realdistanceheuristic/depthfirst', transformedImage, {
+    this.httpClient.post('http://localhost:8081/api/maze/image', transformedImage, {
       observe: 'response',
       responseType: 'blob'
     })
