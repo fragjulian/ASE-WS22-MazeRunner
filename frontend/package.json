@@ -23,9 +23,9 @@
     "@angular/router": "^15.0.0",
     "devextreme": "22.1.6",
     "devextreme-angular": "22.1.6",
+    "karma-sonarqube-unit-reporter": "^0.0.23",
     "ngx-color-picker": "^13.0.0",
     "ngx-dropzone": "^3.1.0",
-    "karma-sonarqube-unit-reporter": "^0.0.23",
     "rxjs": "~7.5.0",
     "tslib": "^2.4.1",
     "zone.js": "~0.12.0"
@@ -42,6 +42,7 @@
     "karma-firefox-launcher": "^2.1.2",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "karma-junit-reporter": "^2.0.1",
     "karma-requirejs": "^1.1.0",
     "typescript": "~4.8.2"
   }
