@@ -45,6 +45,9 @@
         </executions>
         <configuration>
           <testFilesDirectory>./jmeter</testFilesDirectory>
+          <testFilesExcluded><!-- Remove this if you want to run tests_local -->
+            <excludeJMeterTestFile>tests_local/*.jmx</excludeJMeterTestFile>
+          </testFilesExcluded>
           <errorRateThresholdInPercent>5</errorRateThresholdInPercent>
         </configuration>
       </plugin>
