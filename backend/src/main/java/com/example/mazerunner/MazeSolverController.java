@@ -4,6 +4,7 @@ import org.apache.tika.Tika;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
@@ -14,6 +15,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.concurrent.CompletableFuture;
 
 @RestController
 public class MazeSolverController {
@@ -47,16 +49,16 @@ public class MazeSolverController {
 
     */
     @CrossOrigin()
+    @Async
     @PostMapping(value = "/api/maze/{wallDetector}/{heuristic}/{searchStrategy}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public byte[] uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "wallcolor", required = false) String wallColorParameter,//unfortunately cannot use the constant here as default due to spring
-                              @RequestParam(name = "obstaclecolor", required = false) String obstacleColorParameter,//unfortunately cannot use the constant here as default due to spring
-                              @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
-                              @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter,
-                              @PathVariable(name = "wallDetector") String wallDetectorParameter,
-                              @PathVariable(name = "heuristic") String heuristicParameter,
-                              @PathVariable(name = "searchStrategy") String searchStrategyParameter
+    public CompletableFuture<byte[]> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "wallcolor", required = false) String wallColorParameter,//unfortunately cannot use the constant here as default due to spring
+                                                 @RequestParam(name = "obstaclecolor", required = false) String obstacleColorParameter,//unfortunately cannot use the constant here as default due to spring
+                                                 @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
+                                                 @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter,
+                                                 @PathVariable(name = "wallDetector") String wallDetectorParameter,
+                                                 @PathVariable(name = "heuristic") String heuristicParameter,
+                                                 @PathVariable(name = "searchStrategy") String searchStrategyParameter
     ) throws IOException {
-
         file.getContentType();
         Tika tika = new Tika();
         if (!(tika.detect(file.getBytes()).equals(file.getContentType()) && file.getContentType().equals("image/png") || file.getContentType().equals("image/jpg")))
@@ -84,7 +86,7 @@ public class MazeSolverController {
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ImageIO.write(bufferedImage, "png", byteArrayOutputStream);
-        return byteArrayOutputStream.toByteArray();
+        return CompletableFuture.completedFuture(byteArrayOutputStream.toByteArray());
     }
 
     @CrossOrigin()
