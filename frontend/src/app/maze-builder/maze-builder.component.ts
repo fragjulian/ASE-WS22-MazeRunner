@@ -18,6 +18,7 @@ class Position {
   }
 }
 
+
 @Component({
   selector: 'app-maze-canvas',
   templateUrl: './maze-builder.component.html',
@@ -38,7 +39,7 @@ export class MazeBuilderComponent {
   context: CanvasRenderingContext2D | undefined;
   colorPicker: HTMLElement | undefined;
   private walls = new Set<Position>();
-  brushColor = this.initialBrushColor;//todo change to array
+  brushColor = this.initialBrushColor;
   pixelSize = 15;
   cursorPosX = 0;
   cursorPosY = 0;
@@ -125,7 +126,7 @@ export class MazeBuilderComponent {
       walls: Array.from(this.walls.values()),
       obstacles: Array.from(this.obstacles.values())
     }
-    this.httpClient.post(`http://localhost:8081/api/maze/path?sizeX=${this.canvas!.width / this.pixelSize}&sizeY=${this.canvas!.height / this.pixelSize}`, returnObject, {//todo set size correctly
+    this.httpClient.post(`http://localhost:8081/api/maze/path?sizeX=${this.canvas!.width / this.pixelSize}&sizeY=${this.canvas!.height / this.pixelSize}`, returnObject, {
       observe: 'response',
       responseType: 'json'
     })
@@ -187,12 +188,23 @@ export class MazeBuilderComponent {
 
   private clearCurrentPath() {
     for (let current of this.currentPath) {
-      if (!this.walls.has(current)) {//only clear pixels where no wall has been drawn todo has not correctly returning
+      if (this.setHasPosition(this.walls, current)) {//only clear pixels where no wall has been drawn notice: has not correctly returning
+        this.drawPixel(current.x * this.pixelSize, current.y * this.pixelSize, this.brushColors[0]);//redraw wall
+      } else if (this.setHasPosition(this.obstacles, current))
+        this.drawPixel(current.x * this.pixelSize, current.y * this.pixelSize, this.brushColors[1]);//redraw wall
+      else {
         this.context!.clearRect(current.x * this.pixelSize, current.y * this.pixelSize, this.pixelSize, this.pixelSize);
-      } else {
-        this.drawPixel(current.x * this.pixelSize, current.y * this.pixelSize, this.brushColor);//redraw wall
       }
     }
 
+  }
+
+  //unfortunately the has method of ts sets does not use the equals method
+  private setHasPosition(set: Set<Position>, position: Position): boolean {
+    for (const position1 of set) {
+      if (position1.equals(position))
+        return true;
+    }
+    return false;
   }
 }
