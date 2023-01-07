@@ -153,7 +153,7 @@ jobs:
         working-directory: ./backend
         run: |
           mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Xms1024m -Xmx8192m" &
-          sleep 5
+          sleep 10
       - name: Run performance tests
         working-directory: ./jmeter
         run: mvn clean verify
