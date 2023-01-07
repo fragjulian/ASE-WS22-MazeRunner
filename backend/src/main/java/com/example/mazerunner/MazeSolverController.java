@@ -23,6 +23,7 @@ public class MazeSolverController {
     private static final int PATH_COLOUR = new Color(255, 0, 0).getRGB();
     private static final int DEFAULT_BACKGROUND_COLOR = Color.WHITE.getRGB();
     private final MazeUtilsFactory mazeUtilsFactory = MazeUtilsFactory.getMazeUtilsFactory();
+    private final long MAX_FILE_SIZE = 100000;//max file size allowed for upload
 
     /**
      * @param file                    multipart file containing the image
@@ -61,7 +62,8 @@ public class MazeSolverController {
     ) throws IOException {
         if (file == null || file.isEmpty())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "image parameter must contain a valid maze");
-        file.getContentType();
+        if (file.getSize() > MAX_FILE_SIZE)
+            throw new ResponseStatusException(HttpStatus.BANDWIDTH_LIMIT_EXCEEDED, "file size must not exceed " + MAX_FILE_SIZE);
         Tika tika = new Tika();
         if (!(tika.detect(file.getBytes()).equals(file.getContentType()) && file.getContentType().equals("image/png") || file.getContentType().equals("image/jpg")))
             throw new ResponseStatusException(
