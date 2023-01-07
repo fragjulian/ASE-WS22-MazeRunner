@@ -50,14 +50,14 @@ public class MazeSolverController {
     */
     @CrossOrigin()
     @Async
-    @PostMapping(value = "/api/maze/{wallDetector}/{heuristic}/{searchStrategy}", produces = MediaType.IMAGE_JPEG_VALUE)
+    @PostMapping(value = "/api/maze/image", produces = MediaType.IMAGE_JPEG_VALUE)
     public CompletableFuture<byte[]> uploadImage(@RequestParam("image") MultipartFile file, @RequestParam(name = "wallcolor", required = false) String wallColorParameter,//unfortunately cannot use the constant here as default due to spring
                                                  @RequestParam(name = "obstaclecolor", required = false) String obstacleColorParameter,//unfortunately cannot use the constant here as default due to spring
                                                  @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
                                                  @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter,
-                                                 @PathVariable(name = "wallDetector") String wallDetectorParameter,
-                                                 @PathVariable(name = "heuristic") String heuristicParameter,
-                                                 @PathVariable(name = "searchStrategy") String searchStrategyParameter
+                                                 @RequestParam(name = "wallDetector", required = false, defaultValue = "colorwalldetector") String wallDetectorParameter,
+                                                 @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
+                                                 @RequestParam(name = "searchStrategy", required = false, defaultValue = "depthfirst") String searchStrategyParameter
     ) throws IOException {
         file.getContentType();
         Tika tika = new Tika();
@@ -91,13 +91,20 @@ public class MazeSolverController {
 
     @Async
     @CrossOrigin()
-    @PostMapping(value = "/api/path/{sizeX}/{sizeY}", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "/api/maze/path", consumes = "application/json", produces = "application/json")
     public CompletableFuture<ResponseEntity<Path>> uploadMazeData(@RequestBody JsonWallDetector wallDetector,
-                                                                  @PathVariable(name = "sizeX") int sizeX,
-                                                                  @PathVariable(name = "sizeY") int sizeY
+                                                                  @RequestParam(name = "sizeX") int sizeX,
+                                                                  @RequestParam(name = "sizeY") int sizeY,
+                                                                  @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
+                                                                  @RequestParam(name = "distancemetric", defaultValue = "euclidean", required = false) String distanceMetricParameter,
+                                                                  @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
+                                                                  @RequestParam(name = "searchStrategy", defaultValue = "depthfirst", required = false) String searchStrategyParameter
     ) {
+        if (safetyDistanceParameter != null)
+            wallDetector.setSafetyDistance(safetyDistanceParameter);
         wallDetector.setDistanceMetric(new EuclideanDistance());
-        Maze maze = new Maze(sizeX, sizeY, new RealDistanceHeuristic(new EuclideanDistance()), wallDetector, new DepthFirst(), new EuclideanDistance());
+        DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
+        Maze maze = new Maze(sizeX, sizeY, mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric), wallDetector, mazeUtilsFactory.getSearchStrategy(searchStrategyParameter), distanceMetric);
         return CompletableFuture.completedFuture(ResponseEntity.ok(maze.getSolutionPath()));
     }
 
