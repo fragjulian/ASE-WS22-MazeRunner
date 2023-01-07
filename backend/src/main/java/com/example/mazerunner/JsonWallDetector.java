@@ -37,7 +37,6 @@ public class JsonWallDetector implements WallDetector {
 
     @Override
     public boolean[][] detectWall(Maze maze) {
-        //todo think about not using the bufferedImage here
         boolean walls[][] = new boolean[maze.getWidth()][maze.getHeight()];
         //walls
         for (Position wall : this.positionsWalls) {
@@ -47,7 +46,7 @@ public class JsonWallDetector implements WallDetector {
         for (Position obstacle : this.obstacles) {
             walls[obstacle.getX()][obstacle.getY()] = true;
             for (Position neighbour : maze.getDistanceMetric().getNeighbouringPixels(obstacle, this.safetyDistance, maze.getWidth(), maze.getHeight())) {
-                walls[obstacle.getX()][obstacle.getY()] = true;
+                walls[neighbour.getX()][neighbour.getY()] = true;
             }
         }
         return walls;
