@@ -7,7 +7,7 @@ on: # run on push to main (only after successful pull-request)
   push:
     branches:
       - main
-      - CI-CD-Issue#71
+      #- CI-CD-Issue#71
     paths-ignore:
       - 'README.md'
       - 'doc/**'
