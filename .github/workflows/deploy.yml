@@ -7,7 +7,7 @@ on: # run on push to main (only after successful pull-request)
   push:
     branches:
       - main
-      #- CI-CD-Selenium # only for testing
+      - CI-CD-Issue#71
     paths-ignore:
       - 'README.md'
       - 'doc/**'
@@ -94,7 +94,7 @@ jobs:
       - name: Run Selenium tests on live server
         run: mvn -DURL=https://ase.stulpinger.at -DPORT= clean test # no port
       - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
+        uses: EnricoMi/publish-unit-test-result-action/composite@v2
         if: always()
         with:
           junit_files: "./selenium/target/surefire-reports/TEST-*.xml"
