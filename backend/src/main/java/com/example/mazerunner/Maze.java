@@ -46,7 +46,7 @@ public class Maze {
         sizeY = bufferedImage.getHeight();
     }
 
-    public Maze(int sizeX, int sizeY, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, DistanceMetric distanceMetric) {
+    public Maze(int sizeX, int sizeY, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, DistanceMetric distanceMetric, int startColor, int goalColor) {
         this.sizeY = sizeY;
         this.sizeX = sizeX;
         this.wallDetector = wallDetector;
@@ -54,6 +54,8 @@ public class Maze {
         this.distanceMetric = distanceMetric;
         this.heuristic = heuristic;
         this.pathColor = 0;//todo remove
+        this.startColor = startColor;
+        this.goalColor = goalColor;
     }
 
     private void setBufferedImage(BufferedImage bufferedImage, int imageType, int backgroundColor) {

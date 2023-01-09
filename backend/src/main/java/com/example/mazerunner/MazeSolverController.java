@@ -104,14 +104,18 @@ public class MazeSolverController {
                                                                   @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
                                                                   @RequestParam(name = "distancemetric", defaultValue = "euclidean", required = false) String distanceMetricParameter,
                                                                   @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
-                                                                  @RequestParam(name = "searchStrategy", defaultValue = "depthfirst", required = false) String searchStrategyParameter
+                                                                  @RequestParam(name = "searchStrategy", defaultValue = "depthfirst", required = false) String searchStrategyParameter,
+                                                                  @RequestParam(name = "startcolor", required = false) String startColorParameter,//unfortunately cannot use the constant here as default due to spring
+                                                                  @RequestParam(name = "goalcolor", required = false) String goalColorParameter //unfortunately cannot use the constant here as default due to spring
     ) {
         try {
             if (safetyDistanceParameter != null)
                 wallDetector.setSafetyDistance(safetyDistanceParameter);
             wallDetector.setDistanceMetric(new EuclideanDistance());
             DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
-            Maze maze = new Maze(sizeX, sizeY, mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric), wallDetector, mazeUtilsFactory.getSearchStrategy(searchStrategyParameter), distanceMetric);
+            Integer startColor = mazeUtilsFactory.getStartColor(startColorParameter);
+            Integer goalColor = mazeUtilsFactory.getGoalColor(goalColorParameter);
+            Maze maze = new Maze(sizeX, sizeY, mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric), wallDetector, mazeUtilsFactory.getSearchStrategy(searchStrategyParameter), distanceMetric, startColor, goalColor);
             return CompletableFuture.completedFuture(ResponseEntity.ok(maze.getSolutionPath()));
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(
