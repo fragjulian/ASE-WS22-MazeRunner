@@ -37,6 +37,8 @@ export class MazeBuilderComponent {
   context: CanvasRenderingContext2D | undefined;
   colorPicker: HTMLElement | undefined;
   private walls = new Set<Position>();
+  private startPosition: Position | undefined;
+  private goalPosition: Position | undefined;
   pixelSize = 15;
   cursorPosX = 0;
   cursorPosY = 0;
@@ -95,13 +97,17 @@ export class MazeBuilderComponent {
   }
 
   getSolvedPath() {
+    if (this.startPosition == undefined || this.goalPosition == undefined) {
+      console.log("No start or goal position set");
+      return;
+    }
     console.log("getting solved path");
     //var returnObject={walls:this.walls}
     let returnObject = {
       walls: Array.from(this.walls.values()),
       obstacles: [new Position(3, 3)]//todo obstacles
     }
-    this.httpClient.post(`http://localhost:8081/api/maze/path?sizeX=${this.canvas!.width / this.pixelSize}&sizeY=${this.canvas!.height / this.pixelSize}`, returnObject, {//todo set size correctly
+    this.httpClient.post(`http://localhost:8081/api/maze/path?sizeX=${this.canvas!.width / this.pixelSize}&sizeY=${this.canvas!.height / this.pixelSize}&startX=${this.startPosition.x}&startY=${this.startPosition.y}&goalX=${this.goalPosition.x}&goalY=${this.goalPosition.y}`, returnObject, {//todo set size correctly
       observe: 'response',
       responseType: 'json'
     })
@@ -127,6 +133,26 @@ export class MazeBuilderComponent {
     this.cursorPosY = Math.floor(offsetY / this.pixelSize);
     this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
     this.walls.add(new Position(this.cursorPosX, this.cursorPosY));
+  }
+
+  private drawStartAtCurrentMousePosition(offsetX: number, offsetY: number) {
+    if (this.startPosition != undefined) {
+      this.context!.clearRect(this.startPosition.x * this.pixelSize, this.startPosition.y * this.pixelSize, this.pixelSize, this.pixelSize);
+    }
+    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
+    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
+    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
+    this.startPosition = new Position(this.cursorPosX, this.cursorPosY);
+  }
+
+  private drawGoalAtCurrentMousePosition(offsetX: number, offsetY: number) {
+    if (this.goalPosition != undefined) {
+      this.context!.clearRect(this.goalPosition.x * this.pixelSize, this.goalPosition.y * this.pixelSize, this.pixelSize, this.pixelSize);
+    }
+    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
+    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
+    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
+    this.goalPosition = new Position(this.cursorPosX, this.cursorPosY);
   }
 
   private drawPixel(xCoord: number, yCoord: number, color: string) {

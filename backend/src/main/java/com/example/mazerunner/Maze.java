@@ -7,17 +7,15 @@ import java.awt.image.ColorConvertOp;
 public class Maze {
     //image type the targeted colors are in
     private final int pathColor;//todo move out of constructor
-    private final int startColor;
-    private final int goalColor;
     private final Heuristic heuristic;
     private final WallDetector wallDetector;
     private final SearchStrategy searchStrategy;
     private final int sizeX;
     private final DistanceMetric distanceMetric;
-    private Position goal;
+    private final Position goal;
     private final int sizeY;
     private BufferedImage bufferedImage;
-    private Position start;
+    private final Position start;
     private boolean[][] walls;
     private static final Color COLOR_TRANSPARENT = new Color(0, 0, 0, 0);
 
@@ -35,8 +33,8 @@ public class Maze {
      */
     public Maze(BufferedImage bufferedImage, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, int imageType, int pathColor, int backgroundColor, DistanceMetric distanceMetric, int startColor, int goalColor) {
         this.heuristic = heuristic;
-        this.startColor = startColor;
-        this.goalColor = goalColor;
+        this.start = PositionDetectorColor.getPositionByColor(bufferedImage, startColor);
+        this.goal = PositionDetectorColor.getPositionByColor(bufferedImage, goalColor);
         this.wallDetector = wallDetector;
         this.searchStrategy = searchStrategy;
         this.pathColor = pathColor;
@@ -46,7 +44,7 @@ public class Maze {
         sizeY = bufferedImage.getHeight();
     }
 
-    public Maze(int sizeX, int sizeY, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, DistanceMetric distanceMetric, int startColor, int goalColor) {
+    public Maze(int sizeX, int sizeY, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, DistanceMetric distanceMetric, Position start, Position goal) {
         this.sizeY = sizeY;
         this.sizeX = sizeX;
         this.wallDetector = wallDetector;
@@ -54,8 +52,8 @@ public class Maze {
         this.distanceMetric = distanceMetric;
         this.heuristic = heuristic;
         this.pathColor = 0;//todo remove
-        this.startColor = startColor;
-        this.goalColor = goalColor;
+        this.start = start;
+        this.goal = goal;
     }
 
     private void setBufferedImage(BufferedImage bufferedImage, int imageType, int backgroundColor) {
@@ -95,8 +93,6 @@ public class Maze {
 
     public Path getSolutionPath() {
         walls = wallDetector.detectWall(this);
-        goal = PositionDetectorColor.getPositionByColor(bufferedImage, this.goalColor);
-        start = PositionDetectorColor.getPositionByColor(bufferedImage, this.startColor);
         heuristic.calculateHeuristic(sizeX, sizeY, start, goal, walls);
         return searchStrategy.calculateShortestPath(this);
     }

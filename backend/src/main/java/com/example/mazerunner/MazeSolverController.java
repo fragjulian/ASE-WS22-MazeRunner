@@ -101,21 +101,23 @@ public class MazeSolverController {
     public CompletableFuture<ResponseEntity<Path>> uploadMazeData(@RequestBody JsonWallDetector wallDetector,
                                                                   @RequestParam(name = "sizeX") int sizeX,
                                                                   @RequestParam(name = "sizeY") int sizeY,
+                                                                  @RequestParam(name = "startX") int startX,
+                                                                  @RequestParam(name = "startY") int startY,
+                                                                  @RequestParam(name = "goalX") int goalX,
+                                                                  @RequestParam(name = "goalY") int goalY,
                                                                   @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
                                                                   @RequestParam(name = "distancemetric", defaultValue = "euclidean", required = false) String distanceMetricParameter,
                                                                   @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
-                                                                  @RequestParam(name = "searchStrategy", defaultValue = "depthfirst", required = false) String searchStrategyParameter,
-                                                                  @RequestParam(name = "startcolor", required = false) String startColorParameter,//unfortunately cannot use the constant here as default due to spring
-                                                                  @RequestParam(name = "goalcolor", required = false) String goalColorParameter //unfortunately cannot use the constant here as default due to spring
+                                                                  @RequestParam(name = "searchStrategy", defaultValue = "depthfirst", required = false) String searchStrategyParameter
     ) {
         try {
             if (safetyDistanceParameter != null)
                 wallDetector.setSafetyDistance(safetyDistanceParameter);
             wallDetector.setDistanceMetric(new EuclideanDistance());
             DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
-            Integer startColor = mazeUtilsFactory.getStartColor(startColorParameter);
-            Integer goalColor = mazeUtilsFactory.getGoalColor(goalColorParameter);
-            Maze maze = new Maze(sizeX, sizeY, mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric), wallDetector, mazeUtilsFactory.getSearchStrategy(searchStrategyParameter), distanceMetric, startColor, goalColor);
+            Position start = new Position(startX, startY);
+            Position goal = new Position(goalX, goalY);
+            Maze maze = new Maze(sizeX, sizeY, mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric), wallDetector, mazeUtilsFactory.getSearchStrategy(searchStrategyParameter), distanceMetric, start, goal);
             return CompletableFuture.completedFuture(ResponseEntity.ok(maze.getSolutionPath()));
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(
