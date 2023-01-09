@@ -33,8 +33,6 @@ export class MazeBuilderComponent {
   private readonly primaryMouseButton = 1;
 
   private readonly mazeDefaultFileName = 'my-maze.png';
-  postResponse: any;
-
   canvas: HTMLCanvasElement | undefined;
   context: CanvasRenderingContext2D | undefined;
   colorPicker: HTMLElement | undefined;
@@ -127,17 +125,15 @@ export class MazeBuilderComponent {
       obstacles: Array.from(this.obstacles.values())
     }
     this.mazeBuilderAutoSolve.downloadSolutionPath(this.canvas!.width / this.pixelSize, this.canvas!.height / this.pixelSize, this.walls, this.obstacles)
-      .subscribe((response: any) => {//todo use angular to directly convert this to array and not use any
-          this.postResponse = response;
-          this.drawPath();
-        }
+      .subscribe((response: any) => //todo use angular to directly convert this to array and not use any
+        this.drawPath(response.body.path)
       );
   }
 
-  drawPath() {
+  drawPath(positions: Position[]) {
     this.clearCurrentPath();
     this.currentPath = [];
-    for (let path of this.postResponse.body.path) {
+    for (let path of positions) {
       this.currentPath.push(new Position(path.x, path.y));
       this.drawPixel(path.x, path.y, 'red')
     }
