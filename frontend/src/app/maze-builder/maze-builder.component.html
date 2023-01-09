@@ -5,8 +5,8 @@
   <canvas id="maze-canvas" width="1200" height="600"></canvas>
 
   <br>
-  <div class="row">
-    <div class="btn-group" role="group">
+  <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
+    <div class="btn-group me-2" role="group">
 
       <button class="btn btn-outline-danger" type="button" (click)="clearMaze()">
         Clear Maze
@@ -23,18 +23,24 @@
       <button class="btn btn-outline-primary" type="button" (click)="openColorPickerDialog()">
         Pick Color
       </button>
-
-      <input (click)="saveBrushColor()" [(ngModel)]="selectedBrush" id="wall" name="paintingType" type="radio"
-             value="wall">
-      <label for="wall">wall</label><br>
-      <input (click)="saveBrushColor()" [(ngModel)]="selectedBrush" id="obstacle" name="paintingType" type="radio"
-             value="obstacle">
-      <label for="obstacle">obstacle</label><br>
-      <input (click)="saveBrushColor()" [(ngModel)]="selectedBrush" id="other" name="paintingType" type="radio"
-             value="other">
-      <label for="other">other</label><br>
     </div>
+    <div aria-label="select brush" class="btn-group me-2" role="group">
+      <input (click)="saveBrushColor()" [(ngModel)]="selectedBrush" checked class="btn-check" id="wall"
+             name="paintingType"
+             type="radio" value="wall">
+      <label class="btn btn-outline-primary" for="wall"><img alt="wall" height="20" src="../../assets/wall.png"
+                                                             width="20"></label>
+      <input (click)="saveBrushColor()" [(ngModel)]="selectedBrush" class="btn-check" id="obstacle" name="paintingType"
+             type="radio"
+             value="obstacle">
+      <label class="btn btn-outline-primary" for="obstacle"><img alt="obstacle" height="20"
+                                                                 src="../../assets/obstacle.png" width="20"></label>
+      <input (click)="saveBrushColor()" [(ngModel)]="selectedBrush" class="btn-check" id="other" name="paintingType"
+             type="radio"
+             value="other">
+      <label class="btn btn-outline-primary" for="other">other</label>
 
+    </div>
     <!-- hide the color picker and just open the color picker dialog via the button above -->
     <input (ngModelChange)="saveBrushColor()" [(ngModel)]="brushColor" id="color-picker" type="color"/>
 
