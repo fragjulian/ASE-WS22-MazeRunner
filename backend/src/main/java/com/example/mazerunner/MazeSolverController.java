@@ -22,7 +22,6 @@ public class MazeSolverController {
     private static final int IMAGE_TYPE = BufferedImage.TYPE_INT_RGB;
     private static final int PATH_COLOUR = new Color(255, 0, 0).getRGB();
     private static final int DEFAULT_BACKGROUND_COLOR = Color.WHITE.getRGB();
-    private final MazeUtilsFactory mazeUtilsFactory = MazeUtilsFactory.getMazeUtilsFactory();
     private final long MAX_FILE_SIZE = 100000;//max file size allowed for upload
 
     /**
@@ -69,17 +68,17 @@ public class MazeSolverController {
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST, "unsupported file type");
         try {
-            DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
-            WallDetector wallDetector;
-            wallDetector = mazeUtilsFactory.getWallDetector(wallDetectorParameter,
-                    wallColorParameter, obstacleColorParameter,
-                    safetyDistanceParameter, distanceMetric);
-            Heuristic heuristic = mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric);
-            SearchStrategy searchStrategy = mazeUtilsFactory.getSearchStrategy(searchStrategyParameter);
             File temp = File.createTempFile("maze", ".temp");
             file.transferTo(temp);
             BufferedImage bufferedImage = ImageIO.read(temp);
-            Maze maze = new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, IMAGE_TYPE, PATH_COLOUR, DEFAULT_BACKGROUND_COLOR, distanceMetric);
+            Maze maze = new MazeParameterBuilder()
+                    .setDistanceMetric(distanceMetricParameter)
+                    .setHeuristic(heuristicParameter)
+                    .setWallDetector(wallDetectorParameter, wallColorParameter, obstacleColorParameter, safetyDistanceParameter)
+                    .setImageType(IMAGE_TYPE)
+                    .setPathColor(PATH_COLOUR)
+                    .setBackgroundColor(DEFAULT_BACKGROUND_COLOR)
+                    .setSearchStrategy(searchStrategyParameter).build(bufferedImage);
             bufferedImage = maze.getSolvedMaze();
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -91,23 +90,29 @@ public class MazeSolverController {
         }
     }
 
+    /**
+     * @param sizeX                   the width of the maze in pixels
+     * @param sizeY                   the height of the maze in pixels
+     * @param safetyDistanceParameter minimum distance to obstacles measured by distanceMetric
+     * @param heuristicParameter      which heuristic to use. Possible options: realdistanceheuristic, default is realdistanceheuristic
+     * @param searchStrategyParameter which search strategy to use. Possible options: depthfirst, default is depthfirst
+     * @param distanceMetricParameter which distance metric to use. Possible options: euclidean, default is euclidean
+     * @param wallDetector            walls and obstacles in json form from the maze builder. Example: {"walls":[{"x":1,"y":1}],"obstacles":[{"x":2,"y":3}] }
+     * @return an image containing the solved maze
+     */
     @Async
     @CrossOrigin()
     @PostMapping(value = "/api/maze/path", consumes = "application/json", produces = "application/json")
     public CompletableFuture<ResponseEntity<Path>> uploadMazeData(@RequestBody JsonWallDetector wallDetector,
                                                                   @RequestParam(name = "sizeX") int sizeX,
                                                                   @RequestParam(name = "sizeY") int sizeY,
-                                                                  @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
+                                                                  @RequestParam(name = "safetydistance", defaultValue = "2", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
                                                                   @RequestParam(name = "distancemetric", defaultValue = "euclidean", required = false) String distanceMetricParameter,
                                                                   @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
                                                                   @RequestParam(name = "searchStrategy", defaultValue = "depthfirst", required = false) String searchStrategyParameter
     ) {
         try {
-            if (safetyDistanceParameter != null)
-                wallDetector.setSafetyDistance(safetyDistanceParameter);
-            wallDetector.setDistanceMetric(new EuclideanDistance());
-            DistanceMetric distanceMetric = mazeUtilsFactory.getDistanceMetric(distanceMetricParameter);
-            Maze maze = new Maze(sizeX, sizeY, mazeUtilsFactory.getHeuristic(heuristicParameter, distanceMetric), wallDetector, mazeUtilsFactory.getSearchStrategy(searchStrategyParameter), distanceMetric);
+            Maze maze = new MazeParameterBuilder().setDistanceMetric(distanceMetricParameter).setSafetyDistance(safetyDistanceParameter).setHeuristic(heuristicParameter).setSearchStrategy(searchStrategyParameter).setWallDetector(wallDetector).build(sizeX,sizeY);
             return CompletableFuture.completedFuture(ResponseEntity.ok(maze.getSolutionPath()));
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(
