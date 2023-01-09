@@ -1,0 +1,4 @@
+The backend endpoint accepts the following file types:
+png and jpg
+tif is no longer supported due to problems on the fronted side
+It is not sufficient to rename the file. For example, if you simply rename a file maze.tif to maze.png this will also be refused, a wrong file ending is not sufficient.
