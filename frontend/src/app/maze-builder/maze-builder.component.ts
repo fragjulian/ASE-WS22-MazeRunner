@@ -36,13 +36,16 @@ export class MazeBuilderComponent {
   canvas: HTMLCanvasElement | undefined;
   context: CanvasRenderingContext2D | undefined;
   colorPicker: HTMLElement | undefined;
+  wallColor: HTMLSpanElement | undefined;
+  obstacleColor: HTMLSpanElement | undefined;
+  otherColor: HTMLSpanElement | undefined;
   private walls = new Set<Position>();
   brushColor = this.initialBrushColor;
   pixelSize = 15;
   cursorPosX = 0;
   cursorPosY = 0;
   private currentPath: Position[] = [];
-  private brushColors = this.initialBrushColors;
+  brushColors = this.initialBrushColors;
   selectedBrush = "wall"
 
   isDrawing = false;
@@ -58,7 +61,9 @@ export class MazeBuilderComponent {
     this.context = this.canvas.getContext('2d') ?? undefined;
 
     this.colorPicker = document.getElementById('color-picker') as HTMLElement;
-
+    this.wallColor = document.getElementById('wallColor') as HTMLSpanElement;
+    this.obstacleColor = document.getElementById('obstacleColor') as HTMLSpanElement;
+    this.otherColor = document.getElementById('otherColor') as HTMLSpanElement;
     this.canvas.addEventListener('click', this.handleClick.bind(this));
     this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
@@ -81,8 +86,8 @@ export class MazeBuilderComponent {
       this.brushColor = this.brushColors[1]
     if (this.selectedBrush == "other")
       this.brushColor = this.brushColors[2]
-
   }
+
 
   handleClick(event: MouseEvent) {
     this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
@@ -141,7 +146,6 @@ export class MazeBuilderComponent {
 
   openColorPickerDialog() {
     this.colorPicker!.click();
-    this.saveBrushColor()
   }
 
   private drawPixel(xCoord: number, yCoord: number, color: string) {
@@ -170,7 +174,7 @@ export class MazeBuilderComponent {
   private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
     this.cursorPosX = Math.floor(offsetX / this.pixelSize);
     this.cursorPosY = Math.floor(offsetY / this.pixelSize);
-    this.restoreBrushColor();
+    //this.restoreBrushColor();
     this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
     if (this.selectedBrush == "wall")
       this.walls.add(new Position(this.cursorPosX, this.cursorPosY));

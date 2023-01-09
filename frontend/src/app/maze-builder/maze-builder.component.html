@@ -25,24 +25,35 @@
       </button>
     </div>
     <div aria-label="select brush" class="btn-group me-2" role="group">
-      <input (click)="saveBrushColor()" [(ngModel)]="selectedBrush" checked class="btn-check" id="wall"
+      <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush" checked
+             class="btn-check" id="wall"
              name="paintingType"
              type="radio" value="wall">
       <label class="btn btn-outline-primary" for="wall"><img alt="wall" height="20" src="../../assets/wall.png"
-                                                             width="20"><span class="dot"></span></label>
-      <input (click)="saveBrushColor()" [(ngModel)]="selectedBrush" class="btn-check" id="obstacle" name="paintingType"
+                                                             width="20"><span [style.background-color]="brushColors[0]"
+                                                                              class="colorCircle"
+                                                                              id="wallColor"
+
+      ></span></label>
+      <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
+             class="btn-check" id="obstacle" name="paintingType"
              type="radio"
              value="obstacle">
       <label class="btn btn-outline-primary" for="obstacle"><img alt="obstacle" height="20"
-                                                                 src="../../assets/obstacle.png" width="20"></label>
-      <input (click)="saveBrushColor()" [(ngModel)]="selectedBrush" class="btn-check" id="other" name="paintingType"
+                                                                 src="../../assets/obstacle.png" width="20"><span
+        [style.background-color]="brushColors[1]" class="colorCircle"
+        id="obstacleColor"></span></label>
+      <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
+             class="btn-check" id="other" name="paintingType"
              type="radio"
              value="other">
-      <label class="btn btn-outline-primary" for="other">other</label>
+      <label class="btn btn-outline-primary" for="other">other<span [style.background-color]="brushColors[2]"
+                                                                    class="colorCircle"
+                                                                    id="otherColor"></span></label>
 
     </div>
     <!-- hide the color picker and just open the color picker dialog via the button above -->
-    <input (ngModelChange)="saveBrushColor()" [(ngModel)]="brushColor" id="color-picker" type="color"/>
+    <input [(ngModel)]="brushColor" id="color-picker" type="color"/>
 
   </div>
   <a href="https://www.flaticon.com/free-icons/wall" title="wall icons">Wall icons created by Good Ware - Flaticon</a>
