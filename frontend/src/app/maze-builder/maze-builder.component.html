@@ -29,7 +29,7 @@
              name="paintingType"
              type="radio" value="wall">
       <label class="btn btn-outline-primary" for="wall"><img alt="wall" height="20" src="../../assets/wall.png"
-                                                             width="20"></label>
+                                                             width="20"><span class="dot"></span></label>
       <input (click)="saveBrushColor()" [(ngModel)]="selectedBrush" class="btn-check" id="obstacle" name="paintingType"
              type="radio"
              value="obstacle">
@@ -45,4 +45,7 @@
     <input (ngModelChange)="saveBrushColor()" [(ngModel)]="brushColor" id="color-picker" type="color"/>
 
   </div>
+  <a href="https://www.flaticon.com/free-icons/wall" title="wall icons">Wall icons created by Good Ware - Flaticon</a>
+  <a href="https://www.flaticon.com/free-icons/obstacle" title="obstacle icons">Obstacle icons created by Andrejs Kirma
+    - Flaticon</a>
 </div>
