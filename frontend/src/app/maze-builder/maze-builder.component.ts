@@ -184,9 +184,9 @@ export class MazeBuilderComponent {
 
   private clearCurrentPath() {
     for (let current of this.currentPath) {
-      if (this.setHasPosition(this.walls, current)) {//only clear pixels where no wall has been drawn notice: has not correctly returning
+      if (this.positionIncludedInSet(this.walls, current)) {//only clear pixels where no wall has been drawn notice: has not correctly returning
         this.drawPixel(current.x * this.pixelSize, current.y * this.pixelSize, this.brushColors[0]);//redraw wall
-      } else if (this.setHasPosition(this.obstacles, current))
+      } else if (this.positionIncludedInSet(this.obstacles, current))
         this.drawPixel(current.x * this.pixelSize, current.y * this.pixelSize, this.brushColors[1]);//redraw wall
       else {
         this.context!.clearRect(current.x * this.pixelSize, current.y * this.pixelSize, this.pixelSize, this.pixelSize);
@@ -196,7 +196,7 @@ export class MazeBuilderComponent {
   }
 
   //unfortunately the has method of ts sets does not use the equals method
-  private setHasPosition(set: Set<Position>, position: Position): boolean {
+  private positionIncludedInSet(set: Set<Position>, position: Position): boolean {
     for (const position1 of set) {
       if (position1.equals(position))
         return true;
