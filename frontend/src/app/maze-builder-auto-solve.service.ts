@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {Position} from "./maze-builder/maze-builder.component";
 import {catchError} from "rxjs";
+import {Position} from "./Position";
 
 @Injectable({
   providedIn: 'root'
