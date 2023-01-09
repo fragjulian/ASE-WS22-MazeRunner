@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {MazeBuilderAutoSolveService} from "../maze-builder-auto-solve.service";
 
-class Position {
+export class Position {
   x: number;
   y: number;
 
@@ -50,7 +50,7 @@ export class MazeBuilderComponent {
   isDrawing = false;
   private obstacles = new Set<Position>();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private mazeBuilderAutoSolve: MazeBuilderAutoSolveService) {
   }
 
   ngOnInit() {
@@ -126,17 +126,10 @@ export class MazeBuilderComponent {
       walls: Array.from(this.walls.values()),
       obstacles: Array.from(this.obstacles.values())
     }
-    this.httpClient.post(`http://localhost:8081/api/maze/path?sizeX=${this.canvas!.width / this.pixelSize}&sizeY=${this.canvas!.height / this.pixelSize}`, returnObject, {
-      observe: 'response',
-      responseType: 'json'
-    })
-      .subscribe((response) => {
-
-          if (response.status === 200 && response.body != null && 'path' in response.body) {
-            console.log(response.body);
-            this.postResponse = response;
-            this.drawPath();
-          }
+    this.mazeBuilderAutoSolve.downloadSolutionPath(this.canvas!.width / this.pixelSize, this.canvas!.height / this.pixelSize, this.walls, this.obstacles)
+      .subscribe((response: any) => {//todo use angular to directly convert this to array and not use any
+          this.postResponse = response;
+          this.drawPath();
         }
       );
   }
