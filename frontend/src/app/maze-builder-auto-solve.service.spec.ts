@@ -1,12 +1,15 @@
 import {TestBed} from '@angular/core/testing';
 
 import {MazeBuilderAutoSolveService} from './maze-builder-auto-solve.service';
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('MazeBuilderAutoSolveService', () => {
   let service: MazeBuilderAutoSolveService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule]
+    });
     service = TestBed.inject(MazeBuilderAutoSolveService);
   });
 
