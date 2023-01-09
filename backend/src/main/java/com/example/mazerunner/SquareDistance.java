@@ -25,8 +25,9 @@ public class SquareDistance implements DistanceMetric {
 
         List<Position> recursiveResult = new LinkedList<>();
         for (Position resultPosition : result) {
-            recursiveResult.addAll(getNeighbouringPixels(resultPosition, radius - 1, width, height).stream().filter(p -> !recursiveResult.contains(p) && !p.equals(position)).toList());
-
+            recursiveResult.addAll(
+                    getNeighbouringPixels(resultPosition, radius - 1, width, height)
+                            .stream().filter(p -> !recursiveResult.contains(p) && !p.equals(position)).toList());
         }
         result.addAll(recursiveResult.stream().filter(p -> !result.contains(p)).toList());
         return result;
