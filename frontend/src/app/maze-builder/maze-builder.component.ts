@@ -134,17 +134,20 @@ export class MazeBuilderComponent {
 
           if (response.status === 200 && response.body != null && 'path' in response.body) {
             console.log(response.body);
-            this.clearCurrentPath();
-            this.postResponse = response
-            this.currentPath = [];
-            for (let path of this.postResponse.body.path) {
-              this.currentPath.push(new Position(path.x, path.y));
-
-              this.drawPixel(path.x, path.y, 'red')
-            }
+            this.postResponse = response;
+            this.drawPath();
           }
         }
       );
+  }
+
+  drawPath() {
+    this.clearCurrentPath();
+    this.currentPath = [];
+    for (let path of this.postResponse.body.path) {
+      this.currentPath.push(new Position(path.x, path.y));
+      this.drawPixel(path.x, path.y, 'red')
+    }
   }
 
   openColorPickerDialog() {
