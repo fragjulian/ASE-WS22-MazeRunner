@@ -1,5 +1,8 @@
 package com.example.mazerunner;
 
+/**
+ * This class (setWalls and setObstacles) is used by spring when accepting the post-request with the positions of obstacles and walls in json form. The other methods in the backend can then use this class to retrieve this information without any additional changes.
+ */
 public class JsonWallDetector implements WallDetector {
     private Position[] walls;
     private int safetyDistance;
@@ -11,10 +14,6 @@ public class JsonWallDetector implements WallDetector {
 
     public void setWalls(Position[] positions) {
         this.walls = positions;
-        /*this.walls=new boolean[100][100];
-        for (Position position:positions) {
-            this.walls[position.getX()][position.getY()]=true;
-        }*/
     }
 
     public void setSafetyDistance(int safetyDistance) {
@@ -25,9 +24,6 @@ public class JsonWallDetector implements WallDetector {
 
     public void setObstacles(Position[] positions) {
         this.obstacles = positions;
-       /* for (Position position:positions) {
-            this.obstacles[position.getX()][position.getY()]=true;
-        }*/
     }
 
     public void setDistanceMetric(DistanceMetric distanceMetric) {
