@@ -10,7 +10,7 @@ describe('MazeBuilderComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ MazeBuilderComponent ],
-      imports: [ FormsModule ]
+      imports: [FormsModule]
     })
     .compileComponents();
 

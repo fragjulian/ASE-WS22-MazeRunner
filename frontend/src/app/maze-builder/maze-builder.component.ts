@@ -1,4 +1,7 @@
 import {Component} from '@angular/core';
+import {MazeBuilderAutoSolveService} from "../maze-builder-auto-solve.service";
+import {Position} from "../Position";
+
 
 @Component({
   selector: 'app-maze-canvas',
@@ -8,22 +11,32 @@ import {Component} from '@angular/core';
 export class MazeBuilderComponent {
 
   private readonly initialBrushColor = 'black';
+  private readonly initialBrushColors = ['black', 'gray', 'green'];
 
   // usually the left mouse button
   private readonly primaryMouseButton = 1;
 
   private readonly mazeDefaultFileName = 'my-maze.png';
-
   canvas: HTMLCanvasElement | undefined;
   context: CanvasRenderingContext2D | undefined;
   colorPicker: HTMLElement | undefined;
-
+  wallColor: HTMLSpanElement | undefined;
+  obstacleColor: HTMLSpanElement | undefined;
+  otherColor: HTMLSpanElement | undefined;
+  private walls = new Set<Position>();
+  brushColor = this.initialBrushColor;
   pixelSize = 15;
   cursorPosX = 0;
   cursorPosY = 0;
-  brushColor = this.initialBrushColor;
+  private currentPath: Position[] = [];
+  brushColors = this.initialBrushColors;
+  selectedBrush = "wall"
 
   isDrawing = false;
+  private obstacles = new Set<Position>();
+
+  constructor(private mazeBuilderAutoSolve: MazeBuilderAutoSolveService) {
+  }
 
   ngOnInit() {
     this.canvas = document.getElementById('maze-canvas') as HTMLCanvasElement;
@@ -32,12 +45,33 @@ export class MazeBuilderComponent {
     this.context = this.canvas.getContext('2d') ?? undefined;
 
     this.colorPicker = document.getElementById('color-picker') as HTMLElement;
-
+    this.wallColor = document.getElementById('wallColor') as HTMLSpanElement;
+    this.obstacleColor = document.getElementById('obstacleColor') as HTMLSpanElement;
+    this.otherColor = document.getElementById('otherColor') as HTMLSpanElement;
     this.canvas.addEventListener('click', this.handleClick.bind(this));
     this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
     this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
   }
+
+  saveBrushColor() {
+    if (this.selectedBrush == "wall")
+      this.brushColors[0] = this.brushColor;
+    if (this.selectedBrush == "obstacles")
+      this.brushColors[1] = this.brushColor
+    if (this.selectedBrush == "other")
+      this.brushColors[2] = this.brushColor
+  }
+
+  restoreBrushColor() {
+    if (this.selectedBrush == "wall")
+      this.brushColor = this.brushColors[0];
+    if (this.selectedBrush == "obstacle")
+      this.brushColor = this.brushColors[1]
+    if (this.selectedBrush == "other")
+      this.brushColor = this.brushColors[2]
+  }
+
 
   handleClick(event: MouseEvent) {
     this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
@@ -61,25 +95,48 @@ export class MazeBuilderComponent {
 
   handleMouseUp(event: MouseEvent) {
     this.isDrawing = false;
-  }
-
-  private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
-    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
-    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
-    this.drawPixel(this.cursorPosX, this.cursorPosY);
-  }
-
-  private drawPixel(xCoord: number, yCoord: number) {
-    this.context!.fillStyle = this.brushColor;
-    const startX = xCoord * this.pixelSize;
-    const startY = yCoord * this.pixelSize;
-    this.context!.fillRect(startX, startY, this.pixelSize, this.pixelSize);
+    this.getSolvedPath();//automatically get and draw the solved path in the maze editor
   }
 
   clearMaze() {
     const width = this.canvas!.width;
     const height = this.canvas!.height;
     this.context!.clearRect(0, 0, width, height);
+    this.walls = new Set<Position>();
+    this.obstacles = new Set<Position>();
+  }
+
+  getSolvedPath() {
+    console.log("getting solved path");
+    //var returnObject={walls:this.walls}
+    let returnObject = {
+      walls: Array.from(this.walls.values()),
+      obstacles: Array.from(this.obstacles.values())
+    }
+    this.mazeBuilderAutoSolve.downloadSolutionPath(this.canvas!.width / this.pixelSize, this.canvas!.height / this.pixelSize, this.walls, this.obstacles)
+      .subscribe((response: any) => //todo use angular to directly convert this to array and not use any
+        this.drawPath(response.body.path)
+      );
+  }
+
+  drawPath(positions: Position[]) {
+    this.clearCurrentPath();
+    this.currentPath = [];
+    for (let path of positions) {
+      this.currentPath.push(new Position(path.x, path.y));
+      this.drawPixel(path.x, path.y, 'red')
+    }
+  }
+
+  openColorPickerDialog() {
+    this.colorPicker!.click();
+  }
+
+  private drawPixel(xCoord: number, yCoord: number, color: string) {
+    this.context!.fillStyle = color;
+    const startX = xCoord * this.pixelSize;
+    const startY = yCoord * this.pixelSize;
+    this.context!.fillRect(startX, startY, this.pixelSize, this.pixelSize);
   }
 
   exportMazeAsImage() {
@@ -98,7 +155,36 @@ export class MazeBuilderComponent {
     this.context!.strokeRect(0, 0, width, height);
   }
 
-  openColorPickerDialog() {
-    this.colorPicker!.click();
+  private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
+    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
+    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
+    //this.restoreBrushColor();
+    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
+    if (this.selectedBrush == "wall")
+      this.walls.add(new Position(this.cursorPosX, this.cursorPosY));
+    if (this.selectedBrush == "obstacle")
+      this.obstacles.add(new Position(this.cursorPosX, this.cursorPosY));
+  }
+
+  private clearCurrentPath() {
+    for (let current of this.currentPath) {
+      if (this.positionIncludedInSet(this.walls, current)) {//only clear pixels where no wall has been drawn notice: has not correctly returning
+        this.drawPixel(current.x * this.pixelSize, current.y * this.pixelSize, this.brushColors[0]);//redraw wall
+      } else if (this.positionIncludedInSet(this.obstacles, current))
+        this.drawPixel(current.x * this.pixelSize, current.y * this.pixelSize, this.brushColors[1]);//redraw wall
+      else {
+        this.context!.clearRect(current.x * this.pixelSize, current.y * this.pixelSize, this.pixelSize, this.pixelSize);
+      }
+    }
+
+  }
+
+  //unfortunately the has method of ts sets does not use the equals method
+  private positionIncludedInSet(set: Set<Position>, position: Position): boolean {
+    for (const position1 of set) {
+      if (position1.equals(position))
+        return true;
+    }
+    return false;
   }
 }
