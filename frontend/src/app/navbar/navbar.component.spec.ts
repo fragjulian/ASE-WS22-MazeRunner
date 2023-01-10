@@ -83,4 +83,55 @@ describe('NavbarNewComponent', () => {
     expect(btn.innerHTML).toBe('About');
   });
 
+  it('home button should link to home page', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-home');
+    expect(btn.getAttribute('routerLink')).toBe('');
+  });
+
+  it('builder button should link to builder page', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-builder');
+    expect(btn.getAttribute('routerLink')).toBe('builder');
+  });
+
+  it('colorpicker button should link to colorpicker page', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-colorpicker');
+    expect(btn.getAttribute('routerLink')).toBe('colorpicker');
+  });
+
+  it('about button should link to about page', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-about');
+    expect(btn.getAttribute('routerLink')).toBe('about');
+  });
+
+  it('home button should have correct uitestid attribute', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-home');
+    expect(btn.getAttribute('uitestid')).toBe('nav-home');
+  });
+
+  it('builder button should have correct uitestid attribute', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-builder');
+    expect(btn.getAttribute('uitestid')).toBe('nav-builder');
+  });
+
+  it('colorpicker button should have correct uitestid attribute', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-colorpicker');
+    expect(btn.getAttribute('uitestid')).toBe('nav-colorpicker');
+  });
+
+  it('about button should have correct uitestid attribute', () => {
+    const btn = fixture.debugElement.nativeElement.querySelector('#navbar-button-about');
+    expect(btn.getAttribute('uitestid')).toBe('nav-about');
+  });
+
+  it('navbar should have primary color', () => {
+    const navbar = fixture.debugElement.nativeElement.querySelector('#navbar-toolbar');
+    expect(navbar.getAttribute('color')).toBe('primary');
+  });
+
+  it('navbar should have correct class', () => {
+    const navbar = fixture.debugElement.nativeElement.querySelector('#navbar-toolbar');
+    expect(navbar.classList).toContain('flex-container');
+    expect(navbar.classList).toContain('mat-elevation-z4');
+  });
+
 });

@@ -11,3 +11,16 @@ h1 {
   padding-left: 30px;
   max-width: 640px;
 }
+
+::ng-deep .widget-container > span {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+::ng-deep .flex-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

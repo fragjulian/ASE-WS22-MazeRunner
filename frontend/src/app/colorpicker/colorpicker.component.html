@@ -1,28 +1,51 @@
-<!--// Source for Image Picker: https://stackblitz.com/edit/angular-image-color-picker?file=src%2Fapp%2Fapp.component.css,src%2Fapp%2Fimgcol%2Fimgcol.component.html,src%2Fapp%2Fimgcol%2Fimgcol.component.ts,package.json-->
-<h1 id="colorpicker-heading">Click on the image to get the color of the wall and the obstacles.</h1>
+<!-- Source for Image Picker: https://stackblitz.com/edit/angular-image-color-picker?file=src%2Fapp%2Fapp.component.css,src%2Fapp%2Fimgcol%2Fimgcol.component.html,src%2Fapp%2Fimgcol%2Fimgcol.component.ts,package.json-->
+<!-- This code creates a color picker tool that allows users to select a color from an image. -->
+<div class="container">
 
+  <br>
+
+  <span class="colorpicker-heading">Color Picker</span>
+  <br>
+<p>Click on the image to get the color (RGB value) of the wall and the obstacles.</p>
+  <br>
 <body id="colorpicker-body">
 
-  <input id="colorpicker-body-input" type='file' accept="image/*" (change)="readUrl($event)"><br/><br/>
+<!-- The file input element allows the user to select an image file.
+     When the user selects a file, the "readUrl" function is called. -->
 
-  <div class="main">
 
-    <canvas width="500" height="400" #canvasval class="hideData" [class.displayData]="displayData"
+
+<label for="images" class="drop-container">
+  <p class="drop-title">Drop png/jpeg here</p>
+  <input id="images" type='file' accept="image/png, image/jpeg" (change)="readUrl($event)"><br/><br/>
+</label>
+
+<br>
+
+<div class="main">
+
+  <!-- The canvas element is used to display the selected image. -->
+  <canvas width="500" height="400" #canvasval class="hideData" [class.displayData]="displayData"
           (click)="getPixel($event)">
-    </canvas>
+  </canvas>
 
-    <div class="data hideData" [class.displayData]="displayData">
+  <!-- The data display element contains the color preview and the RGB value of the selected color. -->
+  <div class="data hideData" [class.displayData]="displayData">
 
-      <h2>Preview</h2>
+    <h2>Preview</h2>
 
-      <div #colboxval class="colorval" [class.displayCol]="displayCol"></div>
+    <!-- The color box element displays the selected color. -->
+    <div #colboxval class="colorval" [class.displayCol]="displayCol"></div>
 
-      <h2>RGB Value:</h2>
+    <h2>RGB Value:</h2>
 
-      <input type="text" value={{rgbvalue}}>
-
-    </div>
+    <!-- The input element displays the RGB value of the selected color.
+         The value is bound to the "rgbValue" variable. -->
+    <input type="text" value={{rgbValue}}>
 
   </div>
 
+</div>
+
 </body>
+</div>
