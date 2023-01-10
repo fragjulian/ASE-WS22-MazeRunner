@@ -140,7 +140,7 @@ export class RestUploadComponent {
             colorSet.add(color);
           }
 
-          // If the Set has more than x colors, set the error message and return false
+          // If the Set has more than x colors, set the error message and return false. Sets the limit value for the color quantity in the uploaded picture
           if (colorSet.size > 2000) {
             this.errorMessage = 'Error: Image has more than three colors';
             observer.next(false);
