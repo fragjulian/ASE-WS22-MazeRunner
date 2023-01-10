@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
-import {RestService} from "./rest.service";
+import {RestService} from "./Services/rest.service";
 import {Observable, Observer} from 'rxjs';
+import {DownloadImageService} from "./Services/download-image.service";
 
 @Component({
   selector: 'app-rest-upload',
@@ -20,7 +21,7 @@ export class RestUploadComponent {
   showPopup = false;
 
   // Inject the RestService
-  constructor(private rest: RestService) {
+  constructor(private rest: RestService, private downloadService: DownloadImageService) {
   }
 
   // Event handler for when a file is selected
@@ -79,6 +80,9 @@ export class RestUploadComponent {
               this.successResponse = 'Solved Maze';
               blobToBase64(response).then(res => {
                 this.solvedMaze = res;
+                if (typeof res === "string") {
+                  this.downloadService.setSolvedMaze(res);
+                }
               });
               this.showPopup = true;
             },
@@ -98,13 +102,7 @@ export class RestUploadComponent {
 
   // Function to download the solved maze image
   downloadImage() {
-    // Create an anchor element and set its href to the DataURL of the solved maze image
-    const link = document.createElement('a');
-    link.href = this.solvedMaze;
-    // Set the download file name
-    link.download = 'solved-maze.jpg';
-    // Click the link to trigger the download
-    link.click();
+    this.downloadService.downloadImage();
   }
 
   checkImage(image: File): Observable<boolean> {
