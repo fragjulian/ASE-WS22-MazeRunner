@@ -5,7 +5,7 @@ name: Acceptance testing
 on: 
   push:
     branches:
-      #- 'FE-Bugfix-Issue#51' # only for testing
+      #- 'Jmeter' # only for testing
       - main
   pull_request:
     branches:
@@ -46,9 +46,15 @@ jobs:
     - name: Build and analyze with sonarcloud
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_BACKEND }}
       # for java code SonarCloud analysis can be triggered through maven
-      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner
+      run: mvn -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Pcoverage #-Dsonar.projectKey=fragjulian_ASE-WS22-MazeRunner not needed?
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        junit_files: "./backend/target/surefire-reports/TEST-*.xml"
+        check_name: "Backend SonarCloud tests"
 
   sonarcloud-frontend:
     name: Sonar analyze frontend
@@ -77,11 +83,17 @@ jobs:
         projectBaseDir: ./frontend # base directory has to be defined
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_FRONTEND }}
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v2
+      if: always()
+      with:
+        junit_files: "./frontend/reports/junit/**/junit.xml"
+        check_name: "Frontend SonarCloud tests"
+  
   selenium:
     name: UI testing
-    if : github.event_name == 'pull_request' # || github.ref == 'refs/heads/FE-Bugfix-Issue#51' # only for testing
+    if : github.event_name == 'pull_request' # || github.ref == 'refs/heads/CI-CD-Sonar-Issue#62' # only for testing
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code from repo
@@ -122,9 +134,43 @@ jobs:
       - name: Run Selenium tests locally
         working-directory: ./selenium
         run: "mvn -DURL=http://localhost: -DPORT=4200 clean test" #4200 default port
-      - name: Test Reporter
-        uses: dorny/test-reporter@v1.4.3
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
         with:
-          name: Selenium test report
-          path: "./selenium/target/surefire-reports/TEST-*.xml"
-          reporter: java-junit
+          junit_files: "./selenium/target/surefire-reports/TEST-*.xml"
+          check_name: "Selenium UI tests"
+
+  jmeter:
+    name: Performance testing
+    if: github.event_name == 'pull_request' # || github.ref == 'refs/heads/Jmeter' # only for testing
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code from repo
+        uses: actions/checkout@v3
+      - name: Backend setup
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Cache local Maven repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Start backend locally # in the background, wait a bit
+        working-directory: ./backend
+        run: |
+          mvn spring-boot:run -Dspring-boot.run.jvmArguments="-Xms1024m -Xmx8192m" &
+          sleep 10
+      - name: Run performance tests
+        working-directory: ./jmeter
+        run: mvn clean verify
+      - name: Upload Results
+        uses: actions/upload-artifact@v3
+        with:
+          name: jmeter-results
+          path: ./jmeter/target/jmeter
