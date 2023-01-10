@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
-
 import { DownloadImageService } from './download-image.service';
 
 describe('DownloadImageService', () => {
   let service: DownloadImageService;
+  const imgUrl = 'data:image/jpeg;base64,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';
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
@@ -12,5 +12,28 @@ describe('DownloadImageService', () => {
 
   it('should be created', () => {
     expect(service).toBeTruthy();
+  });
+
+  it('should set the solvedMaze property when the setSolvedMaze method is called', () => {
+    service.setSolvedMaze(imgUrl);
+    expect(service.solvedMaze).toBe(imgUrl);
+  });
+
+  it('should download the image when the downloadImage method is called', () => {
+    const link: any = {
+      href: '',
+      download: '',
+      click: () => {}
+    };
+
+    spyOn(document, 'createElement').and.returnValue(link);
+    spyOn(link, 'click');
+
+    service.setSolvedMaze(imgUrl);
+    service.downloadImage();
+
+    expect(link.href).toBe(imgUrl);
+    expect(link.download).toBe('solved-maze.jpg');
+    expect(link.click).toHaveBeenCalled();
   });
 });

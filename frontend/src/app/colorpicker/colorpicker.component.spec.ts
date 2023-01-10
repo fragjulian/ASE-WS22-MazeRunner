@@ -61,5 +61,4 @@ describe('ColorpickerComponent', () => {
     expect(component.getPixel).toHaveBeenCalled();
   });
 
-
 });
