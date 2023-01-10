@@ -2,25 +2,25 @@
   <span>Draw your maze here</span>
 
   <!-- width and height have to be defined here! -->
-  <canvas id="maze-canvas" width="1200" height="600"></canvas>
+  <canvas height="600" id="maze-canvas" width="1200"></canvas>
 
   <br>
   <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
     <div class="btn-group me-2" role="group">
 
-      <button class="btn btn-outline-danger" type="button" (click)="clearMaze()">
+      <button (click)="clearMaze()" class="btn btn-outline-danger" type="button">
         Clear Maze
       </button>
 
-      <button class="btn btn btn-outline-primary" type="button" (click)="exportMazeAsImage()">
+      <button (click)="exportMazeAsImage()" class="btn btn btn-outline-primary" type="button">
         Export Maze
       </button>
 
-      <button class="btn btn btn-outline-primary" type="button" (click)="drawMazeBorder()">
+      <button (click)="drawMazeBorder()" class="btn btn btn-outline-primary" type="button">
         Draw Border
       </button>
 
-      <button class="btn btn-outline-primary" type="button" (click)="openColorPickerDialog()">
+      <button (click)="openColorPickerDialog()" class="btn btn-outline-primary" type="button">
         Pick Color
       </button>
     </div>
@@ -32,9 +32,7 @@
       <label class="btn btn-outline-primary" for="wall"><img alt="wall" height="20" src="../../assets/wall.png"
                                                              width="20"><span [style.background-color]="brushColors[0]"
                                                                               class="colorCircle"
-                                                                              id="wallColor"
-
-      ></span></label>
+                                                                              id="wallColor"></span></label>
       <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
              class="btn-check" id="obstacle" name="paintingType"
              type="radio"
@@ -53,7 +51,7 @@
 
     </div>
     <!-- hide the color picker and just open the color picker dialog via the button above -->
-    <input [(ngModel)]="brushColor" id="color-picker" type="color"/>
+    <input (change)="saveBrushColor()" [(ngModel)]="brushColor" id="color-picker" type="color"/>
 
   </div>
   <a href="https://www.flaticon.com/free-icons/wall" title="wall icons">Wall icons created by Good Ware - Flaticon</a>
