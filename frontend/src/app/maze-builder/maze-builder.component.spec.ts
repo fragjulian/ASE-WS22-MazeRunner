@@ -2,6 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MazeBuilderComponent} from './maze-builder.component';
 import {FormsModule} from "@angular/forms";
+import {MazeBuilderAutoSolveService} from "../maze-builder-auto-solve.service";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 describe('MazeBuilderComponent', () => {
@@ -10,8 +11,8 @@ describe('MazeBuilderComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MazeBuilderComponent ],
-      imports: [FormsModule, HttpClientTestingModule]
+      declarations: [MazeBuilderComponent],
+      imports: [HttpClientTestingModule, FormsModule, MazeBuilderAutoSolveService]
     })
     .compileComponents();
 

@@ -1,22 +1,7 @@
 import {Component} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
+import {MazeBuilderAutoSolveService} from "../maze-builder-auto-solve.service";
+import {Position} from "../Position";
 
-class Position {
-  x: number;
-  y: number;
-
-  constructor(x: number, y: number) {
-    this.x = x;
-    this.y = y;
-  }
-
-  public equals(obj: Object): boolean {
-    if (obj instanceof Position)
-      return obj.x == this.x && obj.y == this.y;
-
-    return false;
-  }
-}
 
 @Component({
   selector: 'app-maze-canvas',
@@ -26,28 +11,33 @@ class Position {
 export class MazeBuilderComponent {
 
   private readonly initialBrushColor = 'black';
+  private readonly initialBrushColors = ['black', 'gray', 'green'];
 
   // usually the left mouse button
   private readonly primaryMouseButton = 1;
 
   private readonly mazeDefaultFileName = 'my-maze.png';
-  postResponse: any;
-
   canvas: HTMLCanvasElement | undefined;
   context: CanvasRenderingContext2D | undefined;
   colorPicker: HTMLElement | undefined;
+  wallColor: HTMLSpanElement | undefined;
+  obstacleColor: HTMLSpanElement | undefined;
+  otherColor: HTMLSpanElement | undefined;
   private walls = new Set<Position>();
+  brushColor = this.initialBrushColor;
   private startPosition: Position | undefined;
   private goalPosition: Position | undefined;
   pixelSize = 15;
   cursorPosX = 0;
   cursorPosY = 0;
   private currentPath: Position[] = [];
-  brushColor = this.initialBrushColor;
+  brushColors = this.initialBrushColors;
+  selectedBrush = "wall"
 
   isDrawing = false;
+  private obstacles = new Set<Position>();
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private mazeBuilderAutoSolve: MazeBuilderAutoSolveService) {
   }
 
   ngOnInit() {
@@ -57,12 +47,33 @@ export class MazeBuilderComponent {
     this.context = this.canvas.getContext('2d') ?? undefined;
 
     this.colorPicker = document.getElementById('color-picker') as HTMLElement;
-
+    this.wallColor = document.getElementById('wallColor') as HTMLSpanElement;
+    this.obstacleColor = document.getElementById('obstacleColor') as HTMLSpanElement;
+    this.otherColor = document.getElementById('otherColor') as HTMLSpanElement;
     this.canvas.addEventListener('click', this.handleClick.bind(this));
     this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
     this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
   }
+
+  saveBrushColor() {
+    if (this.selectedBrush == "wall")
+      this.brushColors[0] = this.brushColor;
+    if (this.selectedBrush == "obstacles")
+      this.brushColors[1] = this.brushColor
+    if (this.selectedBrush == "other")
+      this.brushColors[2] = this.brushColor
+  }
+
+  restoreBrushColor() {
+    if (this.selectedBrush == "wall")
+      this.brushColor = this.brushColors[0];
+    if (this.selectedBrush == "obstacle")
+      this.brushColor = this.brushColors[1]
+    if (this.selectedBrush == "other")
+      this.brushColor = this.brushColors[2]
+  }
+
 
   handleClick(event: MouseEvent) {
     this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
@@ -94,6 +105,7 @@ export class MazeBuilderComponent {
     const height = this.canvas!.height;
     this.context!.clearRect(0, 0, width, height);
     this.walls = new Set<Position>();
+    this.obstacles = new Set<Position>();
   }
 
   getSolvedPath() {
@@ -105,34 +117,25 @@ export class MazeBuilderComponent {
     //var returnObject={walls:this.walls}
     let returnObject = {
       walls: Array.from(this.walls.values()),
-      obstacles: [new Position(3, 3)]//todo obstacles
+      obstacles: Array.from(this.obstacles.values())
     }
-    this.httpClient.post(`http://localhost:8081/api/maze/path?sizeX=${this.canvas!.width / this.pixelSize}&sizeY=${this.canvas!.height / this.pixelSize}&startX=${this.startPosition.x}&startY=${this.startPosition.y}&goalX=${this.goalPosition.x}&goalY=${this.goalPosition.y}`, returnObject, {//todo set size correctly
-      observe: 'response',
-      responseType: 'json'
-    })
-      .subscribe((response) => {
-
-          if (response.status === 200 && response.body != null && 'path' in response.body) {
-            console.log(response.body);
-            this.clearCurrentPath();
-            this.postResponse = response
-            this.currentPath = [];
-            for (let path of this.postResponse.body.path) {
-              this.currentPath.push(new Position(path.x, path.y));
-
-              this.drawPixel(path.x, path.y, 'red')
-            }
-          }
-        }
+    this.mazeBuilderAutoSolve.downloadSolutionPath(this.canvas!.width / this.pixelSize, this.canvas!.height / this.pixelSize, this.walls, this.obstacles)
+      .subscribe((response: any) => //todo use angular to directly convert this to array and not use any
+        this.drawPath(response.body.path)
       );
   }
 
-  private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
-    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
-    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
-    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
-    this.walls.add(new Position(this.cursorPosX, this.cursorPosY));
+  drawPath(positions: Position[]) {
+    this.clearCurrentPath();
+    this.currentPath = [];
+    for (let path of positions) {
+      this.currentPath.push(new Position(path.x, path.y));
+      this.drawPixel(path.x, path.y, 'red')
+    }
+  }
+
+  openColorPickerDialog() {
+    this.colorPicker!.click();
   }
 
   private drawStartAtCurrentMousePosition(offsetX: number, offsetY: number) {
@@ -178,18 +181,36 @@ export class MazeBuilderComponent {
     this.context!.strokeRect(0, 0, width, height);
   }
 
-  openColorPickerDialog() {
-    this.colorPicker!.click();
+  private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
+    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
+    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
+    //this.restoreBrushColor();
+    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
+    if (this.selectedBrush == "wall")
+      this.walls.add(new Position(this.cursorPosX, this.cursorPosY));
+    if (this.selectedBrush == "obstacle")
+      this.obstacles.add(new Position(this.cursorPosX, this.cursorPosY));
   }
 
   private clearCurrentPath() {
     for (let current of this.currentPath) {
-      if (!this.walls.has(current)) {//only clear pixels where no wall has been drawn todo has not correctly returning
+      if (this.positionIncludedInSet(this.walls, current)) {//only clear pixels where no wall has been drawn notice: has not correctly returning
+        this.drawPixel(current.x * this.pixelSize, current.y * this.pixelSize, this.brushColors[0]);//redraw wall
+      } else if (this.positionIncludedInSet(this.obstacles, current))
+        this.drawPixel(current.x * this.pixelSize, current.y * this.pixelSize, this.brushColors[1]);//redraw wall
+      else {
         this.context!.clearRect(current.x * this.pixelSize, current.y * this.pixelSize, this.pixelSize, this.pixelSize);
-      } else {
-        this.drawPixel(current.x * this.pixelSize, current.y * this.pixelSize, this.brushColor);//redraw wall
       }
     }
 
+  }
+
+  //unfortunately the has method of ts sets does not use the equals method
+  private positionIncludedInSet(set: Set<Position>, position: Position): boolean {
+    for (const position1 of set) {
+      if (position1.equals(position))
+        return true;
+    }
+    return false;
   }
 }
