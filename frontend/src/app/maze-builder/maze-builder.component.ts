@@ -11,7 +11,7 @@ import {Position} from "../Position";
 export class MazeBuilderComponent {
 
   private readonly initialBrushColor = 'black';
-  private readonly initialBrushColors = ['black', 'gray', 'green'];
+  private readonly initialBrushColors = ['black', 'gray', 'green', 'purple', 'blue'];
 
   // usually the left mouse button
   private readonly primaryMouseButton = 1;
@@ -22,7 +22,7 @@ export class MazeBuilderComponent {
   colorPicker: HTMLElement | undefined;
   wallColor: HTMLSpanElement | undefined;
   obstacleColor: HTMLSpanElement | undefined;
-  otherColor: HTMLSpanElement | undefined;
+  deleteColor: HTMLSpanElement | undefined;
   private walls = new Set<Position>();
   brushColor = this.initialBrushColor;
   private startPosition: Position | undefined;
@@ -49,7 +49,7 @@ export class MazeBuilderComponent {
     this.colorPicker = document.getElementById('color-picker') as HTMLElement;
     this.wallColor = document.getElementById('wallColor') as HTMLSpanElement;
     this.obstacleColor = document.getElementById('obstacleColor') as HTMLSpanElement;
-    this.otherColor = document.getElementById('otherColor') as HTMLSpanElement;
+    this.deleteColor = document.getElementById('deleteColor') as HTMLSpanElement;
     this.canvas.addEventListener('click', this.handleClick.bind(this));
     this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
@@ -60,9 +60,14 @@ export class MazeBuilderComponent {
     if (this.selectedBrush == "wall")
       this.brushColors[0] = this.brushColor;
     if (this.selectedBrush == "obstacles")
-      this.brushColors[1] = this.brushColor
-    if (this.selectedBrush == "other")
-      this.brushColors[2] = this.brushColor
+      this.brushColors[1] = this.brushColor;
+    if (this.selectedBrush == "delete")
+      this.brushColors[2] = this.brushColor;
+    if (this.selectedBrush == "start")
+      this.brushColors[3] = this.brushColor;
+    if (this.selectedBrush == "goal")
+      this.brushColors[4] = this.brushColor;
+
   }
 
   restoreBrushColor() {
@@ -70,8 +75,12 @@ export class MazeBuilderComponent {
       this.brushColor = this.brushColors[0];
     if (this.selectedBrush == "obstacle")
       this.brushColor = this.brushColors[1]
-    if (this.selectedBrush == "other")
+    if (this.selectedBrush == "delete")
       this.brushColor = this.brushColors[2]
+    if (this.selectedBrush == "start")
+      this.brushColor = this.brushColors[3]
+    if (this.selectedBrush == "goal")
+      this.brushColor = this.brushColors[4]
   }
 
 
@@ -106,6 +115,8 @@ export class MazeBuilderComponent {
     this.context!.clearRect(0, 0, width, height);
     this.walls = new Set<Position>();
     this.obstacles = new Set<Position>();
+    this.startPosition = undefined;
+    this.goalPosition = undefined;
   }
 
   getSolvedPath() {
@@ -113,13 +124,14 @@ export class MazeBuilderComponent {
       console.log("No start or goal position set");
       return;
     }
+
     console.log("getting solved path");
     //var returnObject={walls:this.walls}
     let returnObject = {
       walls: Array.from(this.walls.values()),
       obstacles: Array.from(this.obstacles.values())
     }
-    this.mazeBuilderAutoSolve.downloadSolutionPath(this.canvas!.width / this.pixelSize, this.canvas!.height / this.pixelSize, this.walls, this.obstacles)
+    this.mazeBuilderAutoSolve.downloadSolutionPath(this.canvas!.width / this.pixelSize, this.canvas!.height / this.pixelSize, this.walls, this.obstacles, this.startPosition.x, this.startPosition.y, this.goalPosition.x, this.goalPosition.y)
       .subscribe((response: any) => //todo use angular to directly convert this to array and not use any
         this.drawPath(response.body.path)
       );
@@ -138,23 +150,23 @@ export class MazeBuilderComponent {
     this.colorPicker!.click();
   }
 
-  private drawStartAtCurrentMousePosition(offsetX: number, offsetY: number) {
+  private drawStartAtCurrentMousePosition(posX: number, posY: number) {
     if (this.startPosition != undefined) {
       this.context!.clearRect(this.startPosition.x * this.pixelSize, this.startPosition.y * this.pixelSize, this.pixelSize, this.pixelSize);
     }
-    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
-    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
-    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
+    this.cursorPosX = posX;
+    this.cursorPosY = posY;
+    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColors[3]);
     this.startPosition = new Position(this.cursorPosX, this.cursorPosY);
   }
 
-  private drawGoalAtCurrentMousePosition(offsetX: number, offsetY: number) {
+  private drawGoalAtCurrentMousePosition(posX: number, posY: number) {
     if (this.goalPosition != undefined) {
       this.context!.clearRect(this.goalPosition.x * this.pixelSize, this.goalPosition.y * this.pixelSize, this.pixelSize, this.pixelSize);
     }
-    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
-    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
-    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
+    this.cursorPosX = posX;
+    this.cursorPosY = posY;
+    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColors[4]);
     this.goalPosition = new Position(this.cursorPosX, this.cursorPosY);
   }
 
@@ -163,6 +175,28 @@ export class MazeBuilderComponent {
     const startX = xCoord * this.pixelSize;
     const startY = yCoord * this.pixelSize;
     this.context!.fillRect(startX, startY, this.pixelSize, this.pixelSize);
+  }
+
+  private clearPixel(xCoord: number, yCoord: number) {
+    let pos = new Position(xCoord, yCoord);
+    if (this.startPosition?.equals(pos) || this.goalPosition?.equals(pos)) {
+      return;
+    }
+    this.context!.clearRect(xCoord * this.pixelSize, yCoord * this.pixelSize, this.pixelSize, this.pixelSize);
+
+    //have to go through each element in walls and obstacles, due to fact that delete works only if the objects are the same (not equal)
+    this.walls.forEach((wallPos) => {
+      if (wallPos.equals(pos)) {
+        console.log(true);
+        this.walls.delete(wallPos);
+      }
+    });
+    this.obstacles.forEach((obstPos) => {
+      if (obstPos.equals(pos)) {
+        console.log(true);
+        this.walls.delete(obstPos);
+      }
+    });
   }
 
   exportMazeAsImage() {
@@ -184,12 +218,21 @@ export class MazeBuilderComponent {
   private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
     this.cursorPosX = Math.floor(offsetX / this.pixelSize);
     this.cursorPosY = Math.floor(offsetY / this.pixelSize);
-    //this.restoreBrushColor();
-    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
-    if (this.selectedBrush == "wall")
-      this.walls.add(new Position(this.cursorPosX, this.cursorPosY));
-    if (this.selectedBrush == "obstacle")
-      this.obstacles.add(new Position(this.cursorPosX, this.cursorPosY));
+
+    if (this.selectedBrush == "start") {
+      this.drawStartAtCurrentMousePosition(this.cursorPosX, this.cursorPosY);
+    } else if (this.selectedBrush == "goal") {
+      this.drawGoalAtCurrentMousePosition(this.cursorPosX, this.cursorPosY);
+    } else if (this.selectedBrush == "delete") {
+      this.clearPixel(this.cursorPosX, this.cursorPosY);
+    } else {
+      //this.restoreBrushColor();
+      this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColor);
+      if (this.selectedBrush == "wall")
+        this.walls.add(new Position(this.cursorPosX, this.cursorPosY));
+      if (this.selectedBrush == "obstacle")
+        this.obstacles.add(new Position(this.cursorPosX, this.cursorPosY));
+    }
   }
 
   private clearCurrentPath() {

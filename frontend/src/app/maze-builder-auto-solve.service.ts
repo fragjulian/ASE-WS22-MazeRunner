@@ -11,12 +11,12 @@ export class MazeBuilderAutoSolveService {
   constructor(private httpClient: HttpClient) {
   }
 
-  downloadSolutionPath(sizeX: number, sizeY: number, walls: Set<Position>, obstacles: Set<Position>) {
+  downloadSolutionPath(sizeX: number, sizeY: number, walls: Set<Position>, obstacles: Set<Position>, startX: number, startY: number, goalX: number, goalY: number) {
     let returnObject = {
       walls: Array.from(walls.values()),
       obstacles: Array.from(obstacles.values())
     }
-    return this.httpClient.post<Position[]>(`http://localhost:8081/api/maze/path?sizeX=${sizeX}&sizeY=${sizeY}`, returnObject, {
+    return this.httpClient.post<Position[]>(`http://localhost:8081/api/maze/path?sizeX=${sizeX}&sizeY=${sizeY}&startX=${startX}&startY=${startY}&goalX=${goalX}&goalY=${goalY}`, returnObject, {
       observe: 'response',
       responseType: 'json'
     }).pipe(

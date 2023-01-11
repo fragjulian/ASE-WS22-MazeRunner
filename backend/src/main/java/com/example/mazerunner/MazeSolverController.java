@@ -73,8 +73,6 @@ public class MazeSolverController {
             File temp = File.createTempFile("maze", ".temp");
             file.transferTo(temp);
             BufferedImage bufferedImage = ImageIO.read(temp);
-            Integer startColor = mazeUtilsFactory.getStartColor(startColorParameter);
-            Integer goalColor = mazeUtilsFactory.getGoalColor(goalColorParameter);
             Maze maze = new MazeParameterBuilder()
                     .setDistanceMetric(distanceMetricParameter)
                     .setHeuristic(heuristicParameter)
@@ -117,7 +115,6 @@ public class MazeSolverController {
                                                                   @RequestParam(name = "startY") int startY,
                                                                   @RequestParam(name = "goalX") int goalX,
                                                                   @RequestParam(name = "goalY") int goalY,
-                                                                  @RequestParam(name = "safetydistance", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
                                                                   @RequestParam(name = "distancemetric", defaultValue = "euclidean", required = false) String distanceMetricParameter,
                                                                   @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
                                                                   @RequestParam(name = "searchStrategy", defaultValue = "depthfirst", required = false) String searchStrategyParameter
