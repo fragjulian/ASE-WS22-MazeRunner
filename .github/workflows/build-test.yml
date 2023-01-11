@@ -12,6 +12,7 @@ on: # run on any push except on main
       - 'README.md'
       - 'doc/**'
       - 'selenium'
+      - 'jmeter'
   #pull_request: # run for every pull request
   #  types: [opened, synchronize, reopened]
 jobs:
@@ -38,12 +39,12 @@ jobs:
             ${{ runner.os }}-maven-
       - name: Build and test  # build with maven
         run: mvn clean test
-      - name: Generate test report  # create test report
-        uses: dorny/test-reporter@v1.4.3
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
         with:
-          name: Backend test report
-          path: "**/surefire-reports/TEST-*.xml"
-          reporter: java-junit
+          junit_files: "./backend/target/surefire-reports/TEST-*.xml"
+          check_name: "Backend build tests"
 
   frontend:
     name: Build and test frontend
@@ -64,4 +65,10 @@ jobs:
           cache-dependency-path: './frontend/package-lock.json'
       - run: npm ci  # install packages
       - run: npm run test:ci # run karma tests
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          junit_files: "./frontend/reports/junit/**/junit.xml"
+          check_name: "Frontend build tests"  
 
