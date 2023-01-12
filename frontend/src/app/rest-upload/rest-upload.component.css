@@ -1,3 +1,4 @@
+
 img{
   max-height:300px;max-width:300px;height:auto;width:auto;
 }
@@ -31,4 +32,8 @@ span {
   font-weight: bold;
   padding-bottom: 10px;
 
+}
+
+.toast-bootstrap-compatibility-fix {
+  opacity:1;
 }

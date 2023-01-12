@@ -2,6 +2,10 @@ import {Component} from '@angular/core';
 import {RestService} from "./Services/rest.service";
 import {Observable, Observer} from 'rxjs';
 import {DownloadImageService} from "./Services/download-image.service";
+import {ToastrService} from "ngx-toastr";
+import DevExpress from "devextreme";
+
+import data = DevExpress.data;
 
 @Component({
   selector: 'app-rest-upload',
@@ -21,7 +25,7 @@ export class RestUploadComponent {
   showPopup = false;
 
   // Inject the RestService
-  constructor(private rest: RestService, private downloadService: DownloadImageService) {
+  constructor(private rest: RestService, private downloadService: DownloadImageService, private toastr: ToastrService) {
   }
 
   // Event handler for when a file is selected
@@ -45,6 +49,7 @@ export class RestUploadComponent {
     this.solvedMaze = null;
     this.errorMessage = null;
     this.showPopup = false;
+
 
     // Create a new FormData object to hold the image and color values
     const transformedImage = new FormData();
@@ -90,6 +95,7 @@ export class RestUploadComponent {
             (error: any) => {
               console.error(error);
               this.errorMessage = error.message;
+              this.toastr.error(this.errorMessage);
             }
           );
         } else {

@@ -17,7 +17,7 @@ import {NgxDropzoneModule} from 'ngx-dropzone';
 import {ColorPickerModule} from 'ngx-color-picker';
 import {ColorpickerComponent} from './colorpicker/colorpicker.component';
 import {RestService} from "./rest-upload/Services/rest.service";
-
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -40,6 +40,7 @@ import {RestService} from "./rest-upload/Services/rest.service";
     FormsModule,
     NgxDropzoneModule,
     ColorPickerModule,
+    ToastrModule.forRoot({ timeOut: 5000, enableHtml: true }),
   ],
   providers: [RestService],
   bootstrap: [AppComponent]
