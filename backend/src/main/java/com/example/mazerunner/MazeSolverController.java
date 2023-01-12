@@ -22,7 +22,7 @@ public class MazeSolverController {
     private static final int IMAGE_TYPE = BufferedImage.TYPE_INT_RGB;
     private static final int PATH_COLOUR = new Color(255, 0, 0).getRGB();
     private static final int DEFAULT_BACKGROUND_COLOR = Color.WHITE.getRGB();
-    private final long MAX_FILE_SIZE = 100000;//max file size allowed for upload
+    private final long MAX_FILE_SIZE = 1000000;//max file size allowed for upload
 
     /**
      * @param file                    multipart file containing the image
