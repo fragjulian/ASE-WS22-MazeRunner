@@ -151,6 +151,10 @@ export class MazeBuilderComponent {
   }
 
   private drawStartAtCurrentMousePosition(posX: number, posY: number) {
+    if (this.positionIncludedInSet(this.walls, new Position(posX, posY))) return;
+    if (this.positionIncludedInSet(this.obstacles, new Position(posX, posY))) return;
+    if (this.goalPosition?.equals(new Position(posX, posY))) return;
+
     if (this.startPosition != undefined) {
       this.context!.clearRect(this.startPosition.x * this.pixelSize, this.startPosition.y * this.pixelSize, this.pixelSize, this.pixelSize);
     }
@@ -161,6 +165,10 @@ export class MazeBuilderComponent {
   }
 
   private drawGoalAtCurrentMousePosition(posX: number, posY: number) {
+    if (this.positionIncludedInSet(this.walls, new Position(posX, posY))) return;
+    if (this.positionIncludedInSet(this.obstacles, new Position(posX, posY))) return;
+    if (this.startPosition?.equals(new Position(posX, posY))) return;
+
     if (this.goalPosition != undefined) {
       this.context!.clearRect(this.goalPosition.x * this.pixelSize, this.goalPosition.y * this.pixelSize, this.pixelSize, this.pixelSize);
     }
@@ -185,18 +193,8 @@ export class MazeBuilderComponent {
     this.context!.clearRect(xCoord * this.pixelSize, yCoord * this.pixelSize, this.pixelSize, this.pixelSize);
 
     //have to go through each element in walls and obstacles, due to fact that delete works only if the objects are the same (not equal)
-    this.walls.forEach((wallPos) => {
-      if (wallPos.equals(pos)) {
-        console.log(true);
-        this.walls.delete(wallPos);
-      }
-    });
-    this.obstacles.forEach((obstPos) => {
-      if (obstPos.equals(pos)) {
-        console.log(true);
-        this.walls.delete(obstPos);
-      }
-    });
+    this.deletePositionsInSet(this.walls, pos);
+    this.deletePositionsInSet(this.obstacles, pos);
   }
 
   exportMazeAsImage() {
@@ -255,5 +253,14 @@ export class MazeBuilderComponent {
         return true;
     }
     return false;
+  }
+
+  private deletePositionsInSet(positions: Set<Position>, position: Position): Set<Position> {
+    positions.forEach((setPos) => {
+      if (setPos.equals(setPos)) {
+        positions.delete(setPos);
+      }
+    });
+    return positions;
   }
 }
