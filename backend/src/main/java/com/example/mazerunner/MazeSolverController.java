@@ -57,7 +57,9 @@ public class MazeSolverController {
                                                  @RequestParam(name = "distancemetric", required = false, defaultValue = "euclidean") String distanceMetricParameter,
                                                  @RequestParam(name = "wallDetector", required = false, defaultValue = "colorwalldetector") String wallDetectorParameter,
                                                  @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
-                                                 @RequestParam(name = "searchStrategy", required = false, defaultValue = "depthfirst") String searchStrategyParameter
+                                                 @RequestParam(name = "searchStrategy", required = false, defaultValue = "depthfirst") String searchStrategyParameter,
+                                                 @RequestParam(name = "startcolor", required = false) String startColorParameter,//unfortunately cannot use the constant here as default due to spring
+                                                 @RequestParam(name = "goalcolor", required = false) String goalColorParameter //unfortunately cannot use the constant here as default due to spring
     ) throws IOException {
         if (file == null || file.isEmpty())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "image parameter must contain a valid maze");
@@ -78,7 +80,9 @@ public class MazeSolverController {
                     .setImageType(IMAGE_TYPE)
                     .setPathColor(PATH_COLOUR)
                     .setBackgroundColor(DEFAULT_BACKGROUND_COLOR)
-                    .setSearchStrategy(searchStrategyParameter).build(bufferedImage);
+                    .setSearchStrategy(searchStrategyParameter)
+                    .setStartColor(startColorParameter)
+                    .setGoalColor(goalColorParameter).build(bufferedImage);
             bufferedImage = maze.getSolvedMaze();
 
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -107,12 +111,23 @@ public class MazeSolverController {
                                                                   @RequestParam(name = "sizeX") int sizeX,
                                                                   @RequestParam(name = "sizeY") int sizeY,
                                                                   @RequestParam(name = "safetydistance", defaultValue = "2", required = false) Integer safetyDistanceParameter,//unfortunately cannot use the constant here as default due to spring
+                                                                  @RequestParam(name = "startX") int startX,
+                                                                  @RequestParam(name = "startY") int startY,
+                                                                  @RequestParam(name = "goalX") int goalX,
+                                                                  @RequestParam(name = "goalY") int goalY,
                                                                   @RequestParam(name = "distancemetric", defaultValue = "euclidean", required = false) String distanceMetricParameter,
                                                                   @RequestParam(name = "heuristic", required = false, defaultValue = "realdistanceheuristic") String heuristicParameter,
                                                                   @RequestParam(name = "searchStrategy", defaultValue = "depthfirst", required = false) String searchStrategyParameter
     ) {
         try {
-            Maze maze = new MazeParameterBuilder().setDistanceMetric(distanceMetricParameter).setSafetyDistance(safetyDistanceParameter).setHeuristic(heuristicParameter).setSearchStrategy(searchStrategyParameter).setWallDetector(wallDetector).build(sizeX,sizeY);
+            Maze maze = new MazeParameterBuilder()
+                    .setDistanceMetric(distanceMetricParameter)
+                    .setSafetyDistance(safetyDistanceParameter)
+                    .setHeuristic(heuristicParameter)
+                    .setSearchStrategy(searchStrategyParameter)
+                    .setWallDetector(wallDetector)
+                    .setStartPosition(new Position(startX, startY))
+                    .setGoalPosition(new Position(goalX, goalY)).build(sizeX,sizeY);
             return CompletableFuture.completedFuture(ResponseEntity.ok(maze.getSolutionPath()));
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(

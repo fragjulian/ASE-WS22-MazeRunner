@@ -12,10 +12,10 @@ public class Maze {
     private final SearchStrategy searchStrategy;
     private final int sizeX;
     private final DistanceMetric distanceMetric;
-    private Position goal;
+    private final Position goal;
     private final int sizeY;
     private BufferedImage bufferedImage;
-    private Position start;
+    private final Position start;
     private boolean[][] walls;
     private static final Color COLOR_TRANSPARENT = new Color(0, 0, 0, 0);
 
@@ -27,10 +27,14 @@ public class Maze {
      * @param wallDetector   any detector to detect walls and obstacles
      * @param imageType      the ImageType of the final image and of pathColor and wallDetector
      * @param pathColor      the color in which you want the path to be painted in ColorSpace of ImageType
-     * @param distanceMetric
+     * @param distanceMetric the metric how distance between two positions is calculated
+     * @param startColor     the color of the start pixel to solve the maze
+     * @param goalColor      the color of the goal pixel to solve the maze
      */
-    public Maze(BufferedImage bufferedImage, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, int imageType, int pathColor, int backgroundColor, DistanceMetric distanceMetric) {
+    public Maze(BufferedImage bufferedImage, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, int imageType, int pathColor, int backgroundColor, DistanceMetric distanceMetric, int startColor, int goalColor) {
         this.heuristic = heuristic;
+        this.start = PositionDetectorColor.getPositionByColor(bufferedImage, startColor);
+        this.goal = PositionDetectorColor.getPositionByColor(bufferedImage, goalColor);
         this.wallDetector = wallDetector;
         this.searchStrategy = searchStrategy;
         this.pathColor = pathColor;
@@ -40,7 +44,7 @@ public class Maze {
         sizeY = bufferedImage.getHeight();
     }
 
-    public Maze(int sizeX, int sizeY, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, DistanceMetric distanceMetric) {
+    public Maze(int sizeX, int sizeY, Heuristic heuristic, WallDetector wallDetector, SearchStrategy searchStrategy, DistanceMetric distanceMetric, Position start, Position goal) {
         this.sizeY = sizeY;
         this.sizeX = sizeX;
         this.wallDetector = wallDetector;
@@ -48,6 +52,8 @@ public class Maze {
         this.distanceMetric = distanceMetric;
         this.heuristic = heuristic;
         this.pathColor = 0;//todo remove
+        this.start = start;
+        this.goal = goal;
     }
 
     private void setBufferedImage(BufferedImage bufferedImage, int imageType, int backgroundColor) {
@@ -87,10 +93,6 @@ public class Maze {
 
     public Path getSolutionPath() {
         walls = wallDetector.detectWall(this);
-        //todo set targets
-        goal = new Position(sizeX - 5, sizeY - 5);
-        //todo set start
-        start = new Position(5, 5);
         heuristic.calculateHeuristic(sizeX, sizeY, start, goal, walls);
         return searchStrategy.calculateShortestPath(this);
     }

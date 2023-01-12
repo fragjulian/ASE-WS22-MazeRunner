@@ -12,6 +12,10 @@ public class MazeParameterBuilder {
     private int imageType;
     private int pathColor;
     private int backgroundColor;
+    private int startColor;
+    private int goalColor;
+    private Position startPos;
+    private Position goalPos;
     private DistanceMetric distanceMetric;
 
     public MazeParameterBuilder setWallDetector(String wallDetectorParameter, String wallColorParameter, String obstacleColorParameter, Integer safetyDistance) {
@@ -54,6 +58,26 @@ public class MazeParameterBuilder {
         return this;
     }
 
+    public MazeParameterBuilder setStartColor(String startColor) {
+        this.startColor = mazeUtilsFactory.getStartColor(startColor);
+        return this;
+    }
+
+    public MazeParameterBuilder setGoalColor(String goalColor) {
+        this.goalColor = mazeUtilsFactory.getGoalColor(goalColor);
+        return this;
+    }
+
+    public MazeParameterBuilder setStartPosition(Position startPosition) {
+        this.startPos = startPosition;
+        return this;
+    }
+
+    public MazeParameterBuilder setGoalPosition(Position goalPosition) {
+        this.goalPos = goalPosition;
+        return this;
+    }
+
     public MazeParameterBuilder setHeuristic(Heuristic heuristic) {
         this.heuristic = heuristic;
         return this;
@@ -72,11 +96,11 @@ public class MazeParameterBuilder {
     }
 
     public Maze build(BufferedImage bufferedImage) {
-        return new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, this.imageType, this.pathColor, this.backgroundColor, distanceMetric);
+        return new Maze(bufferedImage, heuristic, wallDetector, searchStrategy, this.imageType, this.pathColor, this.backgroundColor, distanceMetric, startColor, goalColor);
     }
 
     public Maze build(int sizeX, int sizeY) {
-        return new Maze(sizeX, sizeY, heuristic, wallDetector, searchStrategy, distanceMetric);
+        return new Maze(sizeX, sizeY, heuristic, wallDetector, searchStrategy, distanceMetric, startPos, goalPos);
     }
 
     public MazeParameterBuilder setSafetyDistance(int safetyDistance) {
