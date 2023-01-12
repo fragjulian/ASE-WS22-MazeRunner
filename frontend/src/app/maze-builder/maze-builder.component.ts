@@ -22,7 +22,6 @@ export class MazeBuilderComponent {
   colorPicker: HTMLElement | undefined;
   wallColor: HTMLSpanElement | undefined;
   obstacleColor: HTMLSpanElement | undefined;
-  deleteColor: HTMLSpanElement | undefined;
   private walls = new Set<Position>();
   brushColor = this.initialBrushColor;
   private startPosition: Position | undefined;
@@ -49,7 +48,6 @@ export class MazeBuilderComponent {
     this.colorPicker = document.getElementById('color-picker') as HTMLElement;
     this.wallColor = document.getElementById('wallColor') as HTMLSpanElement;
     this.obstacleColor = document.getElementById('obstacleColor') as HTMLSpanElement;
-    this.deleteColor = document.getElementById('deleteColor') as HTMLSpanElement;
     this.canvas.addEventListener('click', this.handleClick.bind(this));
     this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
@@ -61,12 +59,10 @@ export class MazeBuilderComponent {
       this.brushColors[0] = this.brushColor;
     if (this.selectedBrush == "obstacles")
       this.brushColors[1] = this.brushColor;
-    if (this.selectedBrush == "delete")
-      this.brushColors[2] = this.brushColor;
     if (this.selectedBrush == "start")
-      this.brushColors[3] = this.brushColor;
+      this.brushColors[2] = this.brushColor;
     if (this.selectedBrush == "goal")
-      this.brushColors[4] = this.brushColor;
+      this.brushColors[3] = this.brushColor;
 
   }
 
@@ -75,12 +71,10 @@ export class MazeBuilderComponent {
       this.brushColor = this.brushColors[0];
     if (this.selectedBrush == "obstacle")
       this.brushColor = this.brushColors[1]
-    if (this.selectedBrush == "delete")
-      this.brushColor = this.brushColors[2]
     if (this.selectedBrush == "start")
-      this.brushColor = this.brushColors[3]
+      this.brushColor = this.brushColors[2]
     if (this.selectedBrush == "goal")
-      this.brushColor = this.brushColors[4]
+      this.brushColor = this.brushColors[3]
   }
 
 
@@ -160,7 +154,7 @@ export class MazeBuilderComponent {
     }
     this.cursorPosX = posX;
     this.cursorPosY = posY;
-    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColors[3]);
+    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColors[2]);
     this.startPosition = new Position(this.cursorPosX, this.cursorPosY);
   }
 
@@ -174,7 +168,7 @@ export class MazeBuilderComponent {
     }
     this.cursorPosX = posX;
     this.cursorPosY = posY;
-    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColors[4]);
+    this.drawPixel(this.cursorPosX, this.cursorPosY, this.brushColors[3]);
     this.goalPosition = new Position(this.cursorPosX, this.cursorPosY);
   }
 
@@ -192,7 +186,6 @@ export class MazeBuilderComponent {
     }
     this.context!.clearRect(xCoord * this.pixelSize, yCoord * this.pixelSize, this.pixelSize, this.pixelSize);
 
-    //have to go through each element in walls and obstacles, due to fact that delete works only if the objects are the same (not equal)
     this.deletePositionsInSet(this.walls, pos);
     this.deletePositionsInSet(this.obstacles, pos);
   }

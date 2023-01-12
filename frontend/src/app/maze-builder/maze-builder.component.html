@@ -62,10 +62,7 @@
              type="radio"
              value="delete">
       <label class="btn btn-outline-primary" for="delete"><img alt="bin" height="20" src="../../assets/bin.png"
-                                                               width="20"><span
-        [style.background-color]="brushColors[2]"
-        class="colorCircle"
-        id="deleteColor"></span></label>
+                                                               width="20"></label>
     </div>
     <!-- hide the color picker and just open the color picker dialog via the button above -->
     <input (change)="saveBrushColor()" [(ngModel)]="brushColor" id="color-picker" type="color"/>
