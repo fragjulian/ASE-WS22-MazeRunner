@@ -40,7 +40,7 @@ import { ToastrModule } from 'ngx-toastr';
     FormsModule,
     NgxDropzoneModule,
     ColorPickerModule,
-    ToastrModule.forRoot({ timeOut: 5000, enableHtml: true }),
+    ToastrModule.forRoot(/*{ timeOut: 5000, enableHtml: true }*/),
   ],
   providers: [RestService],
   bootstrap: [AppComponent]

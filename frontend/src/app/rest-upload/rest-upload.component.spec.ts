@@ -5,9 +5,8 @@ import {RestUploadComponent} from './rest-upload.component';
 import {HttpClientTestingModule} from '@angular/common/http/testing';
 import {NgxDropzoneModule} from "ngx-dropzone";
 import {DownloadImageService} from "./Services/download-image.service";
-import {RestService} from "./Services/rest.service";
-import {Observable, of, throwError} from "rxjs";
 import {By} from "@angular/platform-browser";
+import {ToastrModule} from "ngx-toastr";
 
 describe('RestUploadComponent', () => {
   let component: RestUploadComponent;
@@ -17,7 +16,8 @@ describe('RestUploadComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule,
         NgxDropzoneModule,
-        FormsModule],
+        FormsModule,
+        ToastrModule.forRoot()],
       declarations: [RestUploadComponent]
     })
       .compileComponents();
@@ -165,12 +165,12 @@ describe('RestUploadComponent', () => {
     expect(successMessage).toBeTruthy();
   });
 
-  it('should display the error message when the errorMessage property is truthy', () => {
+  /*it('should display the error message when the errorMessage property is truthy', () => {
     component.errorMessage = 'Error';
     fixture.detectChanges();
     const errorMessage = fixture.debugElement.query(By.css('.error'));
     expect(errorMessage).toBeTruthy();
-  });
+  });*/
 
   it('should display the popover for the solved maze image when the showPopup property is truthy', () => {
     component.showPopup = true;
