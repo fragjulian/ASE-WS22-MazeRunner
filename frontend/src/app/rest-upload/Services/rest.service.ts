@@ -1,5 +1,5 @@
-import { Injectable } from '@angular/core';
-import { HttpClient} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
 import {catchError} from "rxjs";
 
 
@@ -14,7 +14,7 @@ export class RestService {
   // Function to send a POST request to the server with the given form data
   solveMaze(formData: FormData) {
     // Set the response type to "blob" to receive a binary response
-    return this.http.post('http://localhost:8081/api/maze/colorwalldetector/realdistanceheuristic/depthfirst', formData, { responseType: "blob" })
+    return this.http.post('http://localhost:8081/api/maze/image', formData, {responseType: "blob"})
       // Catch and handle any errors that occur
       .pipe(
         catchError((error: any) => {
