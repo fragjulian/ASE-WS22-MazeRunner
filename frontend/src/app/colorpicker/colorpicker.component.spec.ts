@@ -61,4 +61,20 @@ describe('ColorpickerComponent', () => {
     expect(component.getPixel).toHaveBeenCalled();
   });
 
+  it('component properly displays the color box and the color of the selected pixel when the "getPixel" function is called with valid x and y coordinates of the pixel on the canvas', () => {
+    const colorpickerComponent = new ColorpickerComponent();
+    colorpickerComponent.canvas = document.createElement('canvas');
+    colorpickerComponent.canvasRenderingContext = colorpickerComponent.canvas.getContext('2d')!;
+    colorpickerComponent.canvasRenderingContext.fillStyle = 'rgb(255, 0, 0)';
+    colorpickerComponent.canvasRenderingContext.fillRect(0, 0, 10, 10);
+    colorpickerComponent.colorBox = document.createElement('div');
+    const event = new MouseEvent('click', );
+    colorpickerComponent.getPixel(event);
+    expect(colorpickerComponent.rgbValue).toEqual('255,0,0');
+    expect(colorpickerComponent.hexValue).toEqual('#ff0000');
+    expect(colorpickerComponent.colorBox.style.cssText).toEqual('--bgcolorval:rgba(255,0,0,255);');
+  });
+
+
+
 });
