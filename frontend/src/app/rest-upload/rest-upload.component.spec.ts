@@ -7,6 +7,7 @@ import {NgxDropzoneModule} from "ngx-dropzone";
 import {DownloadImageService} from "./Services/download-image.service";
 import {By} from "@angular/platform-browser";
 import {ToastrModule} from "ngx-toastr";
+import {Observer} from "rxjs";
 
 describe('RestUploadComponent', () => {
   let component: RestUploadComponent;
@@ -184,6 +185,13 @@ describe('RestUploadComponent', () => {
     fixture.detectChanges();
     const downloadButton = fixture.debugElement.query(By.css('.btn-outline-dark'));
     expect(downloadButton).toBeTruthy();
+  });
+
+  it('should not set the errorMessage variable if the image is valid', () => {
+    spyOn(component, 'checkImage').and.callThrough();
+    const file = new File([], 'validImage.jpg', {type: 'image/jpeg'});
+    component.checkImage(file).subscribe();
+    expect(component.errorMessage).toEqual(undefined);
   });
 
 });
