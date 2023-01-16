@@ -27,7 +27,9 @@ export class MazeBuilderComponent {
   private startPosition: Position | undefined;
   private goalPosition: Position | undefined;
   pixelSize = 15;
+  // Current x-coordinate of the cursor on the canvas
   cursorPosX = 0;
+  // Current y-coordinate of the cursor on the canvas
   cursorPosY = 0;
   private currentPath: Position[] = [];
   brushColors = this.initialBrushColors;
@@ -103,9 +105,11 @@ export class MazeBuilderComponent {
     this.getSolvedPath();//automatically get and draw the solved path in the maze editor
   }
 
+  // Clears the entire canvas
   clearMaze() {
     const width = this.canvas!.width;
     const height = this.canvas!.height;
+    // Clear the canvas
     this.context!.clearRect(0, 0, width, height);
     this.walls = new Set<Position>();
     this.obstacles = new Set<Position>();
@@ -190,14 +194,20 @@ export class MazeBuilderComponent {
     this.deletePositionsInSet(this.obstacles, pos);
   }
 
+  // Exports the current state of the canvas as an image file
   exportMazeAsImage() {
+
     const dataUrl = this.canvas!.toDataURL();
+
     const link = document.createElement('a');
+
     link.href = dataUrl;
+    // Set the download attribute of the link to the default file name for the maze image
     link.download = this.mazeDefaultFileName;
     link.click();
   }
 
+  // Draws a border around the entire canvas
   drawMazeBorder() {
     this.context!.strokeStyle = this.brushColor;
     this.context!.lineWidth = 2 * this.pixelSize;
