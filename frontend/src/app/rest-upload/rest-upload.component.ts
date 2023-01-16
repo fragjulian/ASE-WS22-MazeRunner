@@ -1,58 +1,67 @@
 import {Component} from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {RestService} from "./Services/rest.service";
+import {Observable, Observer} from 'rxjs';
+import {DownloadImageService} from "./Services/download-image.service";
+import {ToastrService} from "ngx-toastr";
+import DevExpress from "devextreme";
+
+import data = DevExpress.data;
 
 @Component({
   selector: 'app-rest-upload',
   templateUrl: './rest-upload.component.html',
   styleUrls: ['./rest-upload.component.css']
 })
-
-//Changed version of this tutorial: https://www.techgeeknext.com/angular-upload-image
 export class RestUploadComponent {
-
-  constructor(private httpClient: HttpClient) {
-  }
-
 
   uploadImage: any;
   solvedMaze: any;
-  postResponse: any;
   successResponse: any;
-  rgbvaluewall: string = '0,0,0';
-  rgbvalueobstacle: string = '219,219,219';
+  //the default rgb value for the wall color in the backend
+  rgbvaluewall = '0,0,0';
+  //the default rgb value for the obstacle color in the backend
+  rgbvalueobstacle = '219,219,219';
+  errorMessage: any;
+  showPopup = false;
 
-  /***
-   * Saves the image to a variable.
-   * @param event
-   */
+  // Inject the RestService
+  constructor(private rest: RestService, private downloadService: DownloadImageService, private toastr: ToastrService) {
+  }
+
+  // Event handler for when a file is selected
   onSelect(event: any) {
     this.uploadImage = event.addedFiles[0];
-    console.log(this.uploadImage);
   }
 
+  // Event handler for when a file is removed
   onRemove(event: any) {
-    console.log(event)
     this.uploadImage = null;
+    // Reset the solved maze image, error message, popup and successresponse
+    this.solvedMaze = null;
+    this.errorMessage = null;
+    this.showPopup = false;
+    this.successResponse = null;
   }
 
-  /***
-   * This method takes the uploaded image, changes it to form-data with 'image' as key and the image as value.
-   * After that a post request is sent to the server. The solved image is sent back as a blob and changed into
-   * a DataURL. Everything is updated automatically in the html file.
-   */
+  // Function to submit the image to the REST API for solving
   imageUploadAction() {
+    // Reset the solved maze image and error message
+    this.solvedMaze = null;
+    this.errorMessage = null;
+    this.showPopup = false;
 
-    //Transform image into FormData for the post request
+
+    // Create a new FormData object to hold the image and color values
     const transformedImage = new FormData();
     transformedImage.append('image', this.uploadImage, this.uploadImage.name);
-    //transformedImage.append('walldetector', 'colorwalldetector');
-    if(this.rgbvaluewall) {
+    if (this.rgbvaluewall) {
       transformedImage.append('wallcolor', this.rgbvaluewall);
     }
-    if(this.rgbvalueobstacle) {
+    if (this.rgbvalueobstacle) {
       transformedImage.append('obstaclecolor', this.rgbvalueobstacle);
     }
-    //Helper function to turn blob response into a DataUrl for the image tags in HTML (https://stackoverflow.com/questions/18650168/convert-blob-to-base64)
+
+    // Helper function to convert blob response to DataURL
     const blobToBase64 = (blob: Blob) => {
       const reader = new FileReader();
       reader.readAsDataURL(blob);
@@ -63,35 +72,97 @@ export class RestUploadComponent {
       });
     };
 
+    this.checkImage(this.uploadImage).subscribe(
+      isValid => {
+        if (isValid) {
+          // The image is valid, so you can proceed with the image upload action
 
-    /*
-    * Post request that sends the transformed image to the server. It gets the solved image as an answer.
-    * Looked up the response types here: https://stackoverflow.com/questions/46408537/angular-httpclient-http-failure-during-parsing
-    * Port 8081 for Deployment on live server
-    */
-    this.httpClient.post('http://localhost:8081/api/maze/colorwalldetector/realdistanceheuristic/depthfirst', transformedImage, {
-      observe: 'response',
-      responseType: 'blob'
-    })
-      .subscribe((response) => {
-
-          if (response.status === 200) {
-
-            this.postResponse = response;
-
-            this.successResponse = 'Successful';
-
-            blobToBase64(this.postResponse.body).then(res => {
-              //Used this link to know how to use the DataURL: https://en.wikipedia.org/wiki/Data_URI_scheme
-              this.solvedMaze = res;
-            });
-
-          } else {
-
-            this.successResponse = 'Image not uploaded due to some error!';
-
-          }
+          // Call the solveMaze function of the RestService to send the HTTP request
+          this.rest.solveMaze(transformedImage).subscribe(
+            // If the request is successful, store the response and display the solved maze image
+            (response: any) => {
+              console.log(response);
+              this.successResponse = 'Solved Maze';
+              blobToBase64(response).then(res => {
+                this.solvedMaze = res;
+                if (typeof res === "string") {
+                  this.downloadService.setSolvedMaze(res);
+                }
+              });
+              this.showPopup = true;
+            },
+            // If the request fails, store the error message
+            (error: any) => {
+              console.error(error);
+              this.errorMessage = error.message;
+              this.toastr.error(this.errorMessage);
+            }
+          );
+        } else {
+          // The image is invalid, so do not proceed with the image upload action
+          // The error message has already been set by the checkImage() function
         }
-      );
+      });
+  }
+
+
+  // Function to download the solved maze image
+  downloadImage() {
+    this.downloadService.downloadImage();
+  }
+
+  checkImage(image: File): Observable<boolean> {
+    return Observable.create((observer: Observer<boolean>) => {
+      if (image.size > 3000000) {
+        this.errorMessage = 'Error: Image is too large (max 3 MB)';
+        observer.next(false);
+        observer.complete();
+        return;
+      }
+
+      // Create an image element and set its src to the File object
+      const img = new Image();
+      img.src = URL.createObjectURL(image);
+
+      // When the image has finished loading, check the image for color quantity
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        if (context) {
+          context.drawImage(img, 0, 0);
+
+
+          const imageData = context.getImageData(0, 0, img.width, img.height);
+          const data = imageData.data;
+
+
+          const colorSet = new Set();
+
+          // Iterate over the image data and add each color to the Set
+          for (let i = 0; i < data.length; i += 4) {
+            const color = `rgb(${data[i]}, ${data[i + 1]}, ${data[i + 2]})`;
+            colorSet.add(color);
+          }
+
+          // If the Set has more than x colors, set the error message and return false. Sets the limit value for the color quantity in the uploaded picture
+          if (colorSet.size > 2000) {
+            this.errorMessage = 'Error: Image has more than three colors';
+            observer.next(false);
+            observer.complete();
+            return;
+          }
+
+          // If the image is valid, clear the error message and return true
+          this.errorMessage = '';
+          observer.next(true);
+          observer.complete();
+        } else {
+          // The canvas is not supported by the user's browser
+          this.errorMessage = 'Error: Canvas is not supported by your browser';
+          observer.next(false);
+          observer.complete();
+        }
+      };
+    });
   }
 }

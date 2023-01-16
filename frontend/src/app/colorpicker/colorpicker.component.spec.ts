@@ -1,19 +1,24 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { ColorpickerComponent } from './colorpicker.component';
+import { ElementRef } from '@angular/core';
+import {By} from "@angular/platform-browser";
 
 describe('ColorpickerComponent', () => {
   let component: ColorpickerComponent;
   let fixture: ComponentFixture<ColorpickerComponent>;
+  let elementRef: ElementRef;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
       declarations: [ ColorpickerComponent ]
     })
-    .compileComponents();
+      .compileComponents();
+  }));
 
+  beforeEach(() => {
     fixture = TestBed.createComponent(ColorpickerComponent);
     component = fixture.componentInstance;
+    elementRef = fixture.debugElement.injector.get(ElementRef);
     fixture.detectChanges();
   });
 
@@ -21,20 +26,55 @@ describe('ColorpickerComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have "Click on the image to get the color of the wall and the obstacles." as text in heading', () => {
-    const heading = fixture.debugElement.nativeElement.querySelector('#colorpicker-heading');
-    expect(heading.innerHTML).toBe('Click on the image to get the color of the wall and the obstacles.');
+  it('should display the image preview and color data when an image is selected', () => {
+    // Set up test image file
+    const imageFile = new File([], 'test.jpg', { type: 'image/jpeg' });
+    const fileInput = fixture.debugElement.query(By.css('#images'));
+    fileInput.triggerEventHandler('change', { target: { files: [imageFile] } });
+    fixture.detectChanges();
+
+    // Check that the canvas and data elements are displayed
+    const canvasElement = fixture.debugElement.query(By.css('canvas'));
+    expect(canvasElement).toBeTruthy();
+    const dataElement = fixture.debugElement.query(By.css('.data'));
+    expect(dataElement).toBeTruthy();
   });
 
-  it('should have body element', () => {
-    const body = fixture.debugElement.nativeElement.querySelector('#colorpicker-body')
-    expect(body).toBeTruthy();
+  it('should display the selected image when "displayData" is true', () => {
+    component.displayData = true;
+    fixture.detectChanges();
+    const imageElement = fixture.nativeElement.querySelector('canvas');
+    expect(imageElement).toBeTruthy();
   });
 
-  it('colorpicker-body should have colorpicker-body-input as first child', () => {
-    const colorpicker_body = fixture.debugElement.nativeElement.querySelector('#colorpicker-body');
-    const colorpicker_body_input = fixture.debugElement.nativeElement.querySelector('#colorpicker-body-input');
-    expect(colorpicker_body.firstChild).toBe(colorpicker_body_input);
+  it('should display the color box when "displayCol" is true', () => {
+    component.displayCol = true;
+    fixture.detectChanges();
+    const colorBoxElement = fixture.nativeElement.querySelector('.colorval');
+    expect(colorBoxElement).toBeTruthy();
   });
+
+  it('should call the "getPixel" function when the canvas element is clicked', () => {
+    spyOn(component, 'getPixel');
+    const canvasElement = fixture.nativeElement.querySelector('canvas');
+    canvasElement.click();
+    expect(component.getPixel).toHaveBeenCalled();
+  });
+
+  it('component properly displays the color box and the color of the selected pixel when the "getPixel" function is called with valid x and y coordinates of the pixel on the canvas', () => {
+    const colorpickerComponent = new ColorpickerComponent();
+    colorpickerComponent.canvas = document.createElement('canvas');
+    colorpickerComponent.canvasRenderingContext = colorpickerComponent.canvas.getContext('2d')!;
+    colorpickerComponent.canvasRenderingContext.fillStyle = 'rgb(255, 0, 0)';
+    colorpickerComponent.canvasRenderingContext.fillRect(0, 0, 10, 10);
+    colorpickerComponent.colorBox = document.createElement('div');
+    const event = new MouseEvent('click', );
+    colorpickerComponent.getPixel(event);
+    expect(colorpickerComponent.rgbValue).toEqual('255,0,0');
+    expect(colorpickerComponent.hexValue).toEqual('#ff0000');
+    expect(colorpickerComponent.colorBox.style.cssText).toEqual('--bgcolorval:rgba(255,0,0,255);');
+  });
+
+
 
 });
