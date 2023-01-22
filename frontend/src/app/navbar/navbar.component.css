@@ -5,6 +5,22 @@
 }
 
 #navbar-header{
-font-size: x-large;
-  margin-left: 280px;
+  font-size: x-large;
+}
+
+#navbar-left{
+  width: 33.33333%;
+}
+
+#navbar-center{
+  width: 33.33333%;
+  text-align: center;
+}
+
+#navbar-right{
+  width: 33.33333%;
+}
+
+#navbar-right2{
+  float:right;
 }
