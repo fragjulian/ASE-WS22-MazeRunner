@@ -65,7 +65,6 @@ export class MazeBuilderComponent {
       this.brushColors[2] = this.brushColor;
     if (this.selectedBrush == "goal")
       this.brushColors[3] = this.brushColor;
-
   }
 
   restoreBrushColor() {
@@ -217,8 +216,8 @@ export class MazeBuilderComponent {
   }
 
   private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
-    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
-    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
+    this.cursorPosX = Math.floor(offsetX / this.pixelSize) - 1;
+    this.cursorPosY = Math.floor(offsetY / this.pixelSize) - 1;
 
     if (this.selectedBrush == "start") {
       this.drawStartAtCurrentMousePosition(this.cursorPosX, this.cursorPosY);
@@ -265,5 +264,9 @@ export class MazeBuilderComponent {
       }
     });
     return positions;
+  }
+
+  setColor(color: string) {
+    this.brushColor = color;
   }
 }
