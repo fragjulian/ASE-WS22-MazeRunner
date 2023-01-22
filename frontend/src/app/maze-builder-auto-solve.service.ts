@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {catchError} from "rxjs";
 import {Position} from "./Position";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class MazeBuilderAutoSolveService {
       walls: Array.from(walls.values()),
       obstacles: Array.from(obstacles.values())
     }
-    return this.httpClient.post<Position[]>(`/api/maze/path?sizeX=${sizeX}&sizeY=${sizeY}&startX=${startX}&startY=${startY}&goalX=${goalX}&goalY=${goalY}`, returnObject, {
+    return this.httpClient.post<Position[]>(environment.backendUrl + `api/maze/path?sizeX=${sizeX}&sizeY=${sizeY}&startX=${startX}&startY=${startY}&goalX=${goalX}&goalY=${goalY}`, returnObject, {
       observe: 'response',
       responseType: 'json'
     }).pipe(
