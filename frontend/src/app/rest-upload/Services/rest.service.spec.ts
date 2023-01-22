@@ -29,7 +29,7 @@ describe('RestService', () => {
     });
 
     // Expect a single request to be made to the specified URL with the correct payload
-    const req = httpMock.expectOne('http://localhost:8081/api/maze/colorwalldetector/realdistanceheuristic/depthfirst');
+    const req = httpMock.expectOne('http://localhost:8081/api/maze/image');
     expect(req.request.method).toBe('POST');
     expect(req.request.body).toEqual(formData);
 

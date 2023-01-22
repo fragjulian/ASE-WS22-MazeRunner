@@ -37,7 +37,6 @@ import { ToastrModule } from 'ngx-toastr';
     MatButtonModule,
     FormsModule,
     HttpClientModule,
-    FormsModule,
     NgxDropzoneModule,
     ColorPickerModule,
     ToastrModule.forRoot(/*{ timeOut: 5000, enableHtml: true }*/),

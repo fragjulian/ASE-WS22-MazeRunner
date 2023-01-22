@@ -67,7 +67,7 @@
           <elementProp name="HTTPsampler.Files" elementType="HTTPFileArgs">
             <collectionProp name="HTTPFileArgs.files">
               <elementProp name="../mazes/maze4.png" elementType="HTTPFileArg">
-                <stringProp name="File.mimetype">image/tiff</stringProp>
+                <stringProp name="File.mimetype">image/png</stringProp>
                 <stringProp name="File.path">../mazes/maze4.png</stringProp>
                 <stringProp name="File.paramname">image</stringProp>
               </elementProp>
@@ -80,7 +80,7 @@
           <stringProp name="HTTPSampler.port"></stringProp>
           <stringProp name="HTTPSampler.protocol"></stringProp>
           <stringProp name="HTTPSampler.contentEncoding">UTF-8</stringProp>
-          <stringProp name="HTTPSampler.path">/api/maze/colorwalldetector/realdistanceheuristic/euclidian</stringProp>
+          <stringProp name="HTTPSampler.path">/api/maze/image</stringProp>
           <stringProp name="HTTPSampler.method">POST</stringProp>
           <boolProp name="HTTPSampler.follow_redirects">true</boolProp>
           <boolProp name="HTTPSampler.auto_redirects">false</boolProp>

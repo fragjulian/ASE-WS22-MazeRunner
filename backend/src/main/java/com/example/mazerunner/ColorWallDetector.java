@@ -16,7 +16,8 @@ public class ColorWallDetector implements WallDetector {
     }
 
     @Override
-    public boolean[][] detectWall(BufferedImage bufferedImage) {
+    public boolean[][] detectWall(Maze maze) {
+        BufferedImage bufferedImage = maze.getBufferedImage();
         boolean[][] result = new boolean[bufferedImage.getWidth()][bufferedImage.getHeight()];
         for (int x = 0; x < bufferedImage.getWidth(); x++) {
             for (int y = 0; y < bufferedImage.getHeight(); y++) {
