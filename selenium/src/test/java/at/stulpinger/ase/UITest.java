@@ -21,24 +21,20 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 class UITest {
   private static final String HOME_PATH = "home";
   private static final String ABOUT_PATH = "about";
-  private final String PORT = System.getProperty("PORT");
+  private final String PORT = "4200"; // System.getProperty("PORT");
   private final String URL = System.getProperty("URL");
   private WebDriver driver;
 
   @BeforeEach
   public void setUp() {
-    // for manual testing with installed browser
-//    WebDriverManager.chromedriver().setup();
-//    final var options = new ChromeOptions();
-//    options.addArguments("--headless");
-//    driver = new ChromeDriver();
-
     // headless browser like in CI-CD pipeline
     WebDriverManager.firefoxdriver().setup();
     FirefoxOptions options = new FirefoxOptions();
     options.addArguments("--no-sandbox");
     options.addArguments("--disable-dev-shm-usage");
     options.addArguments("--headless");
+    options.addArguments("--width=1920");
+    options.addArguments("--height=1080");
     driver = new FirefoxDriver(options);
   }
 
@@ -272,7 +268,7 @@ class UITest {
   }
 
   @Test
-  void builder_solveWithoutWalls() throws IOException {
+  void builder_solveWithoutWalls() throws IOException, InterruptedException {
     openApplication();
     WebApp.navigate(driver, Page.BUILDER);
     final var canvas = WebApp.findByTestId(driver, "maze-canvas");
@@ -284,6 +280,8 @@ class UITest {
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(10, 15));
     // current bug in backend: goal has to be drawn twice
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(10, 15));
+
+    Thread.sleep(1_000); // giver server time to respond
     Canvas.verify(driver, canvas, "solved-maze-no-walls.png");
 
     WebApp.clickButton(driver, "clear-maze");
@@ -322,6 +320,8 @@ class UITest {
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(15, 5));
     // current bug in backend: goal has to be drawn twice
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(15, 5));
+
+    Thread.sleep(1_000); // giver server time to respond
     Canvas.verify(driver, canvas, "solved-maze-simple-walls.png");
 
     WebApp.clickButton(driver, "clear-maze");
@@ -383,8 +383,8 @@ class UITest {
     WebApp.clickButton(driver, "set-goal");
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(35, 16));
     // current bug in backend: goal has to be drawn twice
-    Canvas.drawSinglePixels(driver, canvas, Pixel.of(35, 16));
 
+    // Thread.sleep(1_000); // giver server time to respond
     // TODO. border is currently ignored
     //    Canvas.verify(driver, canvas, "solved-maze-advanced.png");
 
