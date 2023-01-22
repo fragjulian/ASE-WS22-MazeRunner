@@ -18,7 +18,6 @@
               "devexpress-diagram",
               "devexpress-gantt",
               "devextreme-quill"
-
             ],
             "outputPath": "dist/frontend",
             "index": "src/index.html",
@@ -72,7 +71,8 @@
               "browserTarget": "frontend:build:production"
             },
             "development": {
-              "browserTarget": "frontend:build:development"
+              "browserTarget": "frontend:build:development",
+              "proxyConfig": "src/proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
