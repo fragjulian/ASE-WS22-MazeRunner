@@ -21,7 +21,7 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 class UITest {
   private static final String HOME_PATH = "home";
   private static final String ABOUT_PATH = "about";
-  private final String PORT = "4200"; // System.getProperty("PORT");
+  private final String PORT = System.getProperty("PORT");
   private final String URL = System.getProperty("URL");
   private WebDriver driver;
 
@@ -281,7 +281,7 @@ class UITest {
     // current bug in backend: goal has to be drawn twice
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(10, 15));
 
-    Thread.sleep(1_000); // giver server time to respond
+    Thread.sleep(1_000); // give server time to respond
     Canvas.verify(driver, canvas, "solved-maze-no-walls.png");
 
     WebApp.clickButton(driver, "clear-maze");
@@ -321,7 +321,7 @@ class UITest {
     // current bug in backend: goal has to be drawn twice
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(15, 5));
 
-    Thread.sleep(1_000); // giver server time to respond
+    Thread.sleep(1_000); // give server time to respond
     Canvas.verify(driver, canvas, "solved-maze-simple-walls.png");
 
     WebApp.clickButton(driver, "clear-maze");
@@ -384,7 +384,7 @@ class UITest {
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(35, 16));
     // current bug in backend: goal has to be drawn twice
 
-    // Thread.sleep(1_000); // giver server time to respond
+    // Thread.sleep(1_000); // give server time to respond
     // TODO. border is currently ignored
     //    Canvas.verify(driver, canvas, "solved-maze-advanced.png");
 
