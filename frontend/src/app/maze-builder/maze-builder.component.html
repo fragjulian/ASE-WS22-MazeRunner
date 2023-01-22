@@ -1,77 +1,100 @@
 <div class="widget-container flex-box">
-  <span>Draw your maze here</span>
+  <span uitestid="builder-header">Draw your maze here</span>
 
   <!-- width and height have to be defined here! -->
-  <canvas height="600" id="maze-canvas" width="1200"></canvas>
+  <canvas height="600" id="maze-canvas" width="1200" uitestid="maze-canvas"></canvas>
 
   <br>
   <div aria-label="Toolbar with button groups" class="btn-toolbar" role="toolbar">
     <div class="btn-group me-2" role="group">
 
-      <button (click)="clearMaze()" class="btn btn-outline-danger" type="button">
+      <button (click)="clearMaze()" class="btn btn-outline-danger" type="button" uitestid="clear-maze">
         Clear Maze
       </button>
 
-      <button (click)="exportMazeAsImage()" class="btn btn btn-outline-primary" type="button">
+      <button (click)="exportMazeAsImage()" class="btn btn btn-outline-primary" type="button" uitestid="export-maze">
         Export Maze
       </button>
 
-      <button (click)="drawMazeBorder()" class="btn btn btn-outline-primary" type="button">
+      <button (click)="drawMazeBorder()" class="btn btn btn-outline-primary" type="button" uitestid="draw-border">
         Draw Border
       </button>
 
-      <button (click)="openColorPickerDialog()" class="btn btn-outline-primary" type="button">
+      <button (click)="openColorPickerDialog()" class="btn btn-outline-primary" type="button" uitestid="pick-color">
         Pick Color
       </button>
     </div>
+
     <div aria-label="select brush" class="btn-group me-2" role="group">
-      <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush" checked
-             class="btn-check" id="wall"
+      <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
+             checked
+             class="btn-check"
+             id="wall"
              name="paintingType"
-             type="radio" value="wall">
-      <label class="btn btn-outline-primary" for="wall"><img alt="wall" height="20" src="../../assets/wall.png"
-                                                             width="20"><span [style.background-color]="brushColors[0]"
-                                                                              class="colorCircle"
-                                                                              id="wallColor"></span></label>
-      <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
-             class="btn-check" id="obstacle" name="paintingType"
              type="radio"
-             value="obstacle">
-      <label class="btn btn-outline-primary" for="obstacle"><img alt="obstacle" height="20"
-                                                                 src="../../assets/obstacle.png" width="20"><span
-        [style.background-color]="brushColors[1]" class="colorCircle"
-        id="obstacleColor"></span></label>
+             value="wall"
+      >
+      <label class="btn btn-outline-primary" for="wall">
+        <img alt="wall" height="20" src="../../assets/wall.png" width="20">
+        <span [style.background-color]="brushColors[0]" class="colorCircle" id="wallColor"></span>
+      </label>
+
       <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
-             class="btn-check" id="start" name="paintingType"
+             class="btn-check"
+             id="obstacle"
+             name="paintingType"
              type="radio"
-             value="start">
-      <label class="btn btn-outline-primary" for="start"><img alt="start" height="20" src="../../assets/start.png"
-                                                              width="20"><span [style.background-color]="brushColors[3]"
-                                                                               class="colorCircle"
-                                                                               id="startColor"></span></label>
+             value="obstacle"
+      >
+      <label class="btn btn-outline-primary" for="obstacle">
+        <img alt="obstacle" height="20" src="../../assets/obstacle.png" width="20">
+        <span [style.background-color]="brushColors[1]" class="colorCircle" id="obstacleColor"></span>
+      </label>
+
       <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
-             class="btn-check" id="goal" name="paintingType"
+             class="btn-check"
+             id="start"
+             name="paintingType"
              type="radio"
-             value="goal">
-      <label class="btn btn-outline-primary" for="goal"><img alt="goal" height="20" src="../../assets/goal.png"
-                                                             width="20"><span [style.background-color]="brushColors[4]"
-                                                                              class="colorCircle"
-                                                                              id="goalColor"></span></label>
+             value="start"
+      >
+      <label class="btn btn-outline-primary" for="start" uitestid="set-start">
+        <img alt="start" height="20" src="../../assets/start.png" width="20">
+        <span [style.background-color]="brushColors[3]" class="colorCircle" id="startColor"></span>
+      </label>
+
       <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
-             class="btn-check" id="delete" name="paintingType"
+             class="btn-check"
+             id="goal"
+             name="paintingType"
              type="radio"
-             value="delete">
-      <label class="btn btn-outline-primary" for="delete"><img alt="bin" height="20" src="../../assets/bin.png"
-                                                               width="20"></label>
+             value="goal"
+      >
+      <label class="btn btn-outline-primary" for="goal" uitestid="set-goal">
+        <img alt="goal" height="20" src="../../assets/goal.png" width="20">
+        <span [style.background-color]="brushColors[4]" class="colorCircle" id="goalColor"></span>
+      </label>
+
+      <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
+             class="btn-check"
+             id="delete"
+             name="paintingType"
+             type="radio"
+             value="delete"
+      >
+      <label class="btn btn-outline-primary" for="delete">
+        <img alt="bin" height="20" src="../../assets/bin.png" width="20">
+      </label>
+
     </div>
+
+    <!-- antipattern: test logic in prod. code -->
+    <!-- however, I found no other possibility to set the color via Selenium -->
+    <input type="button" (click)="setColor('#36CE48')" uitestid="set-green" class="hidden" />
+    <input type="button" (click)="setColor('#E72323')" uitestid="set-red" class="hidden" />
+
     <!-- hide the color picker and just open the color picker dialog via the button above -->
     <input (change)="saveBrushColor()" [(ngModel)]="brushColor" id="color-picker" type="color"/>
 
   </div>
-  <a href="https://www.flaticon.com/free-icons/wall" title="wall icons">Wall icons created by Good Ware - Flaticon</a>
-  <a href="https://www.flaticon.com/free-icons/obstacle" title="obstacle icons">Obstacle icons created by Andrejs Kirma
-    - Flaticon</a>
-  <a href="https://www.flaticon.com/free-icons/trash" title="trash icons">Trash icons created by Freepik - Flaticon</a>
-  <a href="https://www.flaticon.com/free-icons/flags" title="flags icons">Flags icons created by Freepik - Flaticon</a>
-  <a href="https://www.flaticon.com/free-icons/gps" title="gps icons">Gps icons created by Freepik - Flaticon</a>
 </div>
