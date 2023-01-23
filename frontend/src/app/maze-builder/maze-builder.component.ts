@@ -230,8 +230,20 @@ export class MazeBuilderComponent {
   }
 
   private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
-    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
-    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
+    this.cursorPosX = Math.floor((offsetX - this.pixelSize) / this.pixelSize);
+    this.cursorPosY = Math.floor((offsetY - this.pixelSize) / this.pixelSize);
+
+    const width = this.canvas!.width / this.pixelSize;
+    const height = this.canvas!.height / this.pixelSize;
+
+    if (this.cursorPosX < 0)
+      this.cursorPosX = 0;
+    if (this.cursorPosX >= width)
+      this.cursorPosX = width - 1;
+    if (this.cursorPosY < 0)
+      this.cursorPosY = 0;
+    if (this.cursorPosY >= height)
+      this.cursorPosY = height - 1;
 
     if (this.selectedBrush == "start") {
       this.drawStartAtCurrentMousePosition(this.cursorPosX, this.cursorPosY);
