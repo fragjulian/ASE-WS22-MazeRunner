@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {MazeBuilderAutoSolveService} from "../maze-builder-auto-solve.service";
 import {Position} from "../Position";
 
-
 @Component({
   selector: 'app-maze-canvas',
   templateUrl: './maze-builder.component.html',
@@ -11,7 +10,7 @@ import {Position} from "../Position";
 export class MazeBuilderComponent {
 
   private readonly initialBrushColor = 'black';
-  private readonly initialBrushColors = ['black', 'gray', 'green', 'purple', 'blue'];
+  private readonly initialBrushColors = ['black', 'gray', 'green', 'purple'];
 
   // usually the left mouse button
   private readonly primaryMouseButton = 1;

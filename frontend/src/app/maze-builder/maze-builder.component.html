@@ -29,40 +29,45 @@
              class="btn-check" id="wall"
              name="paintingType"
              type="radio" value="wall">
-      <label class="btn btn-outline-primary" for="wall"><img alt="wall" height="20" src="../../assets/wall.png"
-                                                             width="20"><span [style.background-color]="brushColors[0]"
-                                                                              class="colorCircle"
-                                                                              id="wallColor"></span></label>
+      <label class="btn btn-outline-primary" for="wall" matTooltip="Wall Pencil" matTooltipPosition="below">
+        <img alt="wall" height="20" src="../../assets/wall.png" width="20">
+        <span [style.background-color]="brushColors[0]" class="colorCircle" id="wallColor"></span>
+      </label>
+
       <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
              class="btn-check" id="obstacle" name="paintingType"
              type="radio"
              value="obstacle">
-      <label class="btn btn-outline-primary" for="obstacle"><img alt="obstacle" height="20"
-                                                                 src="../../assets/obstacle.png" width="20"><span
-        [style.background-color]="brushColors[1]" class="colorCircle"
-        id="obstacleColor"></span></label>
+      <label class="btn btn-outline-primary" for="obstacle" matTooltip="Obstacle Pencil" matTooltipPosition="below">
+        <img alt="obstacle" height="20" src="../../assets/obstacle.png" width="20">
+        <span [style.background-color]="brushColors[1]" class="colorCircle" id="obstacleColor"></span>
+      </label>
+
       <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
              class="btn-check" id="start" name="paintingType"
              type="radio"
              value="start">
-      <label class="btn btn-outline-primary" for="start"><img alt="start" height="20" src="../../assets/start.png"
-                                                              width="20"><span [style.background-color]="brushColors[3]"
-                                                                               class="colorCircle"
-                                                                               id="startColor"></span></label>
+      <label class="btn btn-outline-primary" for="start" matTooltip="Draw Start Pencil" matTooltipPosition="below">
+        <img alt="start" height="20" src="../../assets/start.png" width="20">
+        <span [style.background-color]="brushColors[2]" class="colorCircle" id="startColor"></span>
+      </label>
+
       <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
              class="btn-check" id="goal" name="paintingType"
              type="radio"
              value="goal">
-      <label class="btn btn-outline-primary" for="goal"><img alt="goal" height="20" src="../../assets/goal.png"
-                                                             width="20"><span [style.background-color]="brushColors[4]"
-                                                                              class="colorCircle"
-                                                                              id="goalColor"></span></label>
+      <label class="btn btn-outline-primary" for="goal" matTooltip="Draw Goal Pencil" matTooltipPosition="below">
+        <img alt="goal" height="20" src="../../assets/goal.png" width="20">
+        <span [style.background-color]="brushColors[3]" class="colorCircle" id="goalColor"></span>
+      </label>
+
       <input (change)="restoreBrushColor()" (ngModelChange)="saveBrushColor()" [(ngModel)]="selectedBrush"
              class="btn-check" id="delete" name="paintingType"
              type="radio"
              value="delete">
-      <label class="btn btn-outline-primary" for="delete"><img alt="bin" height="20" src="../../assets/bin.png"
-                                                               width="20"></label>
+      <label class="btn btn-outline-primary" for="delete" matTooltip="Erase Pencil" matTooltipPosition="below">
+        <img alt="bin" height="20" src="../../assets/bin.png" width="20">
+      </label>
     </div>
     <!-- hide the color picker and just open the color picker dialog via the button above -->
     <input (change)="saveBrushColor()" [(ngModel)]="brushColor" id="color-picker" type="color"/>

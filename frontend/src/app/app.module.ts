@@ -16,6 +16,7 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxDropzoneModule} from 'ngx-dropzone';
 import {ColorPickerModule} from 'ngx-color-picker';
 import {ColorpickerComponent} from './colorpicker/colorpicker.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 
 @NgModule({
@@ -34,6 +35,7 @@ import {ColorpickerComponent} from './colorpicker/colorpicker.component';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
+    MatTooltipModule,
     FormsModule,
     HttpClientModule,
     FormsModule,
