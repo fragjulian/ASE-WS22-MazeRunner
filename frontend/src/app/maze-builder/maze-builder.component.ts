@@ -262,7 +262,7 @@ export class MazeBuilderComponent {
 
   private deletePositionsInSet(positions: Set<Position>, position: Position): Set<Position> {
     positions.forEach((setPos) => {
-      if (setPos.equals(setPos)) {
+      if (setPos.equals(position)) {
         positions.delete(setPos);
       }
     });
