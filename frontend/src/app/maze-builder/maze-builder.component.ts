@@ -209,11 +209,13 @@ export class MazeBuilderComponent {
 
   // Draws a border around the entire canvas
   drawMazeBorder() {
-    this.context!.strokeStyle = this.brushColor;
-    this.context!.lineWidth = 2 * this.pixelSize;
-    const width = this.canvas!.width;
-    const height = this.canvas!.height;
-    this.context!.strokeRect(0, 0, width, height);
+    if (this.selectedBrush == "wall" || this.selectedBrush == "obstacle") {
+      this.context!.strokeStyle = this.brushColor;
+      this.context!.lineWidth = 2 * this.pixelSize;
+      const width = this.canvas!.width;
+      const height = this.canvas!.height;
+      this.context!.strokeRect(0, 0, width, height);
+    }
   }
 
   private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
