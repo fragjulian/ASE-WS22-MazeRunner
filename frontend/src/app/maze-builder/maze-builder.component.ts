@@ -209,12 +209,23 @@ export class MazeBuilderComponent {
 
   // Draws a border around the entire canvas
   drawMazeBorder() {
-    if (this.selectedBrush == "wall" || this.selectedBrush == "obstacle") {
+    if (this.selectedBrush == "wall") {
       this.context!.strokeStyle = this.brushColor;
       this.context!.lineWidth = 2 * this.pixelSize;
       const width = this.canvas!.width;
+      const widthPixels = width / this.pixelSize;
       const height = this.canvas!.height;
+      const heightPixels = height / this.pixelSize;
       this.context!.strokeRect(0, 0, width, height);
+      for (let i = 0; i < widthPixels; i++) {
+        this.walls.add(new Position(i, 0));
+        this.walls.add(new Position(i, heightPixels - 1));
+      }
+      for (let i = 1; i < heightPixels - 1; i++) {
+        this.walls.add(new Position(0, i));
+        this.walls.add(new Position(widthPixels - 1, i));
+      }
+      this.getSolvedPath();
     }
   }
 
