@@ -16,7 +16,15 @@ span {
   float: left;
   width: 100%;
 }
+.flex-container {
+  display: flex;
+}
 
+.flex-container > div {
+  margin: 10px;
+  padding: 20px;
+  font-size: 15px;
+}
 .drop-title {
   color: #444;
   font-size: 20px;
