@@ -78,7 +78,7 @@ export class MazeBuilderComponent {
 
 
   handleClick(event: MouseEvent) {
-    this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
+    // this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY); //moved into handleMouseDown because handleClick is fired after api call in handleMouseUp
   }
 
   handleMouseMove(event: MouseEvent) {
@@ -95,6 +95,8 @@ export class MazeBuilderComponent {
 
   handleMouseDown(event: MouseEvent) {
     this.isDrawing = true;
+    this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
+
   }
 
   handleMouseUp(event: MouseEvent) {
@@ -249,7 +251,7 @@ export class MazeBuilderComponent {
 
   private deletePositionsInSet(positions: Set<Position>, position: Position): Set<Position> {
     positions.forEach((setPos) => {
-      if (setPos.equals(setPos)) {
+      if (setPos.equals(position)) {
         positions.delete(setPos);
       }
     });

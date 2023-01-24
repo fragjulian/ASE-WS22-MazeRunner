@@ -18,6 +18,10 @@ public class Path {
         //todo check if this is allowed
     }
 
+    public void removeStep(Position position) {
+        this.path.remove(position);
+    }
+
     public LinkedList<Position> getPath() {
         return path;
     }
