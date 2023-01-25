@@ -63,10 +63,10 @@ describe('MazeBuilderComponent', () => {
   });
 
   it('should call the drawPixel function when the mouse is clicked', () => {
-      spyOn<any>(component, 'drawPixelAtCurrentMousePosition');
-      component.handleClick(new MouseEvent('click'));
-      expect(component['drawPixelAtCurrentMousePosition']).toHaveBeenCalled();
-    });
+    spyOn<any>(component, 'drawPixelAtCurrentMousePosition');
+    component.handleMouseDown(new MouseEvent('mousedown'));
+    expect(component['drawPixelAtCurrentMousePosition']).toHaveBeenCalled();
+  });
 
     it('should not call the drawPixel function when the mouse is moved and isDrawing is false', () => {
       spyOn<any>(component, 'drawPixelAtCurrentMousePosition');

@@ -49,7 +49,6 @@ export class MazeBuilderComponent {
     this.colorPicker = document.getElementById('color-picker') as HTMLElement;
     this.wallColor = document.getElementById('wallColor') as HTMLSpanElement;
     this.obstacleColor = document.getElementById('obstacleColor') as HTMLSpanElement;
-    this.canvas.addEventListener('click', this.handleClick.bind(this));
     this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
     this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
@@ -79,9 +78,6 @@ export class MazeBuilderComponent {
   }
 
 
-  handleClick(event: MouseEvent) {
-    // this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY); //moved into handleMouseDown because handleClick is fired after api call in handleMouseUp
-  }
 
   handleMouseMove(event: MouseEvent) {
     if (!this.isDrawing) {
@@ -103,7 +99,7 @@ export class MazeBuilderComponent {
 
   handleMouseUp(event: MouseEvent) {
     if (this.isDrawing)
-      this.getSolvedPath();//automatically get and draw the solved path in the maze editor
+      this.getSolvedPath();//automatically get and draw the solved path in the maze editor0
     this.isDrawing = false;
   }
 
