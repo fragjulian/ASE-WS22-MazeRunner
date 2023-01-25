@@ -98,12 +98,13 @@ export class MazeBuilderComponent {
   handleMouseDown(event: MouseEvent) {
     this.isDrawing = true;
     this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
-
+    this.getSolvedPath();//automatically get and draw the solved path in the maze editor
   }
 
   handleMouseUp(event: MouseEvent) {
+    if (this.isDrawing)
+      this.getSolvedPath();//automatically get and draw the solved path in the maze editor
     this.isDrawing = false;
-    this.getSolvedPath();//automatically get and draw the solved path in the maze editor
   }
 
   // Clears the entire canvas
