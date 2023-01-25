@@ -194,5 +194,20 @@ describe('RestUploadComponent', () => {
     expect(component.errorMessage).toEqual(undefined);
   });
 
+  it('should create a new FormData object with the correct image and color values', () => {
+    component.uploadImage = { name: 'test.jpg' };
+    component.rgbvaluewall = '1,2,3';
+    component.rgbvalueobstacle = '4,5,6';
+    component.rgbvaluestart = '7,8,9';
+    component.rgbvalueend = '10,11,12';
+    component.safetydistance = '2';
+    component.uploadImage = new File(['test image'], 'test.jpg');
+
+    const transformedImage = component.imageUploadAction();
+
+    expect(transformedImage).toBe();
+    expect(component.rgbvaluewall).toEqual('1,2,3');
+  });
+
 });
 
