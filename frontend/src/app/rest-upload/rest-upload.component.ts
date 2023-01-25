@@ -67,7 +67,7 @@ export class RestUploadComponent {
       transformedImage.append('startcolor', this.rgbvaluestart)
     }
     if(this.rgbvalueend){
-      transformedImage.append('endcolor', this.rgbvalueend)
+      transformedImage.append('goalcolor', this.rgbvalueend)
     }
     if(this.safetydistance){
       transformedImage.append('safetydistance', this.safetydistance)
