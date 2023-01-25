@@ -16,8 +16,9 @@ import {HttpClientModule} from '@angular/common/http';
 import {NgxDropzoneModule} from 'ngx-dropzone';
 import {ColorPickerModule} from 'ngx-color-picker';
 import {ColorpickerComponent} from './colorpicker/colorpicker.component';
+import {MatTooltipModule} from '@angular/material/tooltip';
 import {RestService} from "./rest-upload/Services/rest.service";
-import { ToastrModule } from 'ngx-toastr';
+import {ToastrModule} from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { ToastrModule } from 'ngx-toastr';
     BrowserAnimationsModule,
     MatToolbarModule,
     MatButtonModule,
+    MatTooltipModule,
     FormsModule,
     HttpClientModule,
     NgxDropzoneModule,

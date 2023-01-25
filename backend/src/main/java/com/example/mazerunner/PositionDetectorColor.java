@@ -12,7 +12,6 @@ public class PositionDetectorColor {
                 }
             }
         }
-
-        return new Position(0, 0); //default position if not found
+        throw new IllegalArgumentException("No Start or Goal Position found with color " + color);
     }
 }

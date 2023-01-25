@@ -27,6 +27,7 @@ public class DepthFirst implements SearchStrategy {
         }
         if (current == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "maze is unsolvable");
+        path.removeStep(maze.getStart());
         return path;
     }
 }

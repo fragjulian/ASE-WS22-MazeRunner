@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {MazeBuilderAutoSolveService} from "../maze-builder-auto-solve.service";
 import {Position} from "../Position";
 
-
 @Component({
   selector: 'app-maze-canvas',
   templateUrl: './maze-builder.component.html',
@@ -11,7 +10,7 @@ import {Position} from "../Position";
 export class MazeBuilderComponent {
 
   private readonly initialBrushColor = 'black';
-  private readonly initialBrushColors = ['black', 'gray', 'green', 'purple', 'blue'];
+  private readonly initialBrushColors = ['black', 'gray', 'green', 'purple'];
 
   // usually the left mouse button
   private readonly primaryMouseButton = 1;
@@ -81,7 +80,7 @@ export class MazeBuilderComponent {
 
 
   handleClick(event: MouseEvent) {
-    this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
+    // this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY); //moved into handleMouseDown because handleClick is fired after api call in handleMouseUp
   }
 
   handleMouseMove(event: MouseEvent) {
@@ -98,6 +97,8 @@ export class MazeBuilderComponent {
 
   handleMouseDown(event: MouseEvent) {
     this.isDrawing = true;
+    this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
+
   }
 
   handleMouseUp(event: MouseEvent) {
