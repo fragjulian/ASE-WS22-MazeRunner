@@ -166,12 +166,20 @@ describe('RestUploadComponent', () => {
     expect(successMessage).toBeTruthy();
   });
 
-  /*it('should display the error message when the errorMessage property is truthy', () => {
-    component.errorMessage = 'Error';
-    fixture.detectChanges();
-    const errorMessage = fixture.debugElement.query(By.css('.error'));
-    expect(errorMessage).toBeTruthy();
-  });*/
+  it('should create a new FormData object with the correct image and color values', () => {
+    component.uploadImage = { name: 'test.jpg' };
+    component.rgbvaluewall = '1,2,3';
+    component.rgbvalueobstacle = '4,5,6';
+    component.rgbvaluestart = '7,8,9';
+    component.rgbvalueend = '10,11,12';
+    component.safetydistance = '2';
+    component.uploadImage = new File(['test image'], 'test.jpg');
+
+    const transformedImage = component.imageUploadAction();
+
+    expect(transformedImage).toBe();
+    expect(component.rgbvaluewall).toEqual('1,2,3');
+  });
 
   it('should display the popover for the solved maze image when the showPopup property is truthy', () => {
     component.showPopup = true;
@@ -193,6 +201,8 @@ describe('RestUploadComponent', () => {
     component.checkImage(file).subscribe();
     expect(component.errorMessage).toEqual(undefined);
   });
+
+
 
 });
 

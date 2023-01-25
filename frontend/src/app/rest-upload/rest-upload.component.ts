@@ -23,6 +23,9 @@ export class RestUploadComponent {
   rgbvalueobstacle = '219,219,219';
   errorMessage: any;
   showPopup = false;
+  rgbvaluestart = '196,4,36';
+  rgbvalueend = '63,72,204';
+  safetydistance = '1';
 
   // Inject the RestService
   constructor(private rest: RestService, private downloadService: DownloadImageService, private toastr: ToastrService) {
@@ -60,6 +63,15 @@ export class RestUploadComponent {
     if (this.rgbvalueobstacle) {
       transformedImage.append('obstaclecolor', this.rgbvalueobstacle);
     }
+    if(this.rgbvaluestart){
+      transformedImage.append('startcolor', this.rgbvaluestart)
+    }
+    if(this.rgbvalueend){
+      transformedImage.append('goalcolor', this.rgbvalueend)
+    }
+    if(this.safetydistance){
+      transformedImage.append('safetydistance', this.safetydistance)
+    }
 
     // Helper function to convert blob response to DataURL
     const blobToBase64 = (blob: Blob) => {
@@ -95,7 +107,7 @@ export class RestUploadComponent {
             (error: any) => {
               console.error(error);
               this.errorMessage = error.message;
-              this.toastr.error(this.errorMessage);
+              this.toastr.error("This maze is unsolvable");
             }
           );
         } else {

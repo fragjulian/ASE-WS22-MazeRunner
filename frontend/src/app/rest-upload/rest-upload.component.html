@@ -42,16 +42,31 @@
     <br>
 
     <!-- Label and input field for the wall color -->
+    <div class="flex-container">
+    <div>
     <h2 uitestid="rgb-wall" id="title-rgb-wall">RGB Value of the Wall:</h2>
     <p><input uitestid="rgb-wall-input" type="text" id="rgbvaluewall" name="rgbvaluewall" [(ngModel)]="rgbvaluewall"></p>
 
-    <!-- Label and input field for the obstacle color -->
+      <!-- Label and input field for the obstacle color -->
     <h2 uitestid="rgb-obstacle" id="title-rgb-obstacle">RGB Value of the Obstacle:</h2>
     <p><input uitestid="rgb-obstacle-input" type="text" id="rgbvalueobstacle" name="rgbvalueobstacle" [(ngModel)]="rgbvalueobstacle"></p>
+      </div>
+      <div>
+    <!-- Label and input field for the start color -->
+    <h2 uitestid="rgb-start" id="title-rgb-start">RGB Value of the Start:</h2>
+    <p><input uitestid="rgb-start-input" type="text" id="rgbvaluestart" name="rgbvaluestart" [(ngModel)]="rgbvaluestart"></p>
 
-
+    <!-- Label and input field for the end color -->
+    <h2 uitestid="rgb-end" id="title-rgb-end">RGB Value of the End:</h2>
+    <p><input uitestid="rgb-end-input" type="text" id="rgbvalueend" name="rgbvalueend" [(ngModel)]="rgbvalueend"></p>
+      </div>
+      <div>
+    <!-- Label and input field for the distance metric -->
+    <h2 uitestid="safetydistancetest" id="safetydistance">Value of the Safety Distance:</h2>
+    <p><input uitestid="safetydistancetest-input" type="number" min="0" step="1" id="safetydistance-input" name="safetydistance-input" [(ngModel)]="safetydistance"></p>
     <br>
-
+      </div>
+</div>
     <!-- Output element for the success message -->
     <div>
       <output *ngIf=successResponse class="success"><b>{{successResponse}}</b></output>
