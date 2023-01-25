@@ -85,8 +85,12 @@ public class MazeParameterBuilder {
 
     public MazeParameterBuilder setWallDetector(WallDetector wallDetector) {
         this.wallDetector = wallDetector;
-        if (wallDetector instanceof JsonWallDetector)
+        if (wallDetector instanceof JsonWallDetector) {
             ((JsonWallDetector) wallDetector).setDistanceMetric(this.distanceMetric);
+            if (this.safetyDistance != 0)
+                ((JsonWallDetector) wallDetector).setSafetyDistance(this.safetyDistance);
+        }
+
         return this;
     }
 
