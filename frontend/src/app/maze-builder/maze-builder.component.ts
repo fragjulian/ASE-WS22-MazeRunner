@@ -293,4 +293,8 @@ export class MazeBuilderComponent {
     });
     return positions;
   }
+
+  setColor(color: string) {
+    this.brushColor = color;
+  }
 }
