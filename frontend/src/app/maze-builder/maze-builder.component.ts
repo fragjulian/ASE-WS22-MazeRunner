@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {MazeBuilderAutoSolveService} from "../maze-builder-auto-solve.service";
 import {Position} from "../Position";
 
-
 @Component({
   selector: 'app-maze-canvas',
   templateUrl: './maze-builder.component.html',
@@ -11,7 +10,7 @@ import {Position} from "../Position";
 export class MazeBuilderComponent {
 
   private readonly initialBrushColor = 'black';
-  private readonly initialBrushColors = ['black', 'gray', 'green', 'purple', 'blue'];
+  private readonly initialBrushColors = ['black', 'gray', 'green', 'purple'];
 
   // usually the left mouse button
   private readonly primaryMouseButton = 1;
@@ -50,7 +49,6 @@ export class MazeBuilderComponent {
     this.colorPicker = document.getElementById('color-picker') as HTMLElement;
     this.wallColor = document.getElementById('wallColor') as HTMLSpanElement;
     this.obstacleColor = document.getElementById('obstacleColor') as HTMLSpanElement;
-    this.canvas.addEventListener('click', this.handleClick.bind(this));
     this.canvas.addEventListener('mousemove', this.handleMouseMove.bind(this));
     this.canvas.addEventListener('mousedown', this.handleMouseDown.bind(this));
     this.canvas.addEventListener('mouseup', this.handleMouseUp.bind(this));
@@ -65,6 +63,7 @@ export class MazeBuilderComponent {
       this.brushColors[2] = this.brushColor;
     if (this.selectedBrush == "goal")
       this.brushColors[3] = this.brushColor;
+
   }
 
   restoreBrushColor() {
@@ -79,9 +78,6 @@ export class MazeBuilderComponent {
   }
 
 
-  handleClick(event: MouseEvent) {
-    this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
-  }
 
   handleMouseMove(event: MouseEvent) {
     if (!this.isDrawing) {
@@ -97,11 +93,14 @@ export class MazeBuilderComponent {
 
   handleMouseDown(event: MouseEvent) {
     this.isDrawing = true;
+    this.drawPixelAtCurrentMousePosition(event.offsetX, event.offsetY);
+    this.getSolvedPath();//automatically get and draw the solved path in the maze editor
   }
 
   handleMouseUp(event: MouseEvent) {
+    if (this.isDrawing)
+      this.getSolvedPath();//automatically get and draw the solved path in the maze editor0
     this.isDrawing = false;
-    this.getSolvedPath();//automatically get and draw the solved path in the maze editor
   }
 
   // Clears the entire canvas
@@ -208,16 +207,41 @@ export class MazeBuilderComponent {
 
   // Draws a border around the entire canvas
   drawMazeBorder() {
-    this.context!.strokeStyle = this.brushColor;
-    this.context!.lineWidth = 2 * this.pixelSize;
-    const width = this.canvas!.width;
-    const height = this.canvas!.height;
-    this.context!.strokeRect(0, 0, width, height);
+    if (this.selectedBrush == "wall") {
+      this.context!.strokeStyle = this.brushColor;
+      this.context!.lineWidth = 2 * this.pixelSize;
+      const width = this.canvas!.width;
+      const widthPixels = width / this.pixelSize;
+      const height = this.canvas!.height;
+      const heightPixels = height / this.pixelSize;
+      this.context!.strokeRect(0, 0, width, height);
+      for (let i = 0; i < widthPixels; i++) {
+        this.walls.add(new Position(i, 0));
+        this.walls.add(new Position(i, heightPixels - 1));
+      }
+      for (let i = 1; i < heightPixels - 1; i++) {
+        this.walls.add(new Position(0, i));
+        this.walls.add(new Position(widthPixels - 1, i));
+      }
+      this.getSolvedPath();
+    }
   }
 
   private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
-    this.cursorPosX = Math.floor(offsetX / this.pixelSize) - 1;
-    this.cursorPosY = Math.floor(offsetY / this.pixelSize) - 1;
+    this.cursorPosX = Math.floor((offsetX - this.pixelSize) / this.pixelSize);
+    this.cursorPosY = Math.floor((offsetY - this.pixelSize) / this.pixelSize);
+
+    const width = this.canvas!.width / this.pixelSize;
+    const height = this.canvas!.height / this.pixelSize;
+
+    if (this.cursorPosX < 0)
+      this.cursorPosX = 0;
+    if (this.cursorPosX >= width)
+      this.cursorPosX = width - 1;
+    if (this.cursorPosY < 0)
+      this.cursorPosY = 0;
+    if (this.cursorPosY >= height)
+      this.cursorPosY = height - 1;
 
     if (this.selectedBrush == "start") {
       this.drawStartAtCurrentMousePosition(this.cursorPosX, this.cursorPosY);
@@ -259,7 +283,7 @@ export class MazeBuilderComponent {
 
   private deletePositionsInSet(positions: Set<Position>, position: Position): Set<Position> {
     positions.forEach((setPos) => {
-      if (setPos.equals(setPos)) {
+      if (setPos.equals(position)) {
         positions.delete(setPos);
       }
     });

@@ -278,8 +278,6 @@ class UITest {
 
     WebApp.clickButton(driver, "set-goal");
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(10, 15));
-    // current bug in backend: goal has to be drawn twice
-    Canvas.drawSinglePixels(driver, canvas, Pixel.of(10, 15));
 
     Thread.sleep(1_000); // give server time to respond
     Canvas.verify(driver, canvas, "solved-maze-no-walls.png");
@@ -317,8 +315,6 @@ class UITest {
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(-15, -15));
 
     WebApp.clickButton(driver, "set-goal");
-    Canvas.drawSinglePixels(driver, canvas, Pixel.of(15, 5));
-    // current bug in backend: goal has to be drawn twice
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(15, 5));
 
     Thread.sleep(1_000); // give server time to respond
@@ -382,11 +378,9 @@ class UITest {
 
     WebApp.clickButton(driver, "set-goal");
     Canvas.drawSinglePixels(driver, canvas, Pixel.of(35, 16));
-    // current bug in backend: goal has to be drawn twice
 
-    // Thread.sleep(1_000); // give server time to respond
-    // TODO. border is currently ignored
-    //    Canvas.verify(driver, canvas, "solved-maze-advanced.png");
+    Thread.sleep(1_000); // give server time to respond
+    Canvas.verify(driver, canvas, "solved-maze-advanced.png");
 
     WebApp.clickButton(driver, "clear-maze");
     Canvas.verify(driver, canvas, "empty-maze.png");
