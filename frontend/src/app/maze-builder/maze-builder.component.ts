@@ -26,7 +26,9 @@ export class MazeBuilderComponent {
   private startPosition: Position | undefined;
   private goalPosition: Position | undefined;
   pixelSize = 15;
+  // Current x-coordinate of the cursor on the canvas
   cursorPosX = 0;
+  // Current y-coordinate of the cursor on the canvas
   cursorPosY = 0;
   private currentPath: Position[] = [];
   brushColors = this.initialBrushColors;
@@ -104,9 +106,11 @@ export class MazeBuilderComponent {
     this.getSolvedPath();//automatically get and draw the solved path in the maze editor
   }
 
+  // Clears the entire canvas
   clearMaze() {
     const width = this.canvas!.width;
     const height = this.canvas!.height;
+    // Clear the canvas
     this.context!.clearRect(0, 0, width, height);
     this.walls = new Set<Position>();
     this.obstacles = new Set<Position>();
@@ -191,25 +195,56 @@ export class MazeBuilderComponent {
     this.deletePositionsInSet(this.obstacles, pos);
   }
 
+  // Exports the current state of the canvas as an image file
   exportMazeAsImage() {
+
     const dataUrl = this.canvas!.toDataURL();
+
     const link = document.createElement('a');
+
     link.href = dataUrl;
+    // Set the download attribute of the link to the default file name for the maze image
     link.download = this.mazeDefaultFileName;
     link.click();
   }
 
+  // Draws a border around the entire canvas
   drawMazeBorder() {
-    this.context!.strokeStyle = this.brushColor;
-    this.context!.lineWidth = 2 * this.pixelSize;
-    const width = this.canvas!.width;
-    const height = this.canvas!.height;
-    this.context!.strokeRect(0, 0, width, height);
+    if (this.selectedBrush == "wall") {
+      this.context!.strokeStyle = this.brushColor;
+      this.context!.lineWidth = 2 * this.pixelSize;
+      const width = this.canvas!.width;
+      const widthPixels = width / this.pixelSize;
+      const height = this.canvas!.height;
+      const heightPixels = height / this.pixelSize;
+      this.context!.strokeRect(0, 0, width, height);
+      for (let i = 0; i < widthPixels; i++) {
+        this.walls.add(new Position(i, 0));
+        this.walls.add(new Position(i, heightPixels - 1));
+      }
+      for (let i = 1; i < heightPixels - 1; i++) {
+        this.walls.add(new Position(0, i));
+        this.walls.add(new Position(widthPixels - 1, i));
+      }
+      this.getSolvedPath();
+    }
   }
 
   private drawPixelAtCurrentMousePosition(offsetX: number, offsetY: number) {
-    this.cursorPosX = Math.floor(offsetX / this.pixelSize);
-    this.cursorPosY = Math.floor(offsetY / this.pixelSize);
+    this.cursorPosX = Math.floor((offsetX - this.pixelSize) / this.pixelSize);
+    this.cursorPosY = Math.floor((offsetY - this.pixelSize) / this.pixelSize);
+
+    const width = this.canvas!.width / this.pixelSize;
+    const height = this.canvas!.height / this.pixelSize;
+
+    if (this.cursorPosX < 0)
+      this.cursorPosX = 0;
+    if (this.cursorPosX >= width)
+      this.cursorPosX = width - 1;
+    if (this.cursorPosY < 0)
+      this.cursorPosY = 0;
+    if (this.cursorPosY >= height)
+      this.cursorPosY = height - 1;
 
     if (this.selectedBrush == "start") {
       this.drawStartAtCurrentMousePosition(this.cursorPosX, this.cursorPosY);

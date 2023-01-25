@@ -1,51 +1,86 @@
-<!--Changed version of this tutorial: https://www.techgeeknext.com/angular-upload-image-->
+<!-- The template includes a dropzone component for selecting and removing the image file. -->
+<!-- It also includes input fields for specifying the wall and obstacle colors. -->
+<!-- There are buttons for submitting the image and downloading the solved image. -->
+<!-- The template displays a success message, an error message, and the solved maze image. -->
+<!-- If the solved maze image is displayed, the template includes a popover with a close button and a download button. -->
+<!-- The template uses one-way data binding directives to bind the component's instance variables to the template's input fields and output elements. -->
+<!-- The template also includes a uitestid attribute for automated testing. -->
+
 <div class="container">
 
-  <br>
-
-  <h1>Maze Upload</h1>
 
   <br>
+
+
+  <span uitestid="maze-header" class="restupload-heading">Maze Upload</span>
+
+
+  <br>
+
 
   <form>
 
-    <!-- Used this tutorial: https://stackblitz.com/edit/ngx-dropzone?file=src%2Fapp%2Fapp.component.html    -->
-    <ngx-dropzone (change)="onSelect($event)" [accept]="'image/*'">
-      <ngx-dropzone-label>Drop it, baby!</ngx-dropzone-label>
+    <!-- Dropzone component for selecting and removing the image file -->
+    <!-- Used this tutorial: https://stackblitz.com/edit/ngx-dropzone?file=src%2Fapp%2Fapp.component.html -->
+    <ngx-dropzone (change)="onSelect($event)" [accept]="'image/png, image/jpeg'">
+      <ngx-dropzone-label class="drop-title">Drop png/jpeg here</ngx-dropzone-label>
+      <!-- Image preview for the selected image file -->
       <ngx-dropzone-image-preview *ngIf="uploadImage" [file]="uploadImage" [removable]="true" (removed)="onRemove($event)">
         <ngx-dropzone-label>{{ uploadImage.name }} ({{ uploadImage.type }})</ngx-dropzone-label>
       </ngx-dropzone-image-preview>
     </ngx-dropzone>
 
+
     <br>
 
+    <!-- Button for submitting the image to the REST API for solving -->
     <div class="form-group" >
-      <input uitestid="solve-maze" type="button" [disabled]="!uploadImage" (click)="imageUploadAction()" value="Solve Maze" class="btn1">
+
+      <input id="solve-maze-button" uitestid="solve-maze" type="button" mat-button [disabled]="!uploadImage" (click)="imageUploadAction()" value="Solve Maze" class="btn btn-outline-primary">
     </div>
 
     <br>
 
+    <!-- Label and input field for the wall color -->
+    <h2 uitestid="rgb-wall" id="title-rgb-wall">RGB Value of the Wall:</h2>
+    <p><input uitestid="rgb-wall-input" type="text" id="rgbvaluewall" name="rgbvaluewall" [(ngModel)]="rgbvaluewall"></p>
+
+    <!-- Label and input field for the obstacle color -->
+    <h2 uitestid="rgb-obstacle" id="title-rgb-obstacle">RGB Value of the Obstacle:</h2>
+    <p><input uitestid="rgb-obstacle-input" type="text" id="rgbvalueobstacle" name="rgbvalueobstacle" [(ngModel)]="rgbvalueobstacle"></p>
+
+
+    <br>
+
+    <!-- Output element for the success message -->
     <div>
       <output *ngIf=successResponse class="success"><b>{{successResponse}}</b></output>
     </div>
 
-    <br>
-    <h2>RGB Value of the Wall:</h2>
-    <p><input type="text" id="rgbvaluewall" name="rgbvaluewall" [(ngModel)]="rgbvaluewall"></p>
+    <!-- Output element for the error message -->
+    <!-- Only displayed if the errorMessage instance variable is truthy -->
+   <!-- <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div> -->
 
-    <h2>RGB Value of the Obstacle:</h2>
-    <p><input type="text" id="rgbvalueobstacle" name="rgbvalueobstacle" [(ngModel)]="rgbvalueobstacle"></p>
 
     <br>
 
-    <div *ngIf=solvedMaze >
-      <img [src]="solvedMaze" alt="Solved Maze">
+    <!-- Popover element for the solved maze image -->
+    <!-- Only displayed if the showPopup instance variable is truthy -->
+    <div *ngIf="showPopup">
+      <div class="popup-overlay">
+        <div class="popup-content">
+          <!-- Image element for the solved maze image -->
+          <img [src]="solvedMaze" alt="Solved Maze">
+
+          <br>
+
+          <!-- Button for downloading the solved maze image -->
+          <button (click)="downloadImage()" mat-button class="btn btn-outline-dark">Download Image</button>
+
+          <!-- Button for closing the popover -->
+          <button (click)="showPopup = false" mat-button class="btn btn-outline-danger">Close</button>
+        </div>
+      </div>
     </div>
-
   </form>
 </div>
-
-
-
-
-
